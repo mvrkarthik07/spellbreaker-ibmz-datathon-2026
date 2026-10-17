@@ -1,96 +1,133 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
-<title id="title">SpellBreaker system flowchart</title>
-<desc id="desc">The Merlion Bank demo sends minimal transfer signals to a FastAPI scoring service on IBM LinuxONE. Features feed three predictive models and a policy engine. Decisions return to the bank app and dashboard; high-risk cases get an asynchronous validated Granite note or a deterministic template.</desc>
-<defs>
-  <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 L11 6 L1 11 Z" fill="#426273"/></marker>
-  <marker id="arrow-async" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1 1 L11 6 L1 11 Z" fill="#8c6b30"/></marker>
-  <style>
-    text{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#172b3a}
-    .title{font-size:34px;font-weight:750;letter-spacing:-.4px}.subtitle{font-size:16px;fill:#536b79}
-    .lane{font-size:16px;font-weight:700;letter-spacing:1px;fill:#486272}
-    .head{font-size:19px;font-weight:720}.body{font-size:14px;fill:#435b69}.small{font-size:12px;fill:#536b79}
-    .box{stroke-width:1.5;rx:18}.arrow{fill:none;stroke:#426273;stroke-width:3;marker-end:url(#arrow)}
-    .async{fill:none;stroke:#a27a36;stroke-width:2.5;stroke-dasharray:9 8;marker-end:url(#arrow-async)}
-  </style>
-</defs>
-<rect width="1440" height="900" rx="26" fill="#f5f8fa"/>
-<text x="64" y="68" class="title">SpellBreaker | real-time intervention flow</text>
-<text x="64" y="98" class="subtitle">Minimal transfer signals in · scam-specific decision out · sensitive identifiers stay out of the case-note prompt</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1540" height="960" viewBox="0 0 1540 960" role="img" aria-labelledby="title desc">
+  <title id="title">How SpellBreaker checks a transfer</title>
+  <desc id="desc">A transfer moves through context gathering, three risk checks and a clear bank action. High-risk cases can get an optional, validated case note, and decisions appear on the analyst dashboard.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#41677a"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a87527"/>
+    </marker>
+    <style>
+      .title { font: 700 34px Arial, sans-serif; fill: #172b3a; letter-spacing: -0.5px; }
+      .subtitle { font: 18px Arial, sans-serif; fill: #526c7c; }
+      .lane { font: 700 15px Arial, sans-serif; fill: #496577; letter-spacing: 1px; }
+      .card-title { font: 700 19px Arial, sans-serif; fill: #1d3342; }
+      .body { font: 15px Arial, sans-serif; fill: #405d6e; }
+      .small { font: 13px Arial, sans-serif; fill: #547080; }
+      .arrow { fill: none; stroke: #41677a; stroke-width: 3; marker-end: url(#arrow); }
+      .async { fill: none; stroke: #a87527; stroke-width: 2.5; stroke-dasharray: 8 7; marker-end: url(#arrow-amber); }
+    </style>
+  </defs>
 
-<rect x="48" y="132" width="1344" height="462" rx="24" fill="#edf3f6" stroke="#d6e1e7"/>
-<text x="76" y="168" class="lane">LIVE SCORING · IBM LINUXONE (s390x)</text>
+  <rect width="1540" height="960" rx="28" fill="#f5f8fa"/>
+  <text x="62" y="65" class="title">A transfer comes in. SpellBreaker checks the context.</text>
+  <text x="64" y="98" class="subtitle">Then it gives the bank a clear next step.</text>
 
-<rect x="78" y="250" width="220" height="150" class="box" fill="#ffffff" stroke="#b8d7d5"/>
-<rect x="78" y="250" width="220" height="10" rx="5" fill="#3b8586"/>
-<text x="104" y="292" class="head">Merlion Bank app</text>
-<text x="104" y="322" class="body">Transfer + demo signals</text>
-<text x="104" y="346" class="body">Call, paste, rush, payee</text>
-<text x="104" y="377" class="small">Fictional customer data</text>
+  <rect x="44" y="132" width="1452" height="370" rx="24" fill="#edf4f7" stroke="#d5e2e8"/>
+  <text x="72" y="168" class="lane">THE QUICK CHECK</text>
 
-<rect x="358" y="250" width="198" height="150" class="box" fill="#ffffff" stroke="#a9c6d4"/>
-<rect x="358" y="250" width="198" height="10" rx="5" fill="#3f718a"/>
-<text x="386" y="292" class="head">FastAPI</text>
-<text x="386" y="322" class="body">POST /score</text>
-<text x="386" y="346" class="body">NumPy inference path</text>
-<text x="386" y="377" class="small">Container · non-root</text>
+  <!-- Main path: one clear left-to-right line. -->
+  <path d="M260 313 H310" class="arrow"/>
+  <path d="M485 313 H535" class="arrow"/>
+  <path d="M750 313 H785" class="arrow"/>
+  <path d="M1040 313 H1075" class="arrow"/>
+  <path d="M1275 313 H1310" class="arrow"/>
 
-<rect x="614" y="250" width="190" height="150" class="box" fill="#ffffff" stroke="#b9c8a6"/>
-<rect x="614" y="250" width="190" height="10" rx="5" fill="#7f9664"/>
-<text x="640" y="292" class="head">Feature builder</text>
-<text x="640" y="322" class="body">Transfer + history</text>
-<text x="640" y="346" class="body">Payee + receiver score</text>
-<text x="640" y="377" class="small">No names in model vector</text>
+  <g>
+    <rect x="70" y="220" width="190" height="186" rx="18" fill="#fff" stroke="#a8cdd0" stroke-width="1.5"/>
+    <rect x="70" y="220" width="190" height="10" rx="5" fill="#438a88"/>
+    <text x="92" y="264" class="card-title">Bank app</text>
+    <text x="92" y="296" class="body">A transfer is started</text>
+    <text x="92" y="324" class="body">Amount · payee · timing</text>
+    <text x="92" y="370" class="small">Fictional customer data</text>
+  </g>
 
-<rect x="862" y="218" width="244" height="112" class="box" fill="#ffffff" stroke="#c6b8dd"/>
-<rect x="862" y="218" width="10" height="112" rx="5" fill="#7762a0"/>
-<text x="892" y="254" class="head">M1 · Transfer risk</text>
-<text x="892" y="283" class="body">scikit-learn · HistGradientBoosting</text>
-<text x="892" y="307" class="small">Risk probability</text>
-<rect x="862" y="356" width="244" height="104" class="box" fill="#ffffff" stroke="#c6b8dd"/>
-<rect x="862" y="356" width="10" height="104" rx="5" fill="#7762a0"/>
-<text x="892" y="391" class="head">M2 · Scam type</text>
-<text x="892" y="420" class="body">scikit-learn classifier</text>
-<text x="892" y="443" class="small">Typology + confidence</text>
-<rect x="862" y="486" width="244" height="82" class="box" fill="#ffffff" stroke="#c6b8dd"/>
-<rect x="862" y="486" width="10" height="82" rx="5" fill="#7762a0"/>
-<text x="892" y="521" class="head">M3 · Receiver mule</text>
-<text x="892" y="547" class="body">XGBoost score lookup (CSV)</text>
+  <g>
+    <rect x="310" y="220" width="175" height="186" rx="18" fill="#fff" stroke="#a9c6d5" stroke-width="1.5"/>
+    <rect x="310" y="220" width="175" height="10" rx="5" fill="#4c819a"/>
+    <text x="332" y="264" class="card-title">SpellBreaker</text>
+    <text x="332" y="296" class="body">Checks the transfer</text>
+    <text x="332" y="324" class="body">and returns a decision</text>
+    <text x="332" y="370" class="small">Runs on IBM LinuxONE</text>
+  </g>
 
-<rect x="1172" y="286" width="184" height="150" class="box" fill="#fffdf5" stroke="#ddc780"/>
-<rect x="1172" y="286" width="184" height="10" rx="5" fill="#c49b40"/>
-<text x="1198" y="328" class="head">Policy</text>
-<text x="1198" y="358" class="body">Level + reasons</text>
-<text x="1198" y="382" class="body">Allow · ask · hold</text>
-<text x="1198" y="412" class="small">Human decides next step</text>
+  <g>
+    <rect x="535" y="220" width="215" height="186" rx="18" fill="#fff" stroke="#b7c8a7" stroke-width="1.5"/>
+    <rect x="535" y="220" width="215" height="10" rx="5" fill="#8a9b69"/>
+    <text x="558" y="264" class="card-title">Gather context</text>
+    <text x="558" y="296" class="body">Payee history</text>
+    <text x="558" y="324" class="body">Recent activity</text>
+    <text x="558" y="352" class="body">Receiver risk score</text>
+    <text x="558" y="380" class="small">No names in model inputs</text>
+  </g>
 
-<path d="M298 325 H350" class="arrow"/>
-<path d="M556 325 H606" class="arrow"/>
-<path d="M804 325 H834 V274 H854" class="arrow"/>
-<path d="M804 325 H834 V408 H854" class="arrow"/>
-<path d="M804 325 H834 V527 H854" class="arrow"/>
-<path d="M1106 274 H1136 V341 H1164" class="arrow"/>
-<path d="M1106 408 H1136 V361 H1164" class="arrow"/>
-<path d="M1106 527 H1136 V386 H1164" class="arrow"/>
-<path d="M1172 438 H1128 V548 H616 V420 H298" class="arrow"/>
-<text x="458" y="476" class="small">decision · action · explanation</text>
+  <g>
+    <rect x="785" y="190" width="255" height="246" rx="18" fill="#fff" stroke="#c8b8df" stroke-width="1.5"/>
+    <rect x="785" y="190" width="9" height="246" rx="4.5" fill="#8068a5"/>
+    <text x="812" y="222" class="card-title">Three quick checks</text>
+    <rect x="812" y="240" width="202" height="48" rx="10" fill="#f7f4fb"/>
+    <text x="827" y="261" class="body">Transfer risk</text>
+    <text x="827" y="279" class="small">How unusual is it?</text>
+    <rect x="812" y="297" width="202" height="48" rx="10" fill="#f7f4fb"/>
+    <text x="827" y="318" class="body">Likely scam type</text>
+    <text x="827" y="336" class="small">What might be happening?</text>
+    <rect x="812" y="354" width="202" height="48" rx="10" fill="#f7f4fb"/>
+    <text x="827" y="375" class="body">Receiver risk</text>
+    <text x="827" y="393" class="small">Has the account raised flags?</text>
+    <text x="812" y="422" class="small">scikit-learn · XGBoost · score lookup</text>
+  </g>
 
-<rect x="48" y="642" width="426" height="172" rx="22" fill="#ffffff" stroke="#a9c6d4" stroke-width="1.5"/>
-<text x="80" y="686" class="head">Fraud analyst dashboard</text>
-<text x="80" y="716" class="body">Live decisions · reasons · model evidence</text>
-<text x="80" y="744" class="body">Privacy panel · case note status</text>
-<text x="80" y="780" class="small">GET /decisions · /report · /case/{id}</text>
-<path d="M1270 438 V625 H262 V634" class="arrow"/>
+  <g>
+    <rect x="1075" y="220" width="200" height="186" rx="18" fill="#fff" stroke="#e0c78f" stroke-width="1.5"/>
+    <rect x="1075" y="220" width="200" height="10" rx="5" fill="#c49a42"/>
+    <text x="1098" y="264" class="card-title">Pick an action</text>
+    <text x="1098" y="298" class="body">Allow · ask · pause</text>
+    <text x="1098" y="326" class="body">or hold for review</text>
+    <text x="1098" y="370" class="small">People make the final call</text>
+  </g>
 
-<rect x="520" y="642" width="836" height="172" rx="22" fill="#fffaf0" stroke="#e5d8b8" stroke-width="1.5"/>
-<text x="552" y="680" class="lane" style="fill:#8b6c34">ASYNC · HIGH / CRITICAL ONLY</text>
-<rect x="552" y="704" width="340" height="80" rx="14" fill="#ffffff" stroke="#dfcea6" stroke-width="1.5"/>
-<text x="576" y="737" class="head">Granite note + validator</text>
-<text x="576" y="763" class="body">Optional mode · fixed facts · strict format</text>
-<rect x="984" y="704" width="332" height="80" rx="14" fill="#ffffff" stroke="#dfcea6" stroke-width="1.5"/>
-<text x="1008" y="737" class="head">Template fallback</text>
-<text x="1008" y="763" class="body">Default after 0/50 Granite acceptance</text>
-<path d="M1260 436 V614 H722 V696" class="async"/>
-<path d="M892 744 H974" class="async"/>
-<path d="M984 784 V830 H262 V822" class="async"/>
-<text x="64" y="864" class="small">Case notes receive the allow-listed fact sheet only; names, account numbers and raw transaction IDs are excluded.</text>
+  <g>
+    <rect x="1310" y="220" width="160" height="186" rx="18" fill="#fff" stroke="#a8cdd0" stroke-width="1.5"/>
+    <rect x="1310" y="220" width="160" height="10" rx="5" fill="#438a88"/>
+    <text x="1332" y="264" class="card-title">Bank replies</text>
+    <text x="1332" y="298" class="body">Clear message</text>
+    <text x="1332" y="326" class="body">plus reasons</text>
+    <text x="1332" y="370" class="small">Decision returned to app</text>
+  </g>
+
+  <!-- Side paths below the main flow, kept separate so they do not cross. -->
+  <text x="72" y="555" class="lane">AFTER THE DECISION</text>
+
+  <path d="M1175 406 V523 H470 V600" class="async"/>
+  <text x="800" y="511" class="small" fill="#936b2f">High / critical only · runs in the background</text>
+  <g>
+    <rect x="70" y="600" width="800" height="224" rx="20" fill="#fffaf1" stroke="#e7d4ad" stroke-width="1.5"/>
+    <text x="98" y="640" class="card-title">A short case note (when needed)</text>
+    <text x="98" y="672" class="body">Only high or critical decisions get a note, created after the score returns.</text>
+
+    <rect x="98" y="697" width="350" height="94" rx="14" fill="#fff" stroke="#dfc797"/>
+    <text x="118" y="728" class="card-title" font-size="17">Granite note · optional</text>
+    <text x="118" y="756" class="small">Checks the facts and format; rejects guesses.</text>
+    <text x="118" y="777" class="small">If it fails, use the ready-made note.</text>
+
+    <path d="M448 744 H495" class="async"/>
+    <rect x="500" y="697" width="340" height="94" rx="14" fill="#fff" stroke="#dfc797"/>
+    <text x="520" y="728" class="card-title" font-size="17">Ready-made fallback</text>
+    <text x="520" y="756" class="small">Used by default unless Granite is enabled</text>
+    <text x="520" y="777" class="small">and its note passes every check.</text>
+  </g>
+
+  <path d="M1315 406 V568 H1165 V600" class="arrow"/>
+  <g>
+    <rect x="940" y="600" width="530" height="224" rx="20" fill="#fff" stroke="#a9c6d5" stroke-width="1.5"/>
+    <text x="970" y="640" class="card-title">Fraud analyst dashboard</text>
+    <text x="970" y="674" class="body">See decisions, reasons and model evidence.</text>
+    <text x="970" y="704" class="body">Check privacy details and case-note status.</text>
+    <text x="970" y="752" class="small">The score stays quick; notes are handled separately.</text>
+    <text x="970" y="790" class="small">Live view for the bank’s review team</text>
+  </g>
+
+  <path d="M870 746 H908 V780 H930" class="async"/>
+  <text x="72" y="884" class="small">Case notes use only approved facts such as level, risk band, scam type and reasons. Names, account numbers and raw transaction IDs stay out.</text>
 </svg>
