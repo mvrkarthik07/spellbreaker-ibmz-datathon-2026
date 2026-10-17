@@ -51,9 +51,14 @@ try:
 except Exception: MULE_SCORES={}
 DEBUG_TIMINGS=os.getenv('SPELLBREAKER_DEBUG_TIMINGS','0').lower() in ('1','true','yes')
 LOGGER=logging.getLogger('spellbreaker.score')
+LOGGER.setLevel(logging.INFO)
+LOGGER.propagate=False
+if not LOGGER.handlers:
+ _handler=logging.StreamHandler()
+ _handler.setFormatter(logging.Formatter('%(message)s'))
+ LOGGER.addHandler(_handler)
 if DEBUG_TIMINGS:
  logging.basicConfig(level=logging.INFO)
- LOGGER.setLevel(logging.INFO)
 class ScoreIn(BaseModel):
  customer_id:str; payee_account:str; payee_name:str='Payee'; amount:float; source_pot:str='current'; flags:dict[str,Any]={}; timestamp:Optional[str]=None
 class ConfirmIn(BaseModel): decision_id:str; user_choice:str
@@ -96,7 +101,7 @@ async def score(p:ScoreIn, background_tasks:BackgroundTasks, request:Request):
  marks['explain']=time.perf_counter()
  level,action,question,message=decide(risk,thresholds,typ)
  marks['policy']=time.perf_counter()
- d=store.add_decision({'customer_id':p.customer_id,'payee_account':p.payee_account,'payee_name':p.payee_name,'amount':p.amount,'timestamp':stamp,'risk':risk,'level':level,'scam_type':typ,'scam_type_confidence':type_confidence,'action':action,'question':question,'message':message,'reasons':rs,'features_used':vec})
+ d=store.add_decision({'customer_id':p.customer_id,'payee_account':p.payee_account,'payee_name':p.payee_name,'amount':p.amount,'source_pot':p.source_pot,'timestamp':stamp,'risk':risk,'level':level,'scam_type':typ,'scam_type_confidence':type_confidence,'action':action,'question':question,'message':message,'reasons':rs,'features_used':vec,'model_version':BUNDLE.get('version') if BUNDLE else 'stub-0'})
  if level in ('HIGH','CRITICAL'):
   age_band=profile.get('age_band','unknown'); amount=p.amount
   amount_band='under S$1k' if amount<1000 else 'S$1k–10k' if amount<10000 else 'S$10k–50k' if amount<50000 else 'over S$50k'
@@ -108,7 +113,9 @@ async def score(p:ScoreIn, background_tasks:BackgroundTasks, request:Request):
   timings={name:round((marks[name]- (start if i==0 else marks[list(marks)[i-1]]))*1000,3) for i,name in enumerate(marks)}
   timings['total']=round((time.perf_counter()-start)*1000,3)
   d['debug_timings_ms']=timings
-  LOGGER.info('score_stage_timings_ms=%s',json.dumps(timings,separators=(',',':')))
+ trace={'event':'score_decision','decision_id':d['decision_id'],'model_version':d['model_version'],'scored_on':d['scored_on'],'level':level,'risk':round(risk,6),'scam_type':typ,'action':action,'latency_ms':round(d['latency_ms'],3)}
+ if DEBUG_TIMINGS:trace['debug_timings_ms']=d['debug_timings_ms']
+ LOGGER.info(json.dumps(trace,separators=(',',':')))
  return d
 @app.post('/transfer/confirm')
 def confirm(p:ConfirmIn):
@@ -121,6 +128,12 @@ def confirm(p:ConfirmIn):
  return {'status':'ok','outcome':d['outcome']}
 @app.get('/decisions')
 def decisions(limit:int=50):return list(islice(store.decisions,max(0,min(limit,500))))
+@app.get('/trace/{decision_id}')
+def trace(decision_id:str):
+ d=store.get_decision(decision_id)
+ if not d:raise HTTPException(404,'decision not found')
+ keys=('decision_id','model_version','scored_on','timestamp','risk','level','scam_type','scam_type_confidence','action','question','message','reasons','latency_ms','debug_timings_ms','outcome')
+ return {key:d[key] for key in keys if key in d}
 @app.get('/case/{decision_id}')
 def case(decision_id:str):
  d=store.get_decision(decision_id)

@@ -17,6 +17,7 @@
 - [x] Recent activity accuracy — show only explicitly proceeded transfers as “Sent”; scoring or cancelling a review no longer makes it look like a completed payment. `git diff --check` passed 2026-10-18 04:03 SGT.
 - [x] Critical hold enforcement — a CRITICAL result has no continue button, and the API rejects attempts to proceed with HTTP 409. Local check confirmed CRITICAL score, blocked proceed and accepted cancel on 2026-10-18 04:11 SGT.
 - [x] Live critical-hold check — LinuxONE scored the government-impersonation case CRITICAL; proceed returned HTTP 409, cancel succeeded, and the deployed bank script has no critical Continue button. Verified 2026-10-18 04:11 SGT.
+- [x] Score trace implementation — unique decision IDs, redacted `/trace/{decision_id}` endpoint, structured stdout scoring logs and UI reference ID; local API suite passed 10/10, JavaScript syntax and diff checks passed 2026-10-18 04:18 SGT. Live LinuxONE transaction/log check pending deployment.
 - [ ] P8 — Post-freeze and hand-off — hand-off section drafted; post-freeze final push/recheck remains scheduled after 07:45 SGT
 
 ## Hand-off

@@ -49,6 +49,12 @@ def test_s5():
  assert d['level'] in ('MEDIUM','HIGH','CRITICAL') and d['scam_type']=='job'
 def test_health_and_reset():
  reset();h=client.get('/health').json();assert h['status']=='ok' and h['arch'];assert client.post('/demo/reset').json()['status']=='ok'
+def test_trace_endpoint_returns_a_redacted_decision_record():
+ reset();d=score('C-TAN','MB-SP','SP Group',180)
+ r=client.get('/trace/'+d['decision_id']);assert r.status_code==200
+ trace=r.json();assert trace['decision_id']==d['decision_id'] and trace['level']==d['level']
+ assert trace['model_version'] and 'latency_ms' in trace and trace['reasons']
+ assert not {'customer_id','payee_account','payee_name','features_used'}.intersection(trace)
 def test_static_pages():assert client.get('/bank/').status_code==200 and client.get('/dashboard/').status_code==200
 
 def test_feature_parity_100_sessions():

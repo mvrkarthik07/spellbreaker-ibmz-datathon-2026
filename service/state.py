@@ -1,6 +1,7 @@
 from copy import deepcopy
 from collections import deque
 from datetime import datetime, timezone
+from uuid import uuid4
 
 SEED={
 'C-TAN':{'name':'Mdm Tan','age_band':'65+','usual_amount':300,'current_balance':9000,'savings_balance':85000,'saved_payees':{'MB-LANDLORD':1800,'MB-DAUGHTER':250,'MB-SP':180},'transfers':[]},
@@ -12,7 +13,7 @@ class Store:
  def reset(self): self.customers=deepcopy(SEED); self.decisions=deque(maxlen=10000); self.by_id={}; self.counter=0
  def profile(self,cid): return self.customers.get(cid,self.customers['C-RAJ'])
  def add_decision(self,d):
-  self.counter+=1; d['decision_id']=f'd_{self.counter:06d}'; d['created_at']=datetime.now(timezone.utc).isoformat(); d['outcome']=None
+  self.counter+=1; d['decision_id']=f'd_{uuid4().hex}'; d['created_at']=datetime.now(timezone.utc).isoformat(); d['outcome']=None
   if len(self.decisions)==self.decisions.maxlen: self.by_id.pop(self.decisions[-1]['decision_id'],None)
   self.decisions.appendleft(d); self.by_id[d['decision_id']]=d; return d
  def get_decision(self,did): return self.by_id.get(did)

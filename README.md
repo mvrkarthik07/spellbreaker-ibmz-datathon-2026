@@ -20,6 +20,10 @@ See [full model results](docs/RESULTS.md).
 
 [Open the live Merlion Bank demo](http://148.100.98.199:8000/bank/) or the [analyst dashboard](http://148.100.98.199:8000/dashboard/). The browser smoke check exercised all five presets, both warning choices, the explanation panel, and reset; see [`evidence/ui_smoke_test.txt`](evidence/ui_smoke_test.txt).
 
+### Trace a scored transfer
+
+Each review displays a unique decision ID. Use it to retrieve the redacted model trace from `GET /trace/{decision_id}`, including the model version, risk, level, action, explanation, and latency. The service also writes one JSON log line per score to stdout; on LinuxONE, view it with `ssh l1cc 'docker logs --since 10m spellbreaker'` and search for the decision ID. Logs omit customer names, account numbers, and feature vectors. Per-stage timings appear in the trace/log only when `SPELLBREAKER_DEBUG_TIMINGS=1` is enabled. The trace endpoint reads the service's in-memory decision store and is cleared on reset or restart; Docker stdout logs remain the server-side request record.
+
 ## IBM Z / LinuxONE evidence
 
 | Claim | Evidence | Current status |

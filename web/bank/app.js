@@ -189,6 +189,7 @@ function render(decision) {
     <p class="result-status"><span aria-hidden="true">●</span>${copy.label}</p>
     <h1>${copy.title}</h1>
     <p class="result-description">${copy.description}</p>
+    <p class="decision-reference">Review reference: <code>${escapeHtml(decision.decision_id || 'unavailable')}</code></p>
     <div class="transfer-summary"><span><small>Recipient</small><strong>${recipient}</strong></span><span class="summary-amount">${escapeHtml(amount)}</span></div>
     ${question}
     ${timer}
