@@ -3,6 +3,7 @@
 from __future__ import annotations
 import argparse, json, platform, sys, time
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -14,14 +15,17 @@ from sklearn.model_selection import train_test_split
 ROOT=Path(__file__).resolve().parents[1]
 FEATS=['on_call','pasted_account','rushed_score','clicked_flagged_link_recent','new_payee','payee_repeat_escalation','n_1h','n_24h','n_new_payees_7d','log_amount_ratio','balance_fraction','from_long_term_savings','receiver_mule_score','hour_sin','hour_cos','is_late_night']
 TYPES=['gov_impersonation','investment','job','phishing_led']
+SGT=ZoneInfo('Asia/Singapore')
+
+def _as_sgt(value):
+    dt=datetime.fromisoformat(value.replace('Z','+00:00'))
+    return dt.replace(tzinfo=SGT) if dt.tzinfo is None else dt.astimezone(SGT)
 
 def training_live_features(payload, profile, mule_scores=None, legit_median_mule=.05):
     """Reference live-session featurizer, kept in parity with service/features.py."""
-    from datetime import datetime
-    now=datetime.fromisoformat(payload['timestamp'].replace('Z','+00:00')) if payload.get('timestamp') else datetime.now().astimezone()
-    if now.tzinfo: now=now.astimezone()
+    now=_as_sgt(payload['timestamp']) if payload.get('timestamp') else datetime.now(SGT)
     hist=profile['transfers']; acct=payload['payee_account']; amount=float(payload['amount']); flags=payload.get('flags') or {}
-    age=lambda x:(now-datetime.fromisoformat(x['time'].replace('Z','+00:00')).astimezone()).total_seconds()
+    age=lambda x:(now-_as_sgt(x['time'])).total_seconds()
     recent1=[x for x in hist if 0<=age(x)<=3600]; recent24=[x for x in hist if 0<=age(x)<=86400]; prior=[x for x in hist if x['payee_account']==acct]
     ratio=amount/max(float(profile.get('usual_amount',150)),1.); hr=now.hour
     return {'on_call':float(bool(flags.get('on_call'))),'pasted_account':float(bool(flags.get('pasted_account'))),'rushed_score':float(flags.get('rushed_score',0)),'clicked_flagged_link_recent':float(bool(flags.get('clicked_flagged_link_recent'))),'new_payee':float(acct not in profile['saved_payees']),'payee_repeat_escalation':float(bool(prior) and amount>prior[-1]['amount']),'n_1h':len(recent1),'n_24h':len(recent24),'n_new_payees_7d':sum(0<=age(x)<=604800 and x['payee_account'] not in profile['saved_payees'] for x in hist),'log_amount_ratio':float(np.log1p(ratio)),'balance_fraction':amount/max(float(profile['current_balance'] if payload.get('source_pot')!='savings' else profile['savings_balance']),1.),'from_long_term_savings':float(payload.get('source_pot')=='savings'),'receiver_mule_score':float((mule_scores or {}).get(acct,.05)),'hour_sin':float(np.sin(2*np.pi*hr/24)),'hour_cos':float(np.cos(2*np.pi*hr/24)),'is_late_night':float(hr>=22 or hr<=5)}

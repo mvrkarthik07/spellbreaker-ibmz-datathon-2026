@@ -55,6 +55,13 @@ def test_trace_endpoint_returns_a_redacted_decision_record():
  trace=r.json();assert trace['decision_id']==d['decision_id'] and trace['level']==d['level']
  assert trace['model_version'] and 'latency_ms' in trace and trace['reasons']
  assert not {'customer_id','payee_account','payee_name','features_used'}.intersection(trace)
+def test_trace_explanations_use_singapore_time_without_raw_hour_features():
+ from service.explain import reasons
+ profile=SEED['C-TAN'];payload={'timestamp':'2026-10-18T12:00:00+08:00','payee_account':'MB-SP','amount':500,'source_pot':'current','flags':{}}
+ features=build_features(payload,profile,{})
+ assert features['is_late_night']==0
+ text=' '.join(reasons(None,features,{}))
+ assert 'hour_sin' not in text and 'hour_cos' not in text and 'Late-night transfer' not in text
 def test_static_pages():assert client.get('/bank/').status_code==200 and client.get('/dashboard/').status_code==200
 
 def test_feature_parity_100_sessions():
