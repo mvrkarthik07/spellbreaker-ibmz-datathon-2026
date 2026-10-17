@@ -1,19 +1,6 @@
 # Architecture
 
-```mermaid
-flowchart LR
-  B[Merlion Bank app] -->|transfer + minimal flags| API[FastAPI on LinuxONE]
-  API --> F[Live feature builder]
-  F --> M1[M1 HistGradientBoosting risk]
-  F --> M2[M2 scam typology classifier]
-  F --> M3[M3 receiver mule score lookup]
-  M1 --> P[Policy: allow, ask, hold]
-  M2 --> P
-  M3 --> P
-  P --> B
-  P -. async .-> G[Local case note template]
-  API --> D[Dashboard]
-```
+The readable Markdown flowchart is in the [repository root](../flowchart.md). It shows the live scoring path and the separate, background case-note path.
 
 | Component | Responsibility |
 |---|---|

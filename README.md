@@ -60,9 +60,7 @@ See [full model results](docs/RESULTS.md).
 
 ## Architecture
 
-![How SpellBreaker checks a transfer](flowchart.svg)
-
-The diagram is also available as [an SVG](flowchart.svg) at the repository root. Component details and the Mermaid source are in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+See the [transfer flowchart](flowchart.md), written in Markdown with Mermaid so GitHub renders it directly. The component details are in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Results
 
