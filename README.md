@@ -11,7 +11,7 @@ The Protection from Scams Act allows police to direct banks to restrict an indiv
 <!-- RESULTS:START -->
 On the receiver-account holdout (0.40% mule base rate), XGBoost MuleNet achieves 7.46× lift and 7.46% recall at the top 1%, and 4.01× lift and 20.06% recall at the top 5%. SpellBreaker synthetic holdout PR-AUC is 0.8802, with a 1.13% legit interruption rate at T1.
 
-Optimized local benchmark (10,000 requests, concurrency 16): server p50 7.53 ms and p99 27.37 ms ([raw JSON](results/bench_local.json)). LinuxONE after the latest UI deployment (10,000 requests, concurrency 16): server p50 23.15 ms and p99 25.01 ms ([raw JSON](results/bench.json)). The synthetic model metrics and measured service latency are separate from real-world effectiveness.
+Optimized local benchmark (10,000 requests, concurrency 16): server p50 7.53 ms and p99 27.37 ms ([raw JSON](results/bench_local.json)). LinuxONE after the latest UI deployment (10,000 requests, concurrency 16): server p50 22.99 ms and p99 24.75 ms ([raw JSON](results/bench.json)). The synthetic model metrics and measured service latency are separate from real-world effectiveness.
 
 See [full model results](docs/RESULTS.md).
 <!-- RESULTS:END -->
@@ -26,7 +26,7 @@ See [full model results](docs/RESULTS.md).
 |---|---|---|
 | Model trained on s390x | [training log](evidence/train_l1cc.log), bundle `trained_on` | Verified; report says `trained_on=s390x` |
 | Served in a container on LinuxONE | [container inspection](evidence/container.txt) | Verified; Ubuntu 24.04 container on l1cc |
-| Real-time latency and throughput | [benchmark JSON](results/bench.json), [benchmark evidence](evidence/bench.txt) | Latest LinuxONE run: server p99 25.01 ms |
+| Real-time latency and throughput | [benchmark JSON](results/bench.json), [benchmark evidence](evidence/bench.txt) | Latest LinuxONE run: server p99 24.75 ms |
 | Customer data stays within bank platform | `docs/PRIVACY.md` | Prototype design statement; no production deployment verified |
 | Local GenAI | `/health`, [50-case evaluation](results/genai_eval.json), [runtime evidence](evidence/genai_runtime.txt) | Granite acceptance was 0/50; deterministic template is default and Granite remains optional |
 | Hyper Protect / Secure Execution; Telum NNPA via zDLC | — | **Production target, not used in this prototype** |

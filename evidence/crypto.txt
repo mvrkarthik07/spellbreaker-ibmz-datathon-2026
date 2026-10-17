@@ -1,10 +1,10 @@
 OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)
-Doing sha256 for 2s on 16 size blocks: 11927231 sha256's in 1.98s
-Doing sha256 for 2s on 64 size blocks: 9436353 sha256's in 1.98s
-Doing sha256 for 2s on 256 size blocks: 7783404 sha256's in 1.99s
-Doing sha256 for 2s on 1024 size blocks: 4813028 sha256's in 1.99s
-Doing sha256 for 2s on 8192 size blocks: 1022294 sha256's in 1.99s
-Doing sha256 for 2s on 16384 size blocks: 529819 sha256's in 1.98s
+Doing sha256 for 2s on 16 size blocks: 11992096 sha256's in 1.97s
+Doing sha256 for 2s on 64 size blocks: 9408310 sha256's in 1.99s
+Doing sha256 for 2s on 256 size blocks: 7771726 sha256's in 1.98s
+Doing sha256 for 2s on 1024 size blocks: 4793371 sha256's in 1.99s
+Doing sha256 for 2s on 8192 size blocks: 1024438 sha256's in 1.99s
+Doing sha256 for 2s on 16384 size blocks: 533494 sha256's in 2.00s
 version: 3.0.13
 built on: Wed Sep 16 18:47:02 2026 UTC
 options: bn(64,64)
@@ -12,11 +12,11 @@ compiler: gcc -fPIC -pthread -m64 -Wa,--noexecstack -Wall -fzero-call-used-regs=
 CPUINFO: OPENSSL_s390xcap=stfle:0xfbcbfffbfeffff7c:0x7fcef0000000000:0x77003b9804a00000:0x0:kimd:0xf0000000fc000000:0x4000000000000001:klmd:0xf0000000fc000000:0x1:km:0xf070383800002828:0x282800000001:kmc:0xf070383800000000:0x1000000000000001:kmac:0xf070383800000000:0xf0f1:kmctr:0xf070383800000000:0x1:kmo:0xf070383800000000:0x1:kmf:0xf070383800000000:0x1:prno:0x9000000000000000:0xa001:kma:0x8000383800000000:0x1:pcc:0xf070383800002828:0xe0c0c00000000001:kdsa:0xf070700088888800:0x1
 The 'numbers' are in 1000s of bytes per second processed.
 type             16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes  16384 bytes
-sha256           96381.66k   305013.43k  1001282.12k  2476653.60k  4208358.01k  4384118.43k
+sha256           97397.73k   302578.81k  1004829.22k  2466538.65k  4217183.97k  4370382.85k
 CPACF / message-security-assist (msa) CPU facility: visible
 implementation=hmac.new(key, account_utf8, hashlib.sha256)
 python_openssl=OpenSSL 3.0.13 30 Jan 2024
 hashlib_sha256_provider=_hashlib
 input=synthetic receiver identifier DEMO-RECEIVER-001
-token=8e551b27909b4c4fe9c9146a3fe4ff3fb89646ec5bb5c3e416d17f9a2bc4e8e6
+token=d082e2338ca65086880a61057f73fda0ac1fc17ccd27c4ae078f820c6fade97e
 key=ephemeral 256-bit random value; not printed or saved
