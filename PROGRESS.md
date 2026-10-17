@@ -14,6 +14,7 @@
 - [x] Public GitHub — public submission repository is `https://github.com/mvrkarthik07/spellbreaker-ibmz-datathon-2026`; key/data scans and ignore checks passed, and `main` is pushed.
 - [x] UI smoke review + flowchart — verified live LinuxONE banking UI presets and interaction buttons in the browser; all 9 remote acceptance checks pass. Added `evidence/ui_smoke_test.txt`, replaced the SVG with a root Markdown/Mermaid flowchart, and embedded the rendered Mermaid source in README for visibility. `git diff --check` passes. Verified 2026-10-18 03:45 SGT.
 - [x] Banking interface polish — rebuilt the customer UI with Singapore-localized account details, clearer hierarchy, privacy balance toggle, editable scenario controls and no customer-facing “demo” wording; verified the new live model hold and safe-transfer screens on LinuxONE. Hid the internal `hour_sin` feature from the dashboard selected-case list without changing model inputs. Added selected-account available-balance hints and UI/API rejection for amounts above available funds. Live API returned 422 for S$10,590 against S$3,000; existing UI evidence records S1, S4 and S5 as CRITICAL. Verified 2026-10-18 03:56 SGT.
+- [x] Recent activity accuracy — show only explicitly proceeded transfers as “Sent”; scoring or cancelling a review no longer makes it look like a completed payment. `git diff --check` passed 2026-10-18 04:03 SGT.
 - [ ] P8 — Post-freeze and hand-off — hand-off section drafted; post-freeze final push/recheck remains scheduled after 07:45 SGT
 
 ## Hand-off

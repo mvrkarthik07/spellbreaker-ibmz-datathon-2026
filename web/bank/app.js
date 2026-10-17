@@ -74,18 +74,19 @@ function refreshRecent() {
   fetch('/decisions?limit=50')
     .then(response => response.json())
     .then(decisions => {
-      const rows = decisions.filter(item => item.customer_id === $('customer').value).slice(0, 4);
+      // A score is only a review. Show a transfer here after the customer
+      // explicitly proceeds; unsubmitted and cancelled reviews are not activity.
+      const rows = decisions.filter(item => item.customer_id === $('customer').value && item.outcome === 'proceeded').slice(0, 4);
       if (!rows.length) {
-        $('recent').innerHTML = '<div class="empty-state"><span class="empty-icon" aria-hidden="true">↗</span><div><strong>No recent transfers</strong><p>Payments you review will appear here.</p></div></div>';
+        $('recent').innerHTML = '<div class="empty-state"><span class="empty-icon" aria-hidden="true">↗</span><div><strong>No completed transfers</strong><p>Transfers you choose to continue will appear here.</p></div></div>';
         return;
       }
       $('recent').innerHTML = rows.map(item => {
-        const status = item.outcome || item.level.toLowerCase();
         const time = item.created_at ? new Intl.DateTimeFormat('en-SG', { hour: '2-digit', minute: '2-digit' }).format(new Date(item.created_at)) : 'Recently';
         return `<article class="activity-item">
           <span class="activity-icon" aria-hidden="true">↗</span>
           <span class="activity-details"><strong>${escapeHtml(item.payee_name)}</strong><small>${escapeHtml(time)} · ${escapeHtml(item.payee_account)}</small></span>
-          <span class="activity-amount"><strong>${escapeHtml(money(item.amount))}</strong><small>${escapeHtml(status)}</small></span>
+          <span class="activity-amount"><strong>${escapeHtml(money(item.amount))}</strong><small>Sent</small></span>
         </article>`;
       }).join('');
     })
