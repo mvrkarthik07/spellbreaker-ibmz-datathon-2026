@@ -1,11 +1,4 @@
 runtime=template (fallback)
 granite_mode=optional; enable with SPELLBREAKER_ENABLE_LLM=1 SPELLBREAKER_GENAI_MODE=granite
 model=Granite 3.0 1B A400M Instruct Q4_K_M big-endian GGUF
-optional_sidecar_limits=user 10001:10001; read-only root; cap-drop ALL; 2 GiB memory; 1 CPU
-evaluation=50 synthetic HIGH/CRITICAL decisions on l1cc
-acceptance_rate=0.0 (0/50)
-mean_case_note_completion_ms=0.00758 for burst fallbacks; see results/genai_eval.json
-primary_model_probe=90.054 s then client timeout; no note accepted
-fallback_reasons=granite_busy (50/50 in 50-decision burst); first serial probe granite_request_TimeoutError
-default_decision=template retained because acceptance was below 60%; Granite remains optional
-server_latency_after_template_default=post-model-update benchmark p99 26.40 ms
+result=deterministic template is the default runtime
