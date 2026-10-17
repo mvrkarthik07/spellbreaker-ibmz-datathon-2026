@@ -1,0 +1,9 @@
+.git
+.venv
+__pycache__
+.pytest_cache
+data
+*.csv
+!results/mule_scores.csv
+*.log
+.DS_Store
