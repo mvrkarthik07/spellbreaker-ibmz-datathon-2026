@@ -5,6 +5,7 @@ for _thread_var in ('OMP_NUM_THREADS', 'OPENBLAS_NUM_THREADS', 'MKL_NUM_THREADS'
     os.environ[_thread_var] = '1'
 
 import csv, json, logging, platform, time
+from itertools import islice
 from pathlib import Path
 from typing import Any, Optional
 from fastapi import BackgroundTasks, FastAPI, HTTPException, Request
@@ -105,7 +106,7 @@ def confirm(p:ConfirmIn):
  if not d:raise HTTPException(404,'decision not found')
  return {'status':'ok','outcome':d['outcome']}
 @app.get('/decisions')
-def decisions(limit:int=50):return list(store.decisions)[:max(0,min(limit,500))]
+def decisions(limit:int=50):return list(islice(store.decisions,max(0,min(limit,500))))
 @app.get('/case/{decision_id}')
 def case(decision_id:str):
  d=store.get_decision(decision_id)
