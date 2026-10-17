@@ -29,6 +29,17 @@ function displayBalance(amount) {
   return balancesHidden ? '••••••' : money(amount);
 }
 
+function availableBalance() {
+  const profile = profiles[$('customer').value];
+  return $('pot').value === 'savings' ? profile.savings : profile.current;
+}
+
+function updateAmountLimit() {
+  const available = availableBalance();
+  $('amount').max = String(available);
+  $('amount-hint').textContent = `Available in this account: ${money(available)}`;
+}
+
 function updateCustomer() {
   const profile = profiles[$('customer').value];
   $('avatar').textContent = profile.initial;
@@ -37,6 +48,7 @@ function updateCustomer() {
   $('total-balance').textContent = displayBalance(profile.current + profile.savings);
   $('current-number').textContent = $('customer').value === 'C-TAN' ? '•• 2846' : $('customer').value === 'C-LIM' ? '•• 3418' : '•• 1906';
   $('savings-number').textContent = $('customer').value === 'C-TAN' ? '•• 5721' : $('customer').value === 'C-LIM' ? '•• 6620' : '•• 4472';
+  updateAmountLimit();
   updateGreeting();
   refreshRecent();
 }
@@ -212,6 +224,7 @@ async function finish(choice) {
 $('start').addEventListener('click', () => showScreen('form'));
 $('back').addEventListener('click', () => { showScreen('home'); refreshRecent(); });
 $('customer').addEventListener('change', updateCustomer);
+$('pot').addEventListener('change', updateAmountLimit);
 $('gear').addEventListener('click', () => { $('controls').open = !$('controls').open; });
 $('toggle-balance').addEventListener('click', event => {
   balancesHidden = !balancesHidden;
@@ -249,6 +262,13 @@ $('transfer-form').addEventListener('submit', async event => {
     $('form-error').hidden = false;
     return;
   }
+  const available = availableBalance();
+  if (amount > available) {
+    const accountName = $('pot').value === 'savings' ? 'savings account' : 'Everyday account';
+    $('form-error').textContent = `That amount is above your ${accountName} balance. ${money(available)} is available.`;
+    $('form-error').hidden = false;
+    return;
+  }
 
   const submit = $('send');
   submit.disabled = true;
@@ -271,7 +291,10 @@ $('transfer-form').addEventListener('submit', async event => {
         }
       })
     });
-    if (!response.ok) throw new Error('Transfer review is unavailable. Please try again.');
+    if (!response.ok) {
+      const problem = await response.json().catch(() => ({}));
+      throw new Error(problem.detail || 'Transfer review is unavailable. Please try again.');
+    }
     render(await response.json());
   } catch (error) {
     $('form-error').textContent = error.message || 'Transfer review is unavailable. Please try again.';

@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[1]
 def main():
  p=argparse.ArgumentParser();p.add_argument('--url',default='http://localhost:8000');p.add_argument('--requests',type=int,default=10000);p.add_argument('--concurrency',type=int,default=16);a=p.parse_args()
  def one(i):
-  body=json.dumps({'customer_id':['C-TAN','C-LIM','C-RAJ'][i%3],'payee_account':f'MB-TEST-{i%37}','payee_name':'Demo payee','amount':100+(i%8000),'source_pot':'current' if i%2 else 'savings','flags':{'on_call':i%7==0,'pasted_account':i%11==0,'rushed_score':(i%100)/100,'clicked_flagged_link_recent':i%43==0}}).encode();req=urllib.request.Request(a.url+'/score',data=body,headers={'Content-Type':'application/json'});t=time.perf_counter()
+  body=json.dumps({'customer_id':['C-TAN','C-LIM','C-RAJ'][i%3],'payee_account':f'MB-TEST-{i%37}','payee_name':'Demo payee','amount':100+(i%2800),'source_pot':'current' if i%2 else 'savings','flags':{'on_call':i%7==0,'pasted_account':i%11==0,'rushed_score':(i%100)/100,'clicked_flagged_link_recent':i%43==0}}).encode();req=urllib.request.Request(a.url+'/score',data=body,headers={'Content-Type':'application/json'});t=time.perf_counter()
   with urllib.request.urlopen(req,timeout=30) as r:d=json.load(r)
   return (time.perf_counter()-t)*1000,float(d['latency_ms'])
  t=time.perf_counter()

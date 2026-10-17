@@ -72,7 +72,11 @@ def prepare_case_note(decision_id: str, case_data: dict[str, Any]):
 
 @app.post('/score')
 async def score(p:ScoreIn, background_tasks:BackgroundTasks, request:Request):
- start=getattr(request.state,'spellbreaker_started',time.perf_counter()); marks={}; profile=store.profile(p.customer_id); stamp=p.timestamp or time.strftime('%Y-%m-%dT%H:%M:%S%z')
+ start=getattr(request.state,'spellbreaker_started',time.perf_counter()); marks={}; profile=store.profile(p.customer_id)
+ if p.amount<=0:raise HTTPException(status_code=422,detail='Enter a transfer amount greater than zero.')
+ balance_key='savings_balance' if p.source_pot=='savings' else 'current_balance'; available=float(profile.get(balance_key,0.))
+ if p.amount>available:raise HTTPException(status_code=422,detail=f'Insufficient funds. Selected account has S${available:,.2f} available.')
+ stamp=p.timestamp or time.strftime('%Y-%m-%dT%H:%M:%S%z')
  payload=(p.model_dump() if hasattr(p,'model_dump') else p.dict());payload['timestamp']=stamp
  marks['parse']=time.perf_counter()
  x=build_features(payload,profile,MULE_SCORES); feats=FEATURES if BUNDLE else list(x)
