@@ -1,0 +1,147 @@
+{
+  "loss_prevented_vs_friction": [
+    {
+      "friction": 0.001,
+      "ml_loss_prevented": 0.4832904884318766,
+      "rules_loss_prevented": 0.007128805303747801
+    },
+    {
+      "friction": 0.0035789473684210526,
+      "ml_loss_prevented": 0.7017994858611826,
+      "rules_loss_prevented": 0.025513618981834234
+    },
+    {
+      "friction": 0.006157894736842105,
+      "ml_loss_prevented": 0.7377892030848329,
+      "rules_loss_prevented": 0.04389843265992067
+    },
+    {
+      "friction": 0.008736842105263157,
+      "ml_loss_prevented": 0.7532133676092545,
+      "rules_loss_prevented": 0.0622832463380071
+    },
+    {
+      "friction": 0.01131578947368421,
+      "ml_loss_prevented": 0.781491002570694,
+      "rules_loss_prevented": 0.08066806001609353
+    },
+    {
+      "friction": 0.013894736842105262,
+      "ml_loss_prevented": 0.794344473007712,
+      "rules_loss_prevented": 0.09905287369417996
+    },
+    {
+      "friction": 0.016473684210526317,
+      "ml_loss_prevented": 0.8097686375321337,
+      "rules_loss_prevented": 0.10796915167095116
+    },
+    {
+      "friction": 0.01905263157894737,
+      "ml_loss_prevented": 0.8277634961439588,
+      "rules_loss_prevented": 0.10796915167095116
+    },
+    {
+      "friction": 0.021631578947368422,
+      "ml_loss_prevented": 0.8380462724935732,
+      "rules_loss_prevented": 0.10796915167095116
+    },
+    {
+      "friction": 0.024210526315789474,
+      "ml_loss_prevented": 0.8508997429305912,
+      "rules_loss_prevented": 0.10796915167095116
+    },
+    {
+      "friction": 0.026789473684210526,
+      "ml_loss_prevented": 0.8586118251928021,
+      "rules_loss_prevented": 0.10796915167095116
+    },
+    {
+      "friction": 0.02936842105263158,
+      "ml_loss_prevented": 0.8586118251928021,
+      "rules_loss_prevented": 0.10796915167095116
+    },
+    {
+      "friction": 0.031947368421052634,
+      "ml_loss_prevented": 0.8586118251928021,
+      "rules_loss_prevented": 0.10796915167095116
+    },
+    {
+      "friction": 0.03452631578947368,
+      "ml_loss_prevented": 0.8637532133676092,
+      "rules_loss_prevented": 0.10796915167095116
+    },
+    {
+      "friction": 0.03710526315789474,
+      "ml_loss_prevented": 0.8740359897172236,
+      "rules_loss_prevented": 0.10796915167095116
+    },
+    {
+      "friction": 0.03968421052631579,
+      "ml_loss_prevented": 0.8766066838046273,
+      "rules_loss_prevented": 0.10796915167095116
+    },
+    {
+      "friction": 0.04226315789473684,
+      "ml_loss_prevented": 0.8791773778920309,
+      "rules_loss_prevented": 0.10796915167095116
+    },
+    {
+      "friction": 0.0448421052631579,
+      "ml_loss_prevented": 0.8817480719794345,
+      "rules_loss_prevented": 0.10796915167095116
+    },
+    {
+      "friction": 0.04742105263157895,
+      "ml_loss_prevented": 0.8817480719794345,
+      "rules_loss_prevented": 0.10796915167095116
+    },
+    {
+      "friction": 0.05,
+      "ml_loss_prevented": 0.8817480719794345,
+      "rules_loss_prevented": 0.10796915167095116
+    }
+  ],
+  "ablations": {
+    "no_behaviour": 0.8477920947354823,
+    "no_mule_score": 0.8771391522470924,
+    "full": 0.8784054505168091
+  },
+  "per_type_recall": {
+    "gov_impersonation": 0.905982905982906,
+    "investment": 0.8043478260869565,
+    "job": 0.6595744680851063,
+    "phishing_led": 0.7674418604651163
+  },
+  "leave_one_type_out_recall": {
+    "gov_impersonation": 0.7435897435897436,
+    "investment": 0.782608695652174,
+    "job": 0.6063829787234043,
+    "phishing_led": 0.7209302325581395
+  },
+  "fairness_by_age_band": {
+    "18-34": {
+      "legit_interruption_rate": 0.011463250168577209,
+      "scam_recall": 0.7982456140350878,
+      "n_legit": 1483,
+      "n_scam": 114
+    },
+    "35-49": {
+      "legit_interruption_rate": 0.011213720316622692,
+      "scam_recall": 0.8089887640449438,
+      "n_legit": 1516,
+      "n_scam": 89
+    },
+    "50-64": {
+      "legit_interruption_rate": 0.01977848101265823,
+      "scam_recall": 0.7401574803149606,
+      "n_legit": 1264,
+      "n_scam": 127
+    },
+    "65+": {
+      "legit_interruption_rate": 0.013245033112582781,
+      "scam_recall": 0.864406779661017,
+      "n_legit": 755,
+      "n_scam": 59
+    }
+  }
+}

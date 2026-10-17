@@ -1,0 +1,73 @@
+{
+  "full": {
+    "pr_auc": 0.8784054505168091,
+    "roc_auc": 0.9752067364685076,
+    "recall_at_t1": 0.7917737789203085,
+    "precision_at_t1": 0.8169761273209549,
+    "legit_interruption_rate": 0.013750498206456756
+  },
+  "rules_baseline": {
+    "recall": 0.10796915167095116,
+    "legit_interruption_rate": 0.01514547628537266
+  },
+  "thresholds": {
+    "T1": 0.35852671163355104,
+    "T2": 0.7255029341583523,
+    "T3": 0.8608260197863765
+  },
+  "per_type_recall": {
+    "gov_impersonation": 0.905982905982906,
+    "investment": 0.8043478260869565,
+    "job": 0.6595744680851063,
+    "phishing_led": 0.7674418604651163
+  },
+  "fairness_by_age_band": {
+    "18-34": {
+      "legit_interruption_rate": 0.011463250168577209,
+      "scam_recall": 0.7982456140350878,
+      "n_legit": 1483,
+      "n_scam": 114
+    },
+    "35-49": {
+      "legit_interruption_rate": 0.011213720316622692,
+      "scam_recall": 0.8089887640449438,
+      "n_legit": 1516,
+      "n_scam": 89
+    },
+    "50-64": {
+      "legit_interruption_rate": 0.01977848101265823,
+      "scam_recall": 0.7401574803149606,
+      "n_legit": 1264,
+      "n_scam": 127
+    },
+    "65+": {
+      "legit_interruption_rate": 0.013245033112582781,
+      "scam_recall": 0.864406779661017,
+      "n_legit": 755,
+      "n_scam": 59
+    }
+  },
+  "ablations": {
+    "no_behaviour": 0.8477920947354823,
+    "no_mule_score": 0.8771391522470924,
+    "full": 0.8784054505168091
+  },
+  "leave_one_type_out_recall": {
+    "gov_impersonation": 0.7435897435897436,
+    "investment": 0.782608695652174,
+    "job": 0.6063829787234043,
+    "phishing_led": 0.7209302325581395
+  },
+  "generation_parameters": {
+    "difficulty": "realistic",
+    "customers": 5000,
+    "rows": 25000,
+    "scam_fraction": 0.0752,
+    "hard_negative_rate": 0.04,
+    "behavioral_label_noise": 0.03,
+    "overlap_adjustment": "on_call scam .28, pasted gov .32, new payee scam .40, 10% legit high-balance transfers",
+    "seed": 42
+  },
+  "latency_ms_per_score": 0.7467030007402503,
+  "effectiveness_assumption": "Risk flags trigger a friction/interruption; prevented-loss curves assume interrupted scams are prevented."
+}
