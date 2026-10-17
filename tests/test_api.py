@@ -62,6 +62,10 @@ def test_trace_explanations_use_singapore_time_without_raw_hour_features():
  assert features['is_late_night']==0
  text=' '.join(reasons(None,features,{}))
  assert 'hour_sin' not in text and 'hour_cos' not in text and 'Late-night transfer' not in text
+def test_trace_does_not_claim_absent_signals():
+ reset();d=score('C-TAN','MB-SP','SP Group',500,flags={})
+ assert not any('active phone call' in reason for reason in d['reasons'])
+ assert d['message']=='This transfer is ready for your confirmation.'
 def test_static_pages():assert client.get('/bank/').status_code==200 and client.get('/dashboard/').status_code==200
 
 def test_feature_parity_100_sessions():

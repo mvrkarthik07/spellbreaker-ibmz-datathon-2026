@@ -2,5 +2,5 @@ QUESTIONS={'gov_impersonation':'Is someone on the phone right now telling you to
 ACTIONS={'LOW':'ALLOW','MEDIUM':'ASK_QUESTION','HIGH':'HOLD_30M_ALERT_CONTACT','CRITICAL':'HOLD_AND_ESCALATE'}
 def decide(risk,thresholds,typ):
  level='CRITICAL' if risk>=thresholds.get('T3',.99) else 'HIGH' if risk>=thresholds.get('T2',.98) else 'MEDIUM' if risk>=thresholds.get('T1',.95) else 'LOW'
- msg={'LOW':'Transfer sent.','MEDIUM':QUESTIONS.get(typ,QUESTIONS['none']),'HIGH':"We've paused this transfer for 30 minutes to keep you safe. Your trusted contact has been notified. If someone is pressuring you, hang up and call the ScamShield Helpline at 1799.",'CRITICAL':'For your protection, Merlion Bank will call you before this transfer is released. Do not share any codes with anyone.'}[level]
+ msg={'LOW':'This transfer is ready for your confirmation.','MEDIUM':QUESTIONS.get(typ,QUESTIONS['none']),'HIGH':"We've paused this transfer for 30 minutes to keep you safe. Your trusted contact has been notified. If someone is pressuring you, hang up and call the ScamShield Helpline at 1799.",'CRITICAL':'For your protection, Merlion Bank will call you before this transfer is released. Do not share any codes with anyone.'}[level]
  return level,ACTIONS[level],(QUESTIONS.get(typ,QUESTIONS['none']) if level!='LOW' else None),msg

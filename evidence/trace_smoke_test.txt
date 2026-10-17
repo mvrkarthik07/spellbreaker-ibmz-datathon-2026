@@ -1,0 +1,52 @@
+{
+  "test": "POST /score, then GET /trace/{decision_id}; transfer left unconfirmed",
+  "request_summary": {
+    "payee": "SP Group (saved payee)",
+    "amount": "S$500",
+    "timestamp": "2026-10-18 12:00 SGT",
+    "flags": "none"
+  },
+  "decision": {
+    "decision_id": "d_45564e78a62049c88d54e66028b65814",
+    "level": "LOW",
+    "risk": 0.002677148247239355,
+    "scam_type": "none",
+    "action": "ALLOW",
+    "message": "This transfer is ready for your confirmation.",
+    "reasons": [
+      "1.7\u00d7 your usual transfer amount",
+      "Moves 6% of your available balance"
+    ],
+    "latency_ms": 5.647050000334275
+  },
+  "trace": {
+    "decision_id": "d_45564e78a62049c88d54e66028b65814",
+    "model_version": "0.1.0",
+    "scored_on": "IBM LinuxONE (s390x)",
+    "timestamp": "2026-10-18T12:00:00+08:00",
+    "risk": 0.002677148247239355,
+    "level": "LOW",
+    "scam_type": "none",
+    "scam_type_confidence": 0.6071602112301573,
+    "action": "ALLOW",
+    "question": null,
+    "message": "This transfer is ready for your confirmation.",
+    "reasons": [
+      "1.7\u00d7 your usual transfer amount",
+      "Moves 6% of your available balance"
+    ],
+    "latency_ms": 5.647050000334275,
+    "outcome": null
+  },
+  "docker_score_log": {
+    "event": "score_decision",
+    "decision_id": "d_45564e78a62049c88d54e66028b65814",
+    "model_version": "0.1.0",
+    "scored_on": "IBM LinuxONE (s390x)",
+    "level": "LOW",
+    "risk": 0.002677,
+    "scam_type": "none",
+    "action": "ALLOW",
+    "latency_ms": 5.647
+  }
+}

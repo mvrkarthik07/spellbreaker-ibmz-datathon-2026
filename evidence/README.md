@@ -12,6 +12,7 @@
 - `../results/genai_eval.json`: acceptance rate and generation-time summary.
 - `health.json`: live service architecture, trained-on architecture and runtime badge.
 - `bench.txt`: 10,000-request localhost LinuxONE benchmark.
+- `trace_smoke_test.txt`: live score ID correlated across the redacted trace endpoint and structured Docker JSON log.
 - `crypto.txt`: OpenSSL SHA-256 speed, MSA visibility and synthetic Python HMAC token sample.
 - `genai_prompt_sample.txt`: synthetic, personal-data-free model prompt example.
 - `ui_smoke_test.txt`: live-browser banking UI checks and remote acceptance suite result.
