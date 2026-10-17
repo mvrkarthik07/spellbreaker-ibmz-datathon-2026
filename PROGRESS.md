@@ -8,7 +8,7 @@
 - [ ] P5 — Benchmark + evidence — local portion verified 2026-10-18 01:33 SGT — 10,000 requests, concurrency 16, 10 Uvicorn workers: 1,193.98 RPS; server p50/p95/p99 7.53/17.63/27.37 ms. Local p50/p99 target passes. LinuxONE benchmark and §9 evidence remain blocked with `l1cc`.
   - [x] Critical local latency fix — verified 2026-10-18 01:33 SGT — debug-stage timing enabled and observed; optimized benchmark p50 7.53 ms, p99 27.37 ms; `pytest -q tests/` passes (8 tests).
 - [x] P6 — GenAI case notes — verified 2026-10-18 01:07 SGT using documented deterministic `template` fallback; `/health` reports `template`, HIGH/CRITICAL case note tested
-- [x] P7 — Docs, video support, polish — verified 2026-10-18 01:12 SGT (fresh clone installed dependencies, trained, passed all 8 acceptance tests, and served `/health`, `/bank/`, and `/dashboard/` with 200 responses)
+- [x] P7 — Docs, video support, polish — verified 2026-10-18 01:35 SGT (fresh-clone checks remain green; dashboard now retries pending background case notes; `node --check web/dashboard/dash.js` passes)
 - [ ] P8 — Post-freeze and hand-off — hand-off section drafted; post-freeze final push/recheck remains scheduled after 07:45 SGT
 
 ## Hand-off
