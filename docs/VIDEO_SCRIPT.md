@@ -1,4 +1,4 @@
-# Video script (target 2:55; update quoted latency after LinuxONE benchmark)
+# Video script (maximum 3:00)
 
 | Time | Shot and narration |
 |---|---|
@@ -6,7 +6,8 @@
 | 0:20–1:15 | On Merlion Bank, select “Scam: fake ICA officer”, show S$20,000 from savings and CRITICAL. Point to active call, pasted account and receiver warning. Dashboard shows the same decision. |
 | 1:15–1:30 | Reset. Select “Rent while on call”; show normal landlord transfer allowed. |
 | 1:30–2:15 | Show dashboard evidence, privacy panel, typology and age-band metrics. Explain three predictive signals and the deterministic case-note fallback. Clearly label simulator results as synthetic. |
-| 2:15–2:50 | On LinuxONE (once deployed): terminal `uname -m`, `podman ps`, training log tail, `/health`, `results/bench.json`; show the architecture and Python/FastAPI/scikit-learn stack. Do not claim s390x execution until the evidence exists. |
+| 2:15–2:40 | On LinuxONE: show `uname -m`, hardened `docker inspect` security fields, `/health`, XGBoost vs HistGradientBoosting report, and the 10,000-request benchmark. Say the risk and scam-type models use scikit-learn, MuleNet uses XGBoost, and the Granite case-note attempt fell back to a verified template. |
+| 2:40–2:50 | **Team & roles (10 seconds):** show the team slide and say each member's name, role, and one contribution (replace README placeholders before recording). |
 | 2:50–3:00 | “SpellBreaker adds an early, targeted interruption before a scam transfer leaves the account.” |
 
-This shot list is under 3:00. The LinuxONE segment must be filmed only after successful deployment and evidence capture.
+This timed script fits 3:00. The LinuxONE segment is supported by the collected deployment and evidence files.

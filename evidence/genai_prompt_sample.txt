@@ -1,0 +1,9 @@
+Illustrative sample of the local GenAI adapter boundary (synthetic values only).
+
+Allow-listed request received by the adapter:
+{"level":"CRITICAL","risk":0.998,"scam_type":"gov_impersonation","reasons":["active call","new recipient"],"amount_band":"S$10k–50k","age_band":"65+"}
+
+Actual user message sent to Granite by service/genai_llm_server.py:
+Scam type: gov impersonation
+
+Excluded: customer name, customer/account identifiers, recipient name/account, raw transaction details, audio, and contact data. The adapter constructs the model prompt from scam_type alone. This example is synthetic and contains no personal data.

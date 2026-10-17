@@ -1,39 +1,39 @@
 training_on=s390x
 {
   "full": {
-    "pr_auc": 0.8802594628910934,
-    "roc_auc": 0.9707673657721084,
-    "recall_at_t1": 0.7734668335419274,
-    "precision_at_t1": 0.8489010989010989,
-    "legit_interruption_rate": 0.011084240225715438
+    "pr_auc": 0.8805388735560538,
+    "roc_auc": 0.9707501826144027,
+    "recall_at_t1": 0.7759699624530664,
+    "precision_at_t1": 0.8458390177353342,
+    "legit_interruption_rate": 0.011386537686416768
   },
   "fairness_by_age_band": {
     "18-34": {
       "legit_interruption_rate": 0.010941644562334218,
-      "scam_recall": 0.7451923076923077,
+      "scam_recall": 0.7427884615384616,
       "n_legit": 6032,
       "n_scam": 416
     },
     "35-49": {
-      "legit_interruption_rate": 0.011564625850340135,
-      "scam_recall": 0.8019323671497585,
+      "legit_interruption_rate": 0.012414965986394558,
+      "scam_recall": 0.8115942028985508,
       "n_legit": 5880,
       "n_scam": 414
     },
     "50-64": {
-      "legit_interruption_rate": 0.010454362685967028,
+      "legit_interruption_rate": 0.010655408122235626,
       "scam_recall": 0.7824497257769653,
       "n_legit": 4974,
       "n_scam": 547
     },
     "65+": {
       "legit_interruption_rate": 0.011478730587440918,
-      "scam_recall": 0.751131221719457,
+      "scam_recall": 0.755656108597285,
       "n_legit": 2962,
       "n_scam": 221
     }
   },
-  "elapsed_s": 16.47299171199984
+  "elapsed_s": 16.675888630999907
 }
 Training completed in 17s with customers=20000.
 
@@ -43,8 +43,8 @@ MuleNet scores used by SpellBreaker training:
   "path": "results/mule_scores.csv",
   "score_rows": 149128,
   "positive_account_rate": 0.0024207392307279653,
-  "score_min": 0.0,
-  "score_median": 0.0004774044315361,
-  "score_max": 0.9996592916969596,
+  "score_min": 2.4606138e-06,
+  "score_median": 0.00040309141,
+  "score_max": 0.09938702,
   "sampling": "seeded sampling with replacement across synthetic transfer sessions"
 }

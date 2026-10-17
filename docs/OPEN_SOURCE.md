@@ -8,6 +8,8 @@
 | NumPy | Simulation and features | https://github.com/numpy/numpy | BSD-3-Clause |
 | pandas | Optional CSV ingest | https://github.com/pandas-dev/pandas | BSD-3-Clause |
 | scikit-learn | Predictive models and metrics | https://github.com/scikit-learn/scikit-learn | BSD-3-Clause |
+| XGBoost | Receiver-mule classifier, trained in the official LinuxONE Jupyter image; compared with scikit-learn HistGradientBoosting | https://github.com/dmlc/xgboost | Apache-2.0 |
+| PyTorch | Small notebook-only MLP challenger for M1; not included in service inference | https://github.com/pytorch/pytorch | BSD-3-Clause |
 | joblib | Model serialization | https://github.com/joblib/joblib | BSD-3-Clause |
 | threadpoolctl | Limit inference thread oversubscription | https://github.com/joblib/threadpoolctl | BSD-3-Clause |
 | pytest | Acceptance checks | https://github.com/pytest-dev/pytest | MIT |

@@ -23,10 +23,8 @@ print("Ubuntu prebuilt s390x ML/service stack imports passed in the project venv
 PY
 
 if [ -f data/HI-Small_Trans.csv ] && [ ! -s results/mule_scores.csv ]; then
-  rows="${MULENET_NROWS:-}"
-  mem_kb=$(awk '/MemAvailable/ {print $2}' /proc/meminfo)
-  if [ -z "$rows" ] && [ "${mem_kb:-0}" -gt 5242880 ]; then rows=2000000; echo "Available memory exceeds about 5 GiB; MuleNet capped at 2000000 rows." | tee -a evidence/train_l1cc.log; fi
-  if [ -n "$rows" ]; then .venv/bin/python ml/mulenet_baseline.py --nrows "$rows" --export-scores results/mule_scores.csv; else .venv/bin/python ml/mulenet_baseline.py --export-scores results/mule_scores.csv; fi
+  echo 'MuleNet scores are missing. Run ml/mulenet_baseline.py inside the official JupyterLab image (prebuilt s390x XGBoost) before apt-backed SpellBreaker training.' >&2
+  exit 1
 elif [ -s results/mule_scores.csv ]; then
   echo 'Using existing results/mule_scores.csv; MuleNet was already run.' | tee -a evidence/train_l1cc.log
 else

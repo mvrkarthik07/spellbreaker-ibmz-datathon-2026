@@ -53,7 +53,9 @@ PY
 
 if command -v docker >/dev/null 2>&1 && docker build -t spellbreaker:latest -f service/Containerfile .; then
   docker rm -f spellbreaker >/dev/null 2>&1 || true
-  if docker run -d --restart unless-stopped --name spellbreaker --network host $LLM_ENV spellbreaker:latest; then
+  if docker run -d --restart unless-stopped --name spellbreaker --network host \
+      --user 10001:10001 --read-only --tmpfs /tmp:rw,nosuid,nodev,size=64m --cap-drop ALL \
+      $LLM_ENV spellbreaker:latest; then
     record_container_env
     exit 0
   fi
@@ -62,7 +64,9 @@ fi
 echo 'Ubuntu 24.04 package image build/run failed; trying the official prebuilt s390x Jupyter image.' | tee -a evidence/deploy_l1cc.log
 if docker build -t spellbreaker:latest -f service/Containerfile.jupyter .; then
   docker rm -f spellbreaker >/dev/null 2>&1 || true
-  if docker run -d --restart unless-stopped --name spellbreaker --network host $LLM_ENV spellbreaker:latest; then
+  if docker run -d --restart unless-stopped --name spellbreaker --network host \
+      --user 10001:10001 --read-only --tmpfs /tmp:rw,nosuid,nodev,size=64m --cap-drop ALL \
+      $LLM_ENV spellbreaker:latest; then
     record_container_env
     exit 0
   fi

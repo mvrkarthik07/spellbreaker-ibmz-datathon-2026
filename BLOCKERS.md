@@ -3,6 +3,7 @@
 ## Needs human
 
 - Supply the team name to replace `[Team Name]` in the project title.
+- Replace the 6 `[Name — role — contribution]` placeholders in README and the matching 10-second Team & roles video segment with the actual team roster and contributions before submission.
 
 ## Resolved / fallbacks
 

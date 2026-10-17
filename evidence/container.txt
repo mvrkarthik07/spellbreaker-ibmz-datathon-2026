@@ -2,7 +2,7 @@ Docker version 29.8.0, build 88096ef
 IMAGE                                                                   ID             DISK USAGE   CONTENT SIZE   EXTRA
 hello-world:latest                                                      11a3eb1597e8       22.5kB         10.2kB
 registry.linuxone.cloud.marist.edu/l1cc/jupyterlab-image-s390x:latest   d2da8a7b0c88       9.85GB         2.71GB
-spellbreaker:latest                                                     f6a89c250d66        695MB          168MB   U
-CONTAINER ID   IMAGE                 COMMAND                  CREATED         STATUS         PORTS     NAMES
-f417795f29fa   spellbreaker:latest   "python3 -m uvicorn …"   2 minutes ago   Up 2 minutes             spellbreaker
-10001
+spellbreaker:latest                                                     118875a3fefc        692MB          168MB   U
+CONTAINER ID   IMAGE                 COMMAND                  CREATED          STATUS          PORTS     NAMES
+51cf30f2d5f6   spellbreaker:latest   "python3 -m uvicorn …"   10 minutes ago   Up 10 minutes             spellbreaker
+User=10001:10001 ReadonlyRootfs=true CapDrop=["ALL"] Tmpfs={"/tmp":"rw,nosuid,nodev,size=64m"}

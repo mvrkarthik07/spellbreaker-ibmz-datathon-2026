@@ -56,7 +56,8 @@ Vulnerability Srbds:                     Not affected
 Vulnerability Tsa:                       Not affected
 Vulnerability Tsx async abort:           Not affected
 Vulnerability Vmscape:                   Not affected
-3
+nproc=3
+free -g:
                total        used        free      shared  buff/cache   available
 Mem:               7           1           0           0           5           6
 Swap:              3           0           3
