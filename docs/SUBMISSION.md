@@ -6,7 +6,7 @@
 
 **Tracks:** Real-Time AI for Critical Decisions; AI Secured — Innovation Without Exposure.
 
-**Repository:** `[GitHub repository URL]`
+**Repository:** [https://github.com/mvrkarthik07/spellbreaker-ibmz-datathon-2026](https://github.com/mvrkarthik07/spellbreaker-ibmz-datathon-2026)
 
 **Video:** `[Video URL, ≤3 minutes]`
 
