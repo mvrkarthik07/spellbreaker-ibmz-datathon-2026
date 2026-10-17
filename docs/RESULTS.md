@@ -114,7 +114,7 @@ The service runs in a non-root Ubuntu 24.04 container using the same Ubuntu-preb
 
 | Duration | Throughput | Server p50 | Server p95 | Server p99 | Client p50 | Client p99 |
 |---:|---:|---:|---:|---:|---:|---:|
-| 47.21 s | 211.82 req/s | 23.05 ms | 24.06 ms | 25.04 ms | 74.71 ms | 104.77 ms |
+| 47.30 s | 211.40 req/s | 23.15 ms | 24.01 ms | 25.01 ms | 74.98 ms | 103.46 ms |
 
 The server-side p99 meets the <50 ms target. Client round-trip latency includes queueing and transport. Granite's 50-case acceptance was 0%, so the deterministic template is the default and Granite remains opt-in; `/health` reports `template (fallback)`. Full results are in `results/bench.json` and `evidence/bench.txt`; platform, CPU, container, package, health, GenAI evaluation and crypto evidence is in `evidence/`. The executed LinuxONE notebook verifies a live CRITICAL score and asynchronous case note in `evidence/SpellBreaker_on_LinuxONE.executed.ipynb`.
 
@@ -154,7 +154,7 @@ At account level, the holdout base mule rate was 0.4000% (952 mule accounts). XG
 | Collaborative XGBoost | 0.72865 | 3.361% / 8.403% / 8.40× | 1.739% / 21.744% / 4.35× | 3.10% (7,383 accounts) |
 | Oracle upper bound | 1.00000 | 40.000% / 100% / 99.99× | 8.000% / 100% / 20.00× | 0.40% ground-truth mule accounts |
 
-The collaboration comparison is an offline two-silo simulation: source-bank IDs are split by parity, each receiver account is joined with an ephemeral HMAC-SHA256 token, and only the top 5% per-silo red flags are shared. Tokens and the evaluation key are not exported. It is a bounded proof of the red-flag/HMAC sharing rule, not a claim of independent-bank production validation. XGBoost exported 237,983 receiver-account scores, which were then sampled with replacement into the 20,000-customer SpellBreaker training run on l1cc (17 seconds). The refreshed SpellBreaker model reports PR-AUC 0.8802, ROC-AUC 0.9708, T1 recall 0.7772, and 1.13% legitimate interruption; `/health` confirms `trained_on=s390x`. The latest service run measured p99 at 25.04 ms, below the 50 ms target. Training and deploy rsync exclude `data/`, `models/`, `results/`, and `evidence/` on the destination; no delete flag is used. Full metrics and versions are in `results/mulenet_report.json`; command/output is in `evidence/mulenet_l1cc.log`.
+The collaboration comparison is an offline two-silo simulation: source-bank IDs are split by parity, each receiver account is joined with an ephemeral HMAC-SHA256 token, and only the top 5% per-silo red flags are shared. Tokens and the evaluation key are not exported. It is a bounded proof of the red-flag/HMAC sharing rule, not a claim of independent-bank production validation. XGBoost exported 237,983 receiver-account scores, which were then sampled with replacement into the 20,000-customer SpellBreaker training run on l1cc (17 seconds). The refreshed SpellBreaker model reports PR-AUC 0.8802, ROC-AUC 0.9708, T1 recall 0.7772, and 1.13% legitimate interruption; `/health` confirms `trained_on=s390x`. The latest service run measured p99 at 25.01 ms, below the 50 ms target. Training and deploy rsync exclude `data/`, `models/`, `results/`, and `evidence/` on the destination; no delete flag is used. Full metrics and versions are in `results/mulenet_report.json`; command/output is in `evidence/mulenet_l1cc.log`.
 
 ## Platform security evidence
 

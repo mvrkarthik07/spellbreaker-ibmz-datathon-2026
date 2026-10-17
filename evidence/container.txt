@@ -2,9 +2,9 @@ Docker version 29.8.0, build 88096ef
 IMAGE                                                                   ID             DISK USAGE   CONTENT SIZE   EXTRA
 hello-world:latest                                                      11a3eb1597e8       22.5kB         10.2kB
 registry.linuxone.cloud.marist.edu/l1cc/jupyterlab-image-s390x:latest   d2da8a7b0c88       9.85GB         2.71GB   U
-spellbreaker:latest                                                     8265b2d5e1c9        700MB          170MB   U
+spellbreaker:latest                                                     6a0eed6aab18        700MB          170MB   U
 CONTAINER ID   IMAGE                                                                   COMMAND                  CREATED          STATUS          PORTS     NAMES
-1046af2e7844   spellbreaker:latest                                                     "python3 -m uvicorn …"   58 seconds ago   Up 58 seconds             spellbreaker
-e5e41cb873bc   registry.linuxone.cloud.marist.edu/l1cc/jupyterlab-image-s390x:latest   "/usr/bin/tini -g --…"   48 minutes ago   Up 48 minutes             notebook2
-0e9d82d14deb   registry.linuxone.cloud.marist.edu/l1cc/jupyterlab-image-s390x:latest   "/usr/bin/tini -g --…"   52 minutes ago   Up 52 minutes             notebook
+85f531d24265   spellbreaker:latest                                                     "python3 -m uvicorn …"   58 seconds ago   Up 58 seconds             spellbreaker
+e5e41cb873bc   registry.linuxone.cloud.marist.edu/l1cc/jupyterlab-image-s390x:latest   "/usr/bin/tini -g --…"   50 minutes ago   Up 50 minutes             notebook2
+0e9d82d14deb   registry.linuxone.cloud.marist.edu/l1cc/jupyterlab-image-s390x:latest   "/usr/bin/tini -g --…"   54 minutes ago   Up 54 minutes             notebook
 User=10001:10001 ReadonlyRootfs=true CapDrop=["ALL"] Tmpfs={"/tmp":"rw,nosuid,nodev,size=64m"}
