@@ -2,7 +2,7 @@
 
 ## Needs human
 
-- Confirm the final team role descriptions with **Karthik Manda**, **Pranay Kanth Molugu**, **Sai Prakash Reddy**, and **Amrutha Vanaparthi** before submission; the proposed roles are in README and the 10-second video segment.
+- Confirm the final team role descriptions with **Karthik Manda**, **Pranay Kanth Molugu**, **Sai Prakash Reddy**, and **Amrutha Vanaparthi** before submission; the proposed roles are in README.
 - Record and upload the final ≤3-minute demo, then replace the video URL placeholder in `docs/SUBMISSION.md`.
 
 ## Resolved / fallbacks

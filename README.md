@@ -56,7 +56,7 @@ See [full model results](docs/RESULTS.md).
 | Containerisation and real-time performance | [container inspection](evidence/container.txt), [benchmark evidence](evidence/bench.txt), and [benchmark JSON](results/bench.json); LinuxONE service p99 is recorded in Results. |
 | Demonstrated platform security | [container inspection](evidence/container.txt) (UID, read-only root, dropped capabilities), [crypto evidence](evidence/crypto.txt) and [CPU features](evidence/cpu_features.txt) (OpenSSL, MSA and NNPA visibility), and [privacy-safe prompt sample](evidence/genai_prompt_sample.txt) (allow-list). |
 | Community value and responsible data use | [results](docs/RESULTS.md), [privacy](docs/PRIVACY.md), [responsible AI](docs/RESPONSIBLE_AI.md), and [open-source/data credits](docs/OPEN_SOURCE.md) (AMLworld source and CDLA-Sharing-1.0). |
-| Team contribution and execution | This README's Team section and the 10-second Team & roles segment in `docs/VIDEO_SCRIPT.md`. |
+| Team contribution and execution | This README's Team section. |
 
 ## Architecture
 
