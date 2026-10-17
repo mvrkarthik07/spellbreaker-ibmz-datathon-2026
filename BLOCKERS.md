@@ -2,7 +2,7 @@
 
 ## Needs human
 
-- Configure SSH alias `l1cc` and run `./scripts/deploy_l1cc.sh`; current laptop cannot resolve `l1cc`.
+- Make SSH alias `l1cc` resolvable. Verify with `ssh -o BatchMode=yes -o ConnectTimeout=10 l1cc 'uname -m'` (expected `s390x`), then run `./scripts/deploy_l1cc.sh` and `./scripts/collect_evidence.sh`; current laptop cannot resolve the alias.
 - Supply the team name to replace `[Team Name]` in the project title.
 - Optional: place IBM AMLworld `HI-Small_Trans.csv` at `data/HI-Small_Trans.csv` or configure Kaggle credentials to enable MuleNet receiver scores.
 

@@ -17,5 +17,5 @@ def reasons(model,x,medians):
  out=[]
  for k in keys:
   v=x[k]; t=TEMPLATES.get(k,k)
-  out.append(t.format(x=f'{2**float(v):.1f}',p=f'{float(v)*100:.0f}',s=f'{float(v):.2f}',n=int(v)) if '{' in t else t)
+  out.append(t.format(x=f'{np.expm1(float(v)):.1f}',p=f'{float(v)*100:.0f}',s=f'{float(v):.2f}',n=int(v)) if '{' in t else t)
  return out

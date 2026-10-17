@@ -7,10 +7,13 @@
 - [ ] P4 — LinuxONE deployment + training on s390x — scripts ready; verification blocked because `l1cc` does not resolve
 - [ ] P5 — Benchmark + evidence — verified 2026-10-18 01:07 SGT — local 100-request run recorded 22.16 RPS and p50/p95 server latency 347.7/356.3 ms; required 10,000-request s390x benchmark/evidence blocked with `l1cc`
 - [x] P6 — GenAI case notes — verified 2026-10-18 01:07 SGT using documented deterministic `template` fallback; `/health` reports `template`, HIGH/CRITICAL case note tested
-- [ ] P7 — Docs, video support, polish — docs drafted; fresh-clone run remains to verify
+- [x] P7 — Docs, video support, polish — verified 2026-10-18 01:08 SGT (docs present; fresh clone installed, trained, and passed all 8 acceptance tests)
 - [ ] P8 — Post-freeze and hand-off
 
 ## Hand-off
 
-- LinuxONE SSH alias `l1cc` was unavailable during this run. Needs human: configure SSH, run `./scripts/deploy_l1cc.sh`, then verify `/health` reports `s390x`.
-- Set the project title team name in the submission fields; `[Team Name]` remains a placeholder.
+- Local demo: `./scripts/run_local.sh`; open `http://localhost:8000/bank/` and `http://localhost:8000/dashboard/`.
+- LinuxONE tunnel once deployed: `ssh -N -L 8000:localhost:8000 l1cc`; then use the same local URLs. No remote URL is verified.
+- Demo click path: bank app → demo controls → “Scam: fake ICA officer” → Review transfer → inspect CRITICAL reasons → dashboard live feed; reset → “Rent while on call” → allowed result.
+- Current blockers: `l1cc` SSH alias unresolved; AMLworld CSV absent; team name placeholder remains. See `BLOCKERS.md` for exact recovery actions.
+- Set the project title team name in submission fields; `[Team Name]` remains a literal placeholder.

@@ -9,6 +9,7 @@
 | pandas | Optional CSV ingest | https://github.com/pandas-dev/pandas | BSD-3-Clause |
 | scikit-learn | Predictive models and metrics | https://github.com/scikit-learn/scikit-learn | BSD-3-Clause |
 | joblib | Model serialization | https://github.com/joblib/joblib | BSD-3-Clause |
+| threadpoolctl | Limit inference thread oversubscription | https://github.com/joblib/threadpoolctl | BSD-3-Clause |
 | pytest | Acceptance checks | https://github.com/pytest-dev/pytest | MIT |
 | IBM AMLworld HI-Small | Intended receiver-side dataset; not present/downloaded | https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml | Kaggle dataset terms apply; verify before redistribution |
 | httpx2 | TestClient HTTP transport for acceptance checks | https://pypi.org/project/httpx2/ | MIT |
