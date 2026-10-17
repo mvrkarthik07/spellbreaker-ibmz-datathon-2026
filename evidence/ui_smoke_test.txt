@@ -21,4 +21,16 @@ API acceptance checks
 - Result: 9 passed in 14.66s.
 - The local test process printed six scikit-learn pickle-version warnings while importing its local app; the exercised remote LinuxONE acceptance scenarios passed.
 
-Conclusion: browser UI and live LinuxONE model responses are working for the scripted demo flow.
+Conclusion: browser UI and live LinuxONE model responses are working for the configured transfer scenarios.
+
+Updated customer interface (2026-10-18 03:37 SGT)
+- Live page uses the new Singapore-localized Merlion Bank layout, S$ totals, masked account endings, balance-hide control, and no customer-visible “demo” label.
+- Scenario settings expose customer profile, supplied call/link signals, five adjustable transfer journeys, and a reset control. The call signal explicitly states that the browser cannot detect calls.
+- Government impersonation loaded a S$20,000 savings transfer and returned an additional-verification hold with the government-specific safety question; stopping it appeared as Cancelled in recent activity.
+- Rent payment loaded a S$1,800 local transfer and returned “This transfer can proceed”; completing it appeared as Proceeded.
+- The interface returns to the clean Mdm Tan account view after reset.
+- Government impersonation -> additional-verification hold; rent -> clear-to-proceed; contractor invoice -> clear-to-proceed; investment opportunity -> additional-verification hold; task-based job offer -> additional-verification hold.
+- Stop and continue actions were both exercised on the refreshed interface; recent activity recorded Cancelled and Proceeded respectively.
+- Balance hide/show control switched all three balances, and reset restored the clean account state.
+- Confirmed customer-facing copy contains no “demo” label; settings disclose that call status is supplied and cannot be detected by the browser.
+- Manual transfer starts with call and flagged-link signals off; scenario presets set the needed signals explicitly.

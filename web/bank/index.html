@@ -1,1 +1,113 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Merlion Bank · Safe transfers</title><link rel="stylesheet" href="style.css"></head><body><main class="phone"><header><div class="brand"><span class="logo">M</span><div><b>Merlion Bank</b><small>SpellBreaker protection</small></div></div><button id="gear" aria-label="Demo controls">⚙</button></header><section id="home" class="screen"><p class="eyebrow">GOOD EVENING</p><h1 id="greeting">Mdm Tan</h1><div class="balance"><small>Current account</small><strong id="current">S$9,000.00</strong></div><div class="balance secondary"><small>Savings</small><strong id="savings">S$85,000.00</strong></div><button class="primary" id="start">Make a transfer</button><h2>Recent transfers</h2><div id="recent" class="recent">Your recent activity will appear here.</div></section><section id="form" class="screen hidden"><button class="back" id="back">← Back</button><p class="eyebrow">NEW TRANSFER</p><h1>Who are you paying?</h1><label>From<select id="pot"><option value="current">Current account</option><option value="savings">Savings</option></select></label><label>Choose a saved payee or add new<select id="payeeChoice"><option value="new">+ New payee</option><option value="MB-LANDLORD">Landlord</option><option value="MB-DAUGHTER">Daughter</option><option value="MB-SP">SP Group</option><option value="MB-CONTRACTOR">Known contractor</option><option value="MB-FRIEND">Friend</option></select></label><label>Payee name<input id="name" value="Secure Govt Account"></label><label>Account number<input id="account" value="MB-778-201-9931" autocomplete="off"></label><label>Amount (S$)<input id="amount" type="number" min="1" value="20000"></label><button class="primary" id="send">Review transfer</button><p class="fine">SpellBreaker checks unusual transfers before they leave your account.</p></section><section id="result" class="screen hidden"></section><details id="controls"><summary>Demo controls — simulates phone signals</summary><p class="fine">Browsers cannot detect calls. This toggle is a demo signal only.</p><label class="toggle"><input type="checkbox" id="call" checked> On active call</label><label class="toggle"><input type="checkbox" id="link"> Recently opened flagged link</label><label>Customer<select id="customer"><option value="C-TAN">C-TAN · Mdm Tan</option><option value="C-LIM">C-LIM · Mr Lim</option><option value="C-RAJ">C-RAJ · Raj</option></select></label><div class="presets"><button data-preset="S1">Scam: fake ICA officer</button><button data-preset="S2">Rent while on call</button><button data-preset="S3">Contractor payment</button><button data-preset="S4">Investment payment #3</button><button data-preset="S5">Job task payment</button></div><button id="reset" class="quiet">Reset demo</button></details><footer>Protected by SpellBreaker · scored on IBM LinuxONE</footer></main><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en-SG">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f1f5f6">
+  <title>Merlion Bank | Secure transfers</title>
+  <link rel="stylesheet" href="style.css?v=20261018-4">
+</head>
+<body>
+  <main class="bank-app" aria-label="Merlion Bank personal banking">
+    <header class="topbar">
+      <a class="brand" href="/bank/" aria-label="Merlion Bank home">
+        <span class="brand-mark" aria-hidden="true"><span>M</span></span>
+        <span class="brand-copy"><strong>Merlion Bank</strong><small>PERSONAL BANKING</small></span>
+      </a>
+      <div class="topbar-right">
+        <span class="region"><span class="region-dot" aria-hidden="true"></span>Singapore</span>
+        <button class="icon-button" id="gear" type="button" aria-label="Scenario settings" title="Scenario settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="m19.4 13.5 1.1.8-1.1 1.9-1.3-.5a7.8 7.8 0 0 1-1.6.9l-.2 1.4h-2.2l-.3-1.4a7.8 7.8 0 0 1-1.7-.1l-.9 1.1-1.9-1.1.5-1.3a7.8 7.8 0 0 1-.9-1.6l-1.4-.2v-2.2l1.4-.3a7.8 7.8 0 0 1 .1-1.7l-1.1-.9 1.1-1.9 1.3.5a7.8 7.8 0 0 1 1.6-.9l.2-1.4h2.2l.3 1.4a7.8 7.8 0 0 1 1.7.1l.9-1.1 1.9 1.1-.5 1.3a7.8 7.8 0 0 1 .9 1.6l1.4.2v2.2l-1.4.3a7.8 7.8 0 0 1-.1 1.7Z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section id="home" class="screen home-screen" aria-labelledby="greeting">
+      <div class="welcome-row">
+        <div>
+          <p class="eyebrow" id="today">SUNDAY, 18 OCTOBER</p>
+          <h1 id="greeting">Good evening, Mdm Tan</h1>
+          <p class="subheading">Your accounts at a glance.</p>
+        </div>
+        <span class="profile-avatar" id="avatar" aria-hidden="true">T</span>
+      </div>
+
+      <section class="total-card" aria-label="Combined account balance">
+        <div class="total-card-top"><span>Total balance</span><button id="toggle-balance" class="balance-toggle" type="button" aria-label="Hide balances" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg></button></div>
+        <strong class="total-value" id="total-balance">S$94,000.00</strong>
+        <div class="total-card-bottom"><span>All accounts</span><span class="balance-asof">Available now</span></div>
+      </section>
+
+      <div class="account-grid">
+        <article class="account-card">
+          <span class="account-icon current-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><path d="M3.5 9h17M7 15h3"/></svg></span>
+          <span class="account-name">Everyday</span>
+          <span class="account-number" id="current-number">•• 2846</span>
+          <strong id="current">S$9,000.00</strong>
+        </article>
+        <article class="account-card savings-card">
+          <span class="account-icon savings-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19.5h16M6.5 19.5v-9h11v9M4.5 10.5 12 5l7.5 5.5M9 14h6"/></svg></span>
+          <span class="account-name">Savings</span>
+          <span class="account-number" id="savings-number">•• 5721</span>
+          <strong id="savings">S$85,000.00</strong>
+        </article>
+      </div>
+
+      <button class="primary-button transfer-start" id="start" type="button"><span class="button-plus" aria-hidden="true">+</span>New transfer <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+
+      <section class="activity-section" aria-labelledby="activity-title">
+        <div class="section-heading"><div><p class="eyebrow">YOUR MONEY</p><h2 id="activity-title">Recent activity</h2></div><span class="activity-period">Latest</span></div>
+        <div id="recent" class="activity-list" aria-live="polite"><div class="empty-state"><span class="empty-icon" aria-hidden="true">↗</span><div><strong>No recent transfers</strong><p>Payments you review will appear here.</p></div></div></div>
+      </section>
+
+      <aside class="protection-note"><span class="shield-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 19 6v5c0 4.7-2.9 8.3-7 10-4.1-1.7-7-5.3-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg></span><span><strong>Extra care for every transfer</strong><small>Transfers are checked for unusual activity.</small></span></aside>
+    </section>
+
+    <section id="form" class="screen form-screen hidden" aria-labelledby="form-title">
+      <button class="back-button" id="back" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg><span>Accounts</span></button>
+      <div class="form-intro"><p class="eyebrow">NEW TRANSFER <span class="step-label">· DETAILS</span></p><h1 id="form-title">Where should it go?</h1><p class="subheading">Enter the recipient and payment amount.</p></div>
+      <form id="transfer-form" novalidate>
+        <label class="field-label" for="pot">Pay from</label>
+        <div class="select-wrap"><select id="pot"><option value="current">Everyday account · •• 2846</option><option value="savings">Savings account · •• 5721</option></select><span class="select-chevron" aria-hidden="true">⌄</span></div>
+
+        <div class="field-heading"><label class="field-label" for="payeeChoice">Recipient</label><span class="field-caption">Singapore</span></div>
+        <div class="select-wrap"><select id="payeeChoice"><option value="new">Add a new recipient</option><option value="MB-LANDLORD">Landlord</option><option value="MB-DAUGHTER">Daughter</option><option value="MB-SP">SP Group</option><option value="MB-CONTRACTOR">Known contractor</option><option value="MB-FRIEND">Friend</option></select><span class="select-chevron" aria-hidden="true">⌄</span></div>
+        <label class="field-label" for="name">Recipient name</label>
+        <input id="name" name="recipient-name" placeholder="Name as shown on account" autocomplete="off" required>
+        <label class="field-label" for="account">Bank account number</label>
+        <input id="account" name="account-number" placeholder="Enter account number" autocomplete="off" inputmode="text" required>
+        <label class="field-label" for="amount">Amount</label>
+        <div class="amount-wrap"><span aria-hidden="true">S$</span><input id="amount" name="amount" type="number" min="1" max="1000000" step="0.01" placeholder="0.00" inputmode="decimal" required></div>
+        <p class="field-hint">Check the recipient details before continuing.</p>
+        <p id="form-error" class="form-error" role="alert" hidden></p>
+        <button class="primary-button review-button" id="send" type="submit">Review transfer <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+      </form>
+      <aside class="privacy-note"><span class="lock-icon" aria-hidden="true">▣</span><span>Your account details are checked securely before the transfer proceeds.</span></aside>
+    </section>
+
+    <section id="result" class="screen result-screen hidden" aria-live="polite"></section>
+
+    <details id="controls" class="scenario-settings">
+      <summary><span class="settings-summary-icon" aria-hidden="true">⚙</span><span>Scenario settings</span><svg class="summary-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></summary>
+      <div class="settings-content">
+        <p class="settings-description">Adjust the account profile and signals to explore different transfer journeys. Call status is a supplied signal; this interface cannot detect phone calls.</p>
+        <label class="settings-toggle"><span><strong>Caller reports an active call</strong><small>Supplied with this transfer</small></span><input type="checkbox" id="call"><i aria-hidden="true"></i></label>
+        <label class="settings-toggle"><span><strong>Recently opened a flagged link</strong><small>Threat-intelligence signal</small></span><input type="checkbox" id="link"><i aria-hidden="true"></i></label>
+        <label class="field-label" for="customer">Account profile</label>
+        <div class="select-wrap"><select id="customer"><option value="C-TAN">Mdm Tan · Everyday account</option><option value="C-LIM">Mr Lim · Everyday account</option><option value="C-RAJ">Raj · Everyday account</option></select><span class="select-chevron" aria-hidden="true">⌄</span></div>
+        <div class="preset-heading"><span>Load a scenario</span><span>5 available</span></div>
+        <div class="presets">
+          <button type="button" data-preset="S1"><span class="preset-icon danger">!</span><span>Government impersonation</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+          <button type="button" data-preset="S2"><span class="preset-icon safe">↗</span><span>Rent payment</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+          <button type="button" data-preset="S3"><span class="preset-icon neutral">↗</span><span>Contractor invoice</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+          <button type="button" data-preset="S4"><span class="preset-icon warning">↗</span><span>Investment opportunity</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+          <button type="button" data-preset="S5"><span class="preset-icon warning">↗</span><span>Task-based job offer</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+        </div>
+        <button id="reset" type="button" class="reset-button">Reset activity</button>
+      </div>
+    </details>
+    <footer class="app-footer"><span class="footer-mark">M</span> Merlion Bank <span class="footer-separator">·</span> Private and secure banking</footer>
+  </main>
+  <script src="app.js?v=20261018-4"></script>
+</body>
+</html>
