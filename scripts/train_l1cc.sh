@@ -15,4 +15,4 @@ else
   rsync -az --exclude=.git/ --exclude=.venv/ --exclude=__pycache__/ --exclude=.pytest_cache/ \
     --exclude=models/ --exclude=results/ --exclude=evidence/ --exclude=data/ ./ l1cc:~/spellbreaker/
 fi
-ssh l1cc 'cd ~/spellbreaker && ./scripts/train_l1cc_remote.sh'
+ssh -o BatchMode=yes -o ConnectTimeout=10 l1cc 'cd ~/spellbreaker && ./scripts/train_l1cc_remote.sh'

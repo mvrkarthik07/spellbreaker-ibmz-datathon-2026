@@ -69,7 +69,7 @@ def prepare_case_note(decision_id: str, case_data: dict[str, Any]):
 @app.post('/score')
 async def score(p:ScoreIn, background_tasks:BackgroundTasks, request:Request):
  start=getattr(request.state,'spellbreaker_started',time.perf_counter()); marks={}; profile=store.profile(p.customer_id); stamp=p.timestamp or time.strftime('%Y-%m-%dT%H:%M:%S%z')
- payload=p.model_dump();payload['timestamp']=stamp
+ payload=(p.model_dump() if hasattr(p,'model_dump') else p.dict());payload['timestamp']=stamp
  marks['parse']=time.perf_counter()
  x=build_features(payload,profile,MULE_SCORES); feats=FEATURES if BUNDLE else list(x)
  vec={k:x.get(k,0) for k in feats}; row=np.asarray([[vec[k] for k in feats]],dtype=np.float64)

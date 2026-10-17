@@ -9,5 +9,5 @@
 
 - No starter files were present. Implementing the requested app and ML prototype from the spec.
 - Container runtime: Docker is installed locally; Podman is absent.
-- LinuxONE phases are active: `l1cc` returned `s390x`; Docker and the requested VM setup passed on 2026-10-18 01:52 SGT. The first P4 install hit PEP 668; its project `.venv` retry is still building dependencies. Public port 8000 returned HTTP 200; the official JupyterLab image is downloading in the background.
+- LinuxONE access and setup are resolved: `l1cc` is `s390x`, Docker passed `hello-world`, and the project has a 4 GiB persistent swap. A pip source-metadata attempt failed on SciPy's missing Fortran compiler; this was replaced by Ubuntu's prebuilt s390x apt stack and a `--system-site-packages` venv. Training and Ubuntu-image service deployment now pass. Public port 8000 returned HTTP 200. No AMLworld `HI-Small_Trans.csv` is present locally; the remote P4 helper checks for it before considering MuleNet.
 - No LLM runtime was evaluated on LinuxONE because the VM is unreachable; app uses the deterministic `template` fallback.

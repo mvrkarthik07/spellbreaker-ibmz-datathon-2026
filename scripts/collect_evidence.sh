@@ -13,7 +13,7 @@ fi
 ssh l1cc 'uname -a; cat /etc/os-release; lscpu; nproc; free -g' > evidence/platform.txt
 ssh l1cc 'grep -m1 features /proc/cpuinfo; grep -c nnpa /proc/cpuinfo || true' > evidence/cpu_features.txt
 ssh l1cc 'cd ~/spellbreaker && if command -v podman >/dev/null 2>&1; then podman --version; podman images; podman ps; podman inspect spellbreaker --format "{{.Config.User}}" || true; elif command -v docker >/dev/null 2>&1; then docker --version; docker images; docker ps; docker inspect spellbreaker --format "{{.Config.User}}" || true; else echo "Container runtime unavailable; service uses the documented venv + uvicorn fallback."; fi' > evidence/container.txt 2>&1
-ssh l1cc 'python3 --version; if command -v podman >/dev/null 2>&1 && podman ps --format {{.Names}} | grep -q spellbreaker; then podman exec spellbreaker pip freeze; elif command -v docker >/dev/null 2>&1 && docker ps --format {{.Names}} | grep -q spellbreaker; then docker exec spellbreaker pip freeze; else cd ~/spellbreaker && .venv/bin/pip freeze; fi' > evidence/python_env.txt
+ssh -o BatchMode=yes -o ConnectTimeout=10 l1cc 'cd ~/spellbreaker && cat evidence/python_env.txt' > evidence/python_env.txt
 ssh l1cc 'cd ~/spellbreaker && cat evidence/train_l1cc.log' > evidence/train_l1cc.log
 ssh l1cc 'curl -fsS localhost:8000/health' > evidence/health.json
 ssh l1cc 'cd ~/spellbreaker && cat results/bench.json' > results/bench.json
