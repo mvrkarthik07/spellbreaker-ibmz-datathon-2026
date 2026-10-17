@@ -33,16 +33,17 @@ Each review displays a unique decision ID. Use it to retrieve the redacted model
 | Real-time latency and throughput | [benchmark JSON](results/bench.json), [benchmark evidence](evidence/bench.txt) | Latest LinuxONE run: server p99 24.96 ms |
 | Customer data stays within bank platform | `docs/PRIVACY.md` | Prototype design statement; no production deployment verified |
 | Local GenAI | `/health`, [50-case evaluation](results/genai_eval.json), [runtime evidence](evidence/genai_runtime.txt) | Granite acceptance was 0/50; deterministic template is default and Granite remains optional |
-| Hyper Protect / Secure Execution; Telum NNPA via zDLC | — | **Production target, not used in this prototype** |
+| NNPA hardware visibility; zDLC model inference | [host/container check](evidence/nnpa.txt) | NNPA is exposed on l1cc and the service container (`grep -c` = 1); zDLC is absent, so accelerated inference is not claimed |
+| Hyper Protect / Secure Execution | — | **Production target, not used in this prototype** |
 
 **AI stack:** scikit-learn (transfer-risk + scam-type models), XGBoost (receiver-mule model), and llama-cpp-python + IBM Granite (case notes, with deterministic validation and template fallback). MuleNet compares XGBoost with scikit-learn HistGradientBoosting on AMLworld; receiver-account metrics and exposure are in [the MuleNet report](results/mulenet_report.json). A small PyTorch MLP is evaluated as a notebook-only M1 challenger and is not served. See the [GenAI evaluation](results/genai_eval.json), [MuleNet run log](evidence/mulenet_l1cc.log), and [executed LinuxONE notebook](evidence/SpellBreaker_on_LinuxONE.executed.ipynb).
 
 ## Platform security on LinuxONE
 
 - The scoring container runs as UID/GID `10001:10001`; Docker inspection recorded the configured user. It also runs with a read-only root filesystem, a size-bounded `/tmp` tmpfs, and all Linux capabilities dropped. See `evidence/container.txt`.
-- LinuxONE exposes the CPACF message-security-assist (MSA) CPU facility. `evidence/cpu_features.txt` records the CPU flags and the literal `grep -c nnpa /proc/cpuinfo` result; `evidence/crypto.txt` records OpenSSL speed output and its OpenSSL runtime. Receiver-account sharing supports keyed HMAC-SHA256 tokens through Python `hmac`/`hashlib`; the evidence includes only a synthetic identifier and an ephemeral key is discarded.
+- LinuxONE exposes the CPACF message-security-assist (MSA) CPU facility. `evidence/cpu_features.txt` records the CPU flags; `evidence/nnpa.txt` includes the live SSH output from the host and service container, both with `grep -c nnpa` = 1. This confirms NNPA visibility only: zDLC and an NNPA inference path are absent, so we do not claim accelerated model execution. `evidence/crypto.txt` records OpenSSL speed output and its OpenSSL runtime. Receiver-account sharing supports keyed HMAC-SHA256 tokens through Python `hmac`/`hashlib`; the evidence includes only a synthetic identifier and an ephemeral key is discarded.
 - The local case-note adapter receives only the fixed allow-listed fact sheet (level, risk %, predicted scam type, exact reasons, amount band, and age band). Names, account numbers, and raw transaction identifiers are excluded; a deterministic validator rejects extra numbers, names, scam types, or missing lines. Accepted notes are marked as fact-checked; see `evidence/genai_prompt_sample.txt`, `evidence/genai_runtime.txt`, and `results/genai_eval.json`.
-- NNPA is visible in CPU flags, but no model ran through zDLC in this prototype. Telum on-chip inference via zDLC is a production path, not a capability claimed as used here. Secure Execution / Hyper Protect is also a production target only.
+- Telum on-chip inference via zDLC and Secure Execution / Hyper Protect remain production paths; this prototype does not use them.
 
 ## Team
 

@@ -2,6 +2,7 @@
 
 - `platform.txt`: LinuxONE OS, architecture, CPU count and memory.
 - `cpu_features.txt`: CPU flags and literal `grep -c nnpa /proc/cpuinfo` result.
+- `nnpa.txt`: live SSH checks of NNPA visibility on the host and running service container, plus a truthful zDLC/inference-use audit.
 - `container.txt`: Docker service, configured user, read-only root, tmpfs and dropped capabilities.
 - `github_preflight.txt`: secret/key/data scan and ignored-path checks before public push.
 - `python_env.txt`: apt-backed project training environment and Ubuntu service container package versions.

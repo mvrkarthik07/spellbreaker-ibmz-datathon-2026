@@ -18,6 +18,7 @@
 - [x] Critical hold enforcement — a CRITICAL result has no continue button, and the API rejects attempts to proceed with HTTP 409. Local check confirmed CRITICAL score, blocked proceed and accepted cancel on 2026-10-18 04:11 SGT.
 - [x] Live critical-hold check — LinuxONE scored the government-impersonation case CRITICAL; proceed returned HTTP 409, cancel succeeded, and the deployed bank script has no critical Continue button. Verified 2026-10-18 04:11 SGT.
 - [x] Score trace implementation — unique decision IDs, redacted `/trace/{decision_id}` endpoint, structured stdout scoring logs and UI reference ID. Fixed Singapore-time interpretation and absent-signal explanations. Local API suite passed 12/12; live LinuxONE score matched its redacted trace and `score_decision` Docker log in `evidence/trace_smoke_test.txt`. The sample remained unconfirmed and did not enter recent activity. Verified 2026-10-18 04:28 SGT.
+- [x] NNPA checklist evidence — verified `/proc/cpuinfo` on the l1cc host and live service container; both advertise `nnpa`, with `grep -c nnpa` = 1. Recorded raw commands/output and a zDLC/integration audit in `evidence/nnpa.txt`. No zDLC runtime or model inference path is present, so only NNPA availability is claimed. Verified 2026-10-18 04:30 SGT.
 - [ ] P8 — Post-freeze and hand-off — hand-off section drafted; post-freeze final push/recheck remains scheduled after 07:45 SGT
 
 ## Hand-off
