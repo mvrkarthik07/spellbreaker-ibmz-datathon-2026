@@ -1,0 +1,8 @@
+Docker version 29.8.0, build 88096ef
+IMAGE                                                                   ID             DISK USAGE   CONTENT SIZE   EXTRA
+hello-world:latest                                                      11a3eb1597e8       22.5kB         10.2kB        
+registry.linuxone.cloud.marist.edu/l1cc/jupyterlab-image-s390x:latest   d2da8a7b0c88       9.85GB         2.71GB        
+spellbreaker:latest                                                     ecaee6b4ab09        681MB          165MB   U    
+CONTAINER ID   IMAGE                 COMMAND                  CREATED          STATUS          PORTS                                         NAMES
+9b379ea14740   spellbreaker:latest   "python3 -m uvicorn …"   14 seconds ago   Up 14 seconds   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp   spellbreaker
+10001

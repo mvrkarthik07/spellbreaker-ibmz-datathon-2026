@@ -1,0 +1,38 @@
+training_on=s390x
+{
+  "full": {
+    "pr_auc": 0.8887452187801311,
+    "roc_auc": 0.9743387668685011,
+    "recall_at_t1": 0.7828535669586983,
+    "precision_at_t1": 0.8515997277059224,
+    "legit_interruption_rate": 0.01098347440548166
+  },
+  "fairness_by_age_band": {
+    "18-34": {
+      "legit_interruption_rate": 0.011273209549071617,
+      "scam_recall": 0.7620192307692307,
+      "n_legit": 6032,
+      "n_scam": 416
+    },
+    "35-49": {
+      "legit_interruption_rate": 0.011054421768707483,
+      "scam_recall": 0.7971014492753623,
+      "n_legit": 5880,
+      "n_scam": 414
+    },
+    "50-64": {
+      "legit_interruption_rate": 0.010052271813429835,
+      "scam_recall": 0.7879341864716636,
+      "n_legit": 4974,
+      "n_scam": 547
+    },
+    "65+": {
+      "legit_interruption_rate": 0.011816340310600946,
+      "scam_recall": 0.7828054298642534,
+      "n_legit": 2962,
+      "n_scam": 221
+    }
+  },
+  "elapsed_s": 12.701639914999987
+}
+Training completed in 13s with customers=20000.

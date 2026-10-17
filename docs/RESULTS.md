@@ -100,6 +100,18 @@ Debug-stage median over 25 local `TestClient` calls with `SPELLBREAKER_DEBUG_TIM
 
 These stage values are a local diagnostic sample, not the multi-worker benchmark. Enable the breakdown with `SPELLBREAKER_DEBUG_TIMINGS=1`; the service returns `debug_timings_ms` and logs the same timing object.
 
+## LinuxONE training and benchmark
+
+The model was trained directly on l1cc (s390x) with 20,000 customers in 13 seconds. Test PR-AUC was 0.889, ROC-AUC 0.974, recall at T1 0.783, and legit interruption 1.10%. The report records age-band fairness, per-type recall and the generation parameters. `evidence/train_l1cc.log`, `results/model_report.json`, and `results/curves.json` contain the raw run artifacts.
+
+The service runs in a non-root Ubuntu 24.04 container using the same Ubuntu-prebuilt scikit-learn 1.4.1.post1 stack as the host training venv. The LinuxONE benchmark ran 10,000 `/score` requests at concurrency 16 on localhost with one Uvicorn worker:
+
+| Duration | Throughput | Server p50 | Server p95 | Server p99 | Client p50 | Client p99 |
+|---:|---:|---:|---:|---:|---:|---:|
+| 47.17 s | 212.00 req/s | 23.04 ms | 24.05 ms | 25.24 ms | 74.68 ms | 102.61 ms |
+
+The server-side p99 meets the <50 ms target. Client round-trip latency includes queueing and transport. Full results are in `results/bench.json` and `evidence/bench.txt`; §9 platform, CPU, container, package, health and crypto evidence is in `evidence/`. The executed LinuxONE notebook verifies a live CRITICAL scoring response and asynchronous case note in `evidence/SpellBreaker_on_LinuxONE.executed.ipynb`.
+
 ```json
 {
   "requests": 10000,

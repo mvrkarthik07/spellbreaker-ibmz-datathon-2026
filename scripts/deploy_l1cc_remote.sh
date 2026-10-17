@@ -5,8 +5,15 @@ mkdir -p evidence results models
 sudo apt-get install -y python3-numpy python3-pandas python3-sklearn python3-scipy python3-joblib python3-fastapi python3-uvicorn python3-httpx python3-pytest python3-venv
 
 record_container_env() {
+  .venv/bin/python - <<'PY' > evidence/python_env_host.txt
+import platform, sys
+from importlib.metadata import version
+print(f"python={sys.version.split()[0]}\nmachine={platform.machine()}")
+for package in ("numpy", "pandas", "scikit-learn", "scipy", "joblib", "fastapi", "uvicorn", "httpx", "pytest"):
+    print(f"{package}={version(package)}")
+PY
   docker exec spellbreaker python3 -c 'import platform,sys; from importlib.metadata import version; print(f"python={sys.version.split()[0]}\nmachine={platform.machine()}"); [print(f"{p}={version(p)}") for p in ("numpy","pandas","scikit-learn","scipy","joblib","fastapi","uvicorn","httpx","pytest")]' > evidence/python_env_container.txt
-  { printf '[training_venv / host]\n'; sed '/^python=/d;/^machine=/d' evidence/python_env.txt; printf '\n[service_container / ubuntu:24.04]\n'; cat evidence/python_env_container.txt; } > evidence/python_env.tmp
+  { printf '[training_venv / host]\n'; cat evidence/python_env_host.txt; printf '\n[service_container / ubuntu:24.04]\n'; cat evidence/python_env_container.txt; } > evidence/python_env.tmp
   mv evidence/python_env.tmp evidence/python_env.txt
 }
 

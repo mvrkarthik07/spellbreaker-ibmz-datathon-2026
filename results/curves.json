@@ -2,146 +2,146 @@
   "loss_prevented_vs_friction": [
     {
       "friction": 0.001,
-      "ml_loss_prevented": 0.4519230769230769,
-      "rules_loss_prevented": 0.014117551462621886
+      "ml_loss_prevented": 0.6076345431789737,
+      "rules_loss_prevented": 0.01641123606674408
     },
     {
       "friction": 0.0035789473684210526,
-      "ml_loss_prevented": 0.625,
-      "rules_loss_prevented": 0.05052597365569938
+      "ml_loss_prevented": 0.6946182728410513,
+      "rules_loss_prevented": 0.0587349501336104
     },
     {
       "friction": 0.006157894736842105,
-      "ml_loss_prevented": 0.6826923076923077,
-      "rules_loss_prevented": 0.08693439584877688
+      "ml_loss_prevented": 0.7428035043804756,
+      "rules_loss_prevented": 0.10105866420047671
     },
     {
       "friction": 0.008736842105263157,
-      "ml_loss_prevented": 0.7139423076923077,
-      "rules_loss_prevented": 0.12334281804185437
+      "ml_loss_prevented": 0.7684605757196495,
+      "rules_loss_prevented": 0.143382378267343
     },
     {
       "friction": 0.01131578947368421,
-      "ml_loss_prevented": 0.7403846153846154,
-      "rules_loss_prevented": 0.15975124023493187
+      "ml_loss_prevented": 0.7866082603254068,
+      "rules_loss_prevented": 0.18570609233420934
     },
     {
       "friction": 0.013894736842105262,
-      "ml_loss_prevented": 0.7860576923076923,
-      "rules_loss_prevented": 0.19615966242800933
+      "ml_loss_prevented": 0.8003754693366708,
+      "rules_loss_prevented": 0.22802980640107562
     },
     {
       "friction": 0.016473684210526317,
-      "ml_loss_prevented": 0.7980769230769231,
-      "rules_loss_prevented": 0.20192307692307693
+      "ml_loss_prevented": 0.8128911138923655,
+      "rules_loss_prevented": 0.22903629536921152
     },
     {
       "friction": 0.01905263157894737,
-      "ml_loss_prevented": 0.8052884615384616,
-      "rules_loss_prevented": 0.20192307692307693
+      "ml_loss_prevented": 0.827909887359199,
+      "rules_loss_prevented": 0.22903629536921152
     },
     {
       "friction": 0.021631578947368422,
-      "ml_loss_prevented": 0.8173076923076923,
-      "rules_loss_prevented": 0.20192307692307693
+      "ml_loss_prevented": 0.8397997496871089,
+      "rules_loss_prevented": 0.22903629536921152
     },
     {
       "friction": 0.024210526315789474,
-      "ml_loss_prevented": 0.8317307692307693,
-      "rules_loss_prevented": 0.20192307692307693
+      "ml_loss_prevented": 0.8473091364205256,
+      "rules_loss_prevented": 0.22903629536921152
     },
     {
       "friction": 0.026789473684210526,
-      "ml_loss_prevented": 0.8365384615384616,
-      "rules_loss_prevented": 0.20192307692307693
+      "ml_loss_prevented": 0.8529411764705882,
+      "rules_loss_prevented": 0.22903629536921152
     },
     {
       "friction": 0.02936842105263158,
-      "ml_loss_prevented": 0.8389423076923077,
-      "rules_loss_prevented": 0.20192307692307693
+      "ml_loss_prevented": 0.8573216520650814,
+      "rules_loss_prevented": 0.22903629536921152
     },
     {
       "friction": 0.031947368421052634,
-      "ml_loss_prevented": 0.84375,
-      "rules_loss_prevented": 0.20192307692307693
+      "ml_loss_prevented": 0.8617021276595744,
+      "rules_loss_prevented": 0.22903629536921152
     },
     {
       "friction": 0.03452631578947368,
-      "ml_loss_prevented": 0.8533653846153846,
-      "rules_loss_prevented": 0.20192307692307693
+      "ml_loss_prevented": 0.8654568210262829,
+      "rules_loss_prevented": 0.22903629536921152
     },
     {
       "friction": 0.03710526315789474,
-      "ml_loss_prevented": 0.8581730769230769,
-      "rules_loss_prevented": 0.20192307692307693
+      "ml_loss_prevented": 0.8692115143929913,
+      "rules_loss_prevented": 0.22903629536921152
     },
     {
       "friction": 0.03968421052631579,
-      "ml_loss_prevented": 0.8653846153846154,
-      "rules_loss_prevented": 0.20192307692307693
+      "ml_loss_prevented": 0.8729662077596996,
+      "rules_loss_prevented": 0.22903629536921152
     },
     {
       "friction": 0.04226315789473684,
-      "ml_loss_prevented": 0.8677884615384616,
-      "rules_loss_prevented": 0.20192307692307693
+      "ml_loss_prevented": 0.8798498122653317,
+      "rules_loss_prevented": 0.22903629536921152
     },
     {
       "friction": 0.0448421052631579,
-      "ml_loss_prevented": 0.8701923076923077,
-      "rules_loss_prevented": 0.20192307692307693
+      "ml_loss_prevented": 0.8873591989987485,
+      "rules_loss_prevented": 0.22903629536921152
     },
     {
       "friction": 0.04742105263157895,
-      "ml_loss_prevented": 0.8701923076923077,
-      "rules_loss_prevented": 0.20192307692307693
+      "ml_loss_prevented": 0.8911138923654568,
+      "rules_loss_prevented": 0.22903629536921152
     },
     {
       "friction": 0.05,
-      "ml_loss_prevented": 0.875,
-      "rules_loss_prevented": 0.20192307692307693
+      "ml_loss_prevented": 0.8973717146433041,
+      "rules_loss_prevented": 0.22903629536921152
     }
   ],
   "ablations": {
-    "no_behaviour": 0.8437723183497567,
-    "no_mule_score": 0.8734701318382191,
-    "full": 0.8730447866940966
+    "no_behaviour": 0.8607614893706966,
+    "no_mule_score": 0.8859981994358221,
+    "full": 0.8887452187801311
   },
   "per_type_recall": {
-    "gov_impersonation": 0.9056603773584906,
-    "investment": 0.6704545454545454,
-    "job": 0.7572815533980582,
-    "phishing_led": 0.7563025210084033
+    "gov_impersonation": 0.9284009546539379,
+    "investment": 0.7574123989218329,
+    "job": 0.660574412532637,
+    "phishing_led": 0.7717647058823529
   },
   "leave_one_type_out_recall": {
-    "gov_impersonation": 0.7735849056603774,
-    "investment": 0.5795454545454546,
-    "job": 0.6504854368932039,
-    "phishing_led": 0.680672268907563
+    "gov_impersonation": 0.8210023866348448,
+    "investment": 0.6469002695417789,
+    "job": 0.5900783289817232,
+    "phishing_led": 0.6964705882352941
   },
   "fairness_by_age_band": {
     "18-34": {
-      "legit_interruption_rate": 0.010966415352981495,
-      "scam_recall": 0.696078431372549,
-      "n_legit": 1459,
-      "n_scam": 102
+      "legit_interruption_rate": 0.011273209549071617,
+      "scam_recall": 0.7620192307692307,
+      "n_legit": 6032,
+      "n_scam": 416
     },
     "35-49": {
-      "legit_interruption_rate": 0.011984021304926764,
-      "scam_recall": 0.8080808080808081,
-      "n_legit": 1502,
-      "n_scam": 99
+      "legit_interruption_rate": 0.011054421768707483,
+      "scam_recall": 0.7971014492753623,
+      "n_legit": 5880,
+      "n_scam": 414
     },
     "50-64": {
-      "legit_interruption_rate": 0.01794453507340946,
-      "scam_recall": 0.803921568627451,
-      "n_legit": 1226,
-      "n_scam": 153
+      "legit_interruption_rate": 0.010052271813429835,
+      "scam_recall": 0.7879341864716636,
+      "n_legit": 4974,
+      "n_scam": 547
     },
     "65+": {
-      "legit_interruption_rate": 0.014157014157014158,
-      "scam_recall": 0.7903225806451613,
-      "n_legit": 777,
-      "n_scam": 62
+      "legit_interruption_rate": 0.011816340310600946,
+      "scam_recall": 0.7828054298642534,
+      "n_legit": 2962,
+      "n_scam": 221
     }
   }
 }
