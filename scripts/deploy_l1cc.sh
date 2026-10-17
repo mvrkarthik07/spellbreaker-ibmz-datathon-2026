@@ -8,8 +8,18 @@ if [ "$arch" != s390x ]; then
   exit 1
 fi
 
-rsync -az --exclude=data/ --exclude=.git/ --exclude=.venv/ --exclude=__pycache__/ --exclude=.pytest_cache/ \
-  --exclude=data/ --exclude=models/ --exclude=results/ --exclude=evidence/ ./ l1cc:~/spellbreaker/
+# Do not remove or overwrite runtime artifacts or source datasets on l1cc.
+# No deletion flag is used; these root paths are excluded entirely.
+rsync -az \
+  --exclude='/.git/***' \
+  --exclude='/.venv/***' \
+  --exclude='__pycache__/***' \
+  --exclude='.pytest_cache/***' \
+  --exclude='/data/***' \
+  --exclude='/models/***' \
+  --exclude='/results/***' \
+  --exclude='/evidence/***' \
+  ./ l1cc:~/spellbreaker/
 ssh -o BatchMode=yes -o ConnectTimeout=10 l1cc 'cd ~/spellbreaker && ./scripts/deploy_l1cc_remote.sh'
 
 health=$(ssh -o BatchMode=yes -o ConnectTimeout=10 l1cc 'for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30; do curl -fsS localhost:8000/health && exit 0; sleep 1; done; exit 1')
