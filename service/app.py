@@ -1,13 +1,18 @@
 from __future__ import annotations
 import json, platform, time
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from joblib import load
+import pandas as pd
+from threadpoolctl import threadpool_limits
+
+# Small batch inference is faster and more stable without OpenMP oversubscription.
+_INFERENCE_THREADS = threadpool_limits(limits=1)
 from .state import store, PAYEES
 from .features import build_features
 from .policy import decide
@@ -26,11 +31,10 @@ except Exception: REPORT={}
 try: CURVES=json.loads((ROOT/'results/curves.json').read_text())
 except Exception: CURVES={}
 try:
- import pandas as pd
  df=pd.read_csv(ROOT/'results/mule_scores.csv'); MULE_SCORES={str(i):float(v) for i,v in zip(df.get('account',[]),df['score'])}
 except Exception: MULE_SCORES={}
 class ScoreIn(BaseModel):
- customer_id:str; payee_account:str; payee_name:str='Payee'; amount:float; source_pot:str='current'; flags:dict[str,Any]={}; timestamp:str|None=None
+ customer_id:str; payee_account:str; payee_name:str='Payee'; amount:float; source_pot:str='current'; flags:dict[str,Any]={}; timestamp:Optional[str]=None
 class ConfirmIn(BaseModel): decision_id:str; user_choice:str
 @app.get('/')
 def root():return RedirectResponse('/bank/')
@@ -43,12 +47,12 @@ def score(p:ScoreIn):
  x=build_features(payload,profile,MULE_SCORES); feats=BUNDLE['features'] if BUNDLE else list(x)
  vec={k:x.get(k,0) for k in feats}
  if BUNDLE:
-  model=BUNDLE['risk_model']; risk=float(model.predict_proba([[vec[k] for k in feats]])[0][1]); typ=str(BUNDLE['type_model'].predict([[vec[k] for k in feats]])[0]); thresholds=BUNDLE['thresholds']; med=BUNDLE.get('legit_medians',{})
+  model=BUNDLE['risk_model']; risk=float(model.predict_proba(pd.DataFrame([[vec[k] for k in feats]],columns=feats))[0][1]); typ=str(BUNDLE['type_model'].predict(pd.DataFrame([[vec[k] for k in feats]],columns=feats))[0]); thresholds=BUNDLE['thresholds']; med=BUNDLE.get('legit_medians',{})
  else:
   risk=min(.999, .02 + .26*x['on_call']+.22*x['pasted_account']+.23*x['receiver_mule_score']+.15*x['from_long_term_savings']+.12*x['new_payee']+.08*x['rushed_score']);typ='gov_impersonation' if x['on_call'] and x['pasted_account'] else 'none';thresholds={'T1':.48,'T2':.65,'T3':.82};med={}
  level,action,question,message=decide(risk,thresholds,typ)
  rs=reasons(BUNDLE['risk_model'] if BUNDLE else None,vec,med)
- d=store.add_decision({'customer_id':p.customer_id,'payee_account':p.payee_account,'payee_name':p.payee_name,'amount':p.amount,'timestamp':stamp,'risk':risk,'level':level,'scam_type':typ,'scam_type_confidence':float(max(BUNDLE['type_model'].predict_proba([[vec[k] for k in feats]])[0])) if BUNDLE else .7,'action':action,'question':question,'message':message,'reasons':rs,'features_used':vec})
+ d=store.add_decision({'customer_id':p.customer_id,'payee_account':p.payee_account,'payee_name':p.payee_name,'amount':p.amount,'timestamp':stamp,'risk':risk,'level':level,'scam_type':typ,'scam_type_confidence':float(max(BUNDLE['type_model'].predict_proba(pd.DataFrame([[vec[k] for k in feats]],columns=feats))[0])) if BUNDLE else .7,'action':action,'question':question,'message':message,'reasons':rs,'features_used':vec})
  d['latency_ms']=(time.perf_counter()-start)*1000
  d['scored_on']='IBM LinuxONE (s390x)' if platform.machine()=='s390x' else f'local dev ({platform.machine()})'
  return d

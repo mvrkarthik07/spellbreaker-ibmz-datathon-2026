@@ -15,7 +15,12 @@ class Store:
   d=next((x for x in self.decisions if x['decision_id']==did),None)
   if not d:return None
   d['outcome']='proceeded' if choice=='proceed' else 'cancelled'
-  p=self.profile(d['customer_id']); p['transfers'].append({'payee_account':d['payee_account'],'amount':d['amount'],'time':d['timestamp']})
-  if choice=='proceed':p['saved_payees'][d['payee_account']]=d['amount']
+  p=self.profile(d['customer_id'])
+  if choice=='proceed':
+   p['transfers'].append({'payee_account':d['payee_account'],'amount':d['amount'],'time':d['timestamp']})
+   p['saved_payees'][d['payee_account']]=d['amount']
   return d
 store=Store()
+def seed_demo():
+ store.reset()
+ return store

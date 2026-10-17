@@ -1,7 +1,7 @@
 # Progress
 
 - [x] P0 — Bootstrap — verified 2026-10-18 00:57 SGT (dependency imports pass)
-- [ ] P1 — Service skeleton + UI wired to a stub
+- [x] P1 — Service + UI — verified 2026-10-18 01:06 SGT (`/health` ok; `/bank/` and `/dashboard/` HTTP 200; stub fallback retained)
 - [ ] P2 — ML realistic model
 - [ ] P3 — Real model in the service
 - [ ] P4 — LinuxONE deployment + training on s390x
