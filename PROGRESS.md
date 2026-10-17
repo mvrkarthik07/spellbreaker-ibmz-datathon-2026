@@ -11,6 +11,7 @@
 - [x] P6 — GenAI case notes — refreshed 2026-10-18 03:15 SGT: fixed fact-sheet-only Granite prompt, strict four-line deterministic validator, asynchronous fallback logging, and 50-case l1cc evaluation. Acceptance was 0/50 under the 90-second primary-inference timeout/burst gate, so template is default and Granite remains optional. Post-change l1cc p99 stayed 25.19 ms; remote acceptance passed 9/9.
 - [x] P7 — Docs, video support, polish — refreshed 2026-10-18 03:15 SGT: tokenmaxxers roster and 10-second role segment filled; rubric mapping, security, Granite evaluation and privacy evidence documented. Five demo presets returned expected levels over HTTP.
 - [x] MuleNet account-level reporting — full HI-Small run completed on l1cc inside the official s390x JupyterLab image (5,078,345 rows); account ROC-AUC, precision/recall/lift at top 1% and 5%, and HMAC red-flag-gated silo collaboration are in `results/mulenet_report.json` and `docs/RESULTS.md`.
+- [x] Public GitHub — created `https://github.com/mvrkarthik07/spellbreaker-ibmz-datathon-2026` after key/data scans and ignore checks; `main` is pushed. README and submission fields link to the repository.
 - [ ] P8 — Post-freeze and hand-off — hand-off section drafted; post-freeze final push/recheck remains scheduled after 07:45 SGT
 
 ## Hand-off
