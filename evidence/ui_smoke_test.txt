@@ -1,0 +1,24 @@
+SpellBreaker live UI smoke check
+Date: 2026-10-18 (SGT)
+Target: http://148.100.98.199:8000/bank/ (LinuxONE s390x)
+
+Browser checks (rendered banking UI)
+- Page loaded; Merlion Bank home, synthetic balances and recent transfers visible.
+- Make a transfer opened the form; Review transfer called the live /score model.
+- Scam: fake ICA officer -> CRITICAL, risk 100%, government impersonation question shown.
+- Rent while on call -> LOW, risk 5%, transfer sent screen shown.
+- Contractor payment -> LOW, risk 1%, transfer sent screen shown.
+- Investment payment #3 -> CRITICAL, risk 95%, investment-specific question shown.
+- Job task payment -> CRITICAL, risk 99%, job-specific question shown.
+- “Yes, someone asked me” returned home and recorded the transfer as cancelled.
+- “No, continue” returned home and recorded the transfer as proceeded.
+- “Why am I seeing this?” expanded to show the model-derived reasons.
+- “Reset demo” cleared recent activity and returned to the clean home screen.
+- All five demo preset buttons, both transfer-choice buttons, explanation and reset responded.
+
+API acceptance checks
+- BASE_URL=http://148.100.98.199:8000 pytest -q tests
+- Result: 9 passed in 14.66s.
+- The local test process printed six scikit-learn pickle-version warnings while importing its local app; the exercised remote LinuxONE acceptance scenarios passed.
+
+Conclusion: browser UI and live LinuxONE model responses are working for the scripted demo flow.

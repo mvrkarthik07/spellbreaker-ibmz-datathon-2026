@@ -2,7 +2,7 @@
 
 **SpellBreaker spots the moment a genuine customer is being manipulated into sending money, then interrupts with a scam-specific warning.** It asks: **“Is the owner under someone else’s control right now?”**
 
-**Public repository:** [github.com/mvrkarthik07/spellbreaker](https://github.com/mvrkarthik07/spellbreaker)
+**Public repository:** [github.com/mvrkarthik07/spellbreaker-ibmz-datathon-2026](https://github.com/mvrkarthik07/spellbreaker-ibmz-datathon-2026)
 
 In 2025, Singapore recorded S$913.1 million in scam losses across 41,974 cases. 81.8% of cases involved self-effected transfers, where the real account owner sent the money. Seniors were about 15% of victims and had the highest average loss at S$37,053. [Singapore Police Force, 2025 annual scam figures](https://www.police.gov.sg/media-hub/police-life/2026/02/scams-and-cybercrime-fell-by-almost-a-quarter-in-2025)
 
@@ -18,7 +18,7 @@ See [full model results](docs/RESULTS.md).
 
 ## Demo
 
-Screenshot/GIF placeholders: `docs/img/bank-demo.png`, `docs/img/dashboard.png`.
+[Open the live Merlion Bank demo](http://148.100.98.199:8000/bank/) or the [analyst dashboard](http://148.100.98.199:8000/dashboard/). The browser smoke check exercised all five presets, both warning choices, the explanation panel, and reset; see [`evidence/ui_smoke_test.txt`](evidence/ui_smoke_test.txt).
 
 ## IBM Z / LinuxONE evidence
 
@@ -60,20 +60,9 @@ Screenshot/GIF placeholders: `docs/img/bank-demo.png`, `docs/img/dashboard.png`.
 
 ## Architecture
 
-```mermaid
-flowchart LR
-  B[Merlion Bank demo app] -->|transfer signals| API[FastAPI /score on LinuxONE target]
-  API --> F[Feature builder]
-  F --> M1[M1 transfer risk]
-  F --> M2[M2 scam type]
-  F --> M3[M3 receiver mule score]
-  M1 --> P[Policy and intervention]
-  M2 --> P
-  M3 --> P
-  P -->|decision| B
-  P -. async case note .-> G[Granite validator or template fallback]
-  API --> D[Fraud dashboard]
-```
+![SpellBreaker end-to-end flowchart](flowchart.svg)
+
+The diagram is also available as [an SVG](flowchart.svg) at the repository root. Component details and the Mermaid source are in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Results
 
