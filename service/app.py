@@ -51,7 +51,9 @@ try:
 except Exception: MULE_SCORES={}
 DEBUG_TIMINGS=os.getenv('SPELLBREAKER_DEBUG_TIMINGS','0').lower() in ('1','true','yes')
 LOGGER=logging.getLogger('spellbreaker.score')
-if DEBUG_TIMINGS: LOGGER.setLevel(logging.INFO)
+if DEBUG_TIMINGS:
+ logging.basicConfig(level=logging.INFO)
+ LOGGER.setLevel(logging.INFO)
 class ScoreIn(BaseModel):
  customer_id:str; payee_account:str; payee_name:str='Payee'; amount:float; source_pot:str='current'; flags:dict[str,Any]={}; timestamp:Optional[str]=None
 class ConfirmIn(BaseModel): decision_id:str; user_choice:str
