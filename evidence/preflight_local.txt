@@ -1,7 +1,9 @@
 Preflight captured 2026-10-18 00:56 SGT
+Working directory: /Users/karthik/Documents/ChatGPT/spellbreaker
 Python: Python 3.14.4
 pip: pip 26.0.1
 Git: git version 2.54.0 (Apple Git-157)
 Podman: unavailable
 Docker: Docker version 29.4.0
-LinuxONE SSH: ssh -o BatchMode=yes -o ConnectTimeout=10 l1cc 'uname -m' failed: Could not resolve hostname l1cc
+SSH l1cc: failed; Could not resolve hostname l1cc
+Workspace repository: no prior commits or starter files at first inspection
