@@ -9,5 +9,5 @@
 
 - No starter files were present. Implementing the requested app and ML prototype from the spec.
 - Container runtime: Docker is installed locally; Podman is absent.
-- LinuxONE phases are now active: `l1cc` returned `s390x` at 2026-10-18 01:43 SGT. The first P4 install hit Debian PEP 668; training now creates a project `.venv` and is being retried.
+- LinuxONE phases are active: `l1cc` returned `s390x`; Docker and the requested VM setup passed on 2026-10-18 01:52 SGT. The first P4 install hit PEP 668; its project `.venv` retry is still building dependencies. Public port 8000 returned HTTP 200; the official JupyterLab image is downloading in the background.
 - No LLM runtime was evaluated on LinuxONE because the VM is unreachable; app uses the deterministic `template` fallback.

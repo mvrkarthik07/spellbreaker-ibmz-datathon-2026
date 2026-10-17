@@ -1,0 +1,235 @@
+
+$ ssh l1cc curl\ -fsSL\ https://get.docker.com\ \|\ sudo\ sh
+# Executing docker install script, commit: ada7a567e59b3935bd601bb21e422da50e80e376
+Warning: the "docker" command appears to already exist on this system.
+
+If you already have Docker installed, this script can cause trouble, which is
+why we're displaying this warning and provide the opportunity to cancel the
+installation.
+
+If you installed the current Docker package using this script and are using it
+again to update Docker, you can ignore this message, but be aware that the
+script resets any custom changes in the deb and rpm repo configuration
+files to match the parameters passed to the script.
+
+You may press Ctrl+C now to abort this script.
++ sleep 20
++ sh -c apt-get -qq update >/dev/null
++ sh -c DEBIAN_FRONTEND=noninteractive apt-get -y -qq install ca-certificates curl >/dev/null
++ sh -c install -m 0755 -d /etc/apt/keyrings
++ sh -c curl -fsSL "https://download.docker.com/linux/ubuntu/gpg" -o /etc/apt/keyrings/docker.asc
++ sh -c chmod a+r /etc/apt/keyrings/docker.asc
++ sh -c echo "deb [arch=s390x signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu noble stable" > /etc/apt/sources.list.d/docker.list
++ sh -c apt-get -qq update >/dev/null
++ apt_flags=-y -qq
++ [ -n  ]
++ sh -c DEBIAN_FRONTEND=noninteractive apt-get -y -qq install docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-ce-rootless-extras docker-buildx-plugin docker-model-plugin >/dev/null
+Using systemd to manage Docker service
++ sh -c systemctl enable --now docker.service 2>/dev/null
+INFO: Docker daemon enabled and started
+
++ sh -c docker version
+Client: Docker Engine - Community
+ Version:           29.8.0
+ API version:       1.56
+ Go version:        go1.26.8
+ Git commit:        88096ef
+ Built:             Thu Sep 17 08:51:40 2026
+ OS/Arch:           linux/s390x
+ Context:           default
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          29.8.0
+  API version:      1.56 (minimum version 1.40)
+  Go version:       go1.26.8
+  Git commit:       3ce5872
+  Built:            Thu Sep 17 08:51:40 2026
+  OS/Arch:          linux/s390x
+  Experimental:     false
+ containerd:
+  Version:          v2.3.5
+  GitCommit:        1294c24a7da8e5a793ed378161673abe94118892
+ runc:
+  Version:          1.5.1
+  GitCommit:        v1.5.1-0-g8f2685a4
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+
+================================================================================
+
+To run Docker as a non-privileged user, consider setting up the
+Docker daemon in rootless mode for your user:
+
+    dockerd-rootless-setuptool.sh install
+
+Visit https://docs.docker.com/go/rootless/ to learn about rootless mode.
+
+
+To run the Docker daemon as a fully privileged service, but granting non-root
+users access, refer to https://docs.docker.com/go/daemon-access/
+
+WARNING: Access to the remote API on a privileged Docker daemon is equivalent
+         to root access on the host. Refer to the 'Docker daemon attack surface'
+         documentation for details: https://docs.docker.com/go/attack-surface/
+
+================================================================================
+
+[exit=0]
+
+$ ssh l1cc sudo\ usermod\ -aG\ docker\ linux1\ \&\&\ sudo\ systemctl\ enable\ --now\ docker
+Synchronizing state of docker.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable docker
+[exit=0]
+
+$ ssh l1cc docker\ run\ --rm\ hello-world
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+8ff7c0e549c1: Pulling fs layer
+8ff7c0e549c1: Download complete
+c5b075524fd6: Download complete
+8ff7c0e549c1: Pull complete
+Digest: sha256:11a3eb1597e864c51b3f56733cb2e8a90bf0c284bfc05f9444d81c558bc848aa
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (s390x)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+[exit=0]
+
+$ ssh l1cc sudo\ apt-get\ update\ \&\&\ sudo\ apt-get\ install\ -y\ python3-venv\ python3-pip\ git\ rsync\ build-essential\ cmake
+Hit:1 https://download.docker.com/linux/ubuntu noble InRelease
+Hit:2 http://ports.ubuntu.com/ubuntu-ports noble InRelease
+Hit:3 http://ports.ubuntu.com/ubuntu-ports noble-updates InRelease
+Hit:4 http://ports.ubuntu.com/ubuntu-ports noble-backports InRelease
+Hit:5 http://ports.ubuntu.com/ubuntu-ports noble-security InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+python3-venv is already the newest version (3.12.3-0ubuntu2.1).
+python3-pip is already the newest version (24.0+dfsg-1ubuntu1.3).
+git is already the newest version (1:2.43.0-1ubuntu7.3).
+rsync is already the newest version (3.2.7-1ubuntu1.5).
+build-essential is already the newest version (12.10ubuntu1).
+build-essential set to manually installed.
+The following additional packages will be installed:
+  cmake-data libjsoncpp25 librhash0
+Suggested packages:
+  cmake-doc cmake-format elpa-cmake-mode ninja-build
+The following NEW packages will be installed:
+  cmake cmake-data libjsoncpp25 librhash0
+0 upgraded, 4 newly installed, 0 to remove and 0 not upgraded.
+Need to get 14.0 MB of archives.
+After this operation, 49.5 MB of additional disk space will be used.
+Get:1 http://ports.ubuntu.com/ubuntu-ports noble/main s390x libjsoncpp25 s390x 1.9.5-6build1 [82.5 kB]
+Get:2 http://ports.ubuntu.com/ubuntu-ports noble/main s390x librhash0 s390x 1.4.3-3build1 [133 kB]
+Get:3 http://ports.ubuntu.com/ubuntu-ports noble/main s390x cmake-data all 3.28.3-1build7 [2155 kB]
+Get:4 http://ports.ubuntu.com/ubuntu-ports noble/main s390x cmake s390x 3.28.3-1build7 [11.7 MB]
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin: 
+Fetched 14.0 MB in 2s (8971 kB/s)
+Selecting previously unselected package libjsoncpp25:s390x.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 70593 files and directories currently installed.)
+Preparing to unpack .../libjsoncpp25_1.9.5-6build1_s390x.deb ...
+Unpacking libjsoncpp25:s390x (1.9.5-6build1) ...
+Selecting previously unselected package librhash0:s390x.
+Preparing to unpack .../librhash0_1.4.3-3build1_s390x.deb ...
+Unpacking librhash0:s390x (1.4.3-3build1) ...
+Selecting previously unselected package cmake-data.
+Preparing to unpack .../cmake-data_3.28.3-1build7_all.deb ...
+Unpacking cmake-data (3.28.3-1build7) ...
+Selecting previously unselected package cmake.
+Preparing to unpack .../cmake_3.28.3-1build7_s390x.deb ...
+Unpacking cmake (3.28.3-1build7) ...
+Setting up libjsoncpp25:s390x (1.9.5-6build1) ...
+Setting up librhash0:s390x (1.4.3-3build1) ...
+Setting up cmake-data (3.28.3-1build7) ...
+Setting up cmake (3.28.3-1build7) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+Processing triggers for libc-bin (2.39-0ubuntu8.9) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Teletype
+
+Running kernel seems to be up-to-date (ABI upgrades are not detected).
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+[exit=0]
+
+$ ssh l1cc sudo\ fallocate\ -l\ 4G\ /swapfile\ \&\&\ sudo\ chmod\ 600\ /swapfile\ \&\&\ sudo\ mkswap\ /swapfile\ \&\&\ sudo\ swapon\ /swapfile\ \&\&\ \(grep\ -q\ \"\^/swapfile\ none\ swap\ sw\ 0\ 0\$\"\ /etc/fstab\ \|\|\ echo\ \"/swapfile\ none\ swap\ sw\ 0\ 0\"\ \|\ sudo\ tee\ -a\ /etc/fstab\)\ \&\&\ free\ -h
+Setting up swapspace version 1, size = 4 GiB (4294963200 bytes)
+no label, UUID=71e548fd-ca10-4e1a-8482-6f1344033d88
+/swapfile none swap sw 0 0
+               total        used        free      shared  buff/cache   available
+Mem:           7.8Gi       3.1Gi       2.9Gi       9.5Mi       2.0Gi       4.7Gi
+Swap:          4.0Gi          0B       4.0Gi
+[exit=0]
+
+$ ssh l1cc sudo\ iptables\ -I\ INPUT\ -p\ tcp\ --dport\ 8000\ -j\ ACCEPT\ \&\&\ sudo\ iptables\ -I\ INPUT\ -p\ tcp\ --dport\ 38888\ -j\ ACCEPT\ \&\&\ sudo\ iptables\ -L\ INPUT\ -n\ --line-numbers\ \|\ head\ -n\ 8
+Chain INPUT (policy ACCEPT)
+num  target     prot opt source               destination         
+1    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:38888
+2    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            tcp dpt:8000
+3    ACCEPT     0    --  127.0.0.0/8          127.0.0.0/8         
+4    ACCEPT     6    --  0.0.0.0/0            0.0.0.0/0            ctstate NEW tcp dpt:22
+5    ACCEPT     1    --  0.0.0.0/0            0.0.0.0/0           
+6    ACCEPT     0    --  0.0.0.0/0            0.0.0.0/0            ctstate RELATED,ESTABLISHED
+[exit=0]
+
+$ ssh l1cc nohup\ python3\ -m\ http.server\ 8000\ \>/tmp/spellbreaker-port-test.log\ 2\>\&1\ \</dev/null\ \&\ echo\ \$\!
+10725
+[exit=0]
+
+$ ssh l1cc ps and port log
+linux1     10725       1  0 17:51 ?        00:00:00 python3 -m http.server 8000
+[exit=0]
+
+$ curl -s -o /dev/null -w "%{http_code}" --max-time 8 http://148.100.98.199:8000/
+200
+[exit=0]
+
+$ ssh l1cc kill\ 10725\ \&\&\ echo\ port-test-server-stopped
+port-test-server-stopped
+[exit=0]
+
+$ ssh l1cc nohup\ docker\ pull\ registry.linuxone.cloud.marist.edu/l1cc/jupyterlab-image-s390x:latest\ \>\ ~/jupyterlab-image-pull.log\ 2\>\&1\ \</dev/null\ \&\ echo\ pull_pid=\$\!
+pull_pid=10982
+[exit=0]
+
+$ ssh -o BatchMode=yes -o ConnectTimeout=10 l1cc uname -m
+s390x
+[exit=0]
