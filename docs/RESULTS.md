@@ -102,13 +102,13 @@ These stage values are a local diagnostic sample, not the multi-worker benchmark
 
 ## LinuxONE training and benchmark
 
-The model was trained directly on l1cc (s390x) with 20,000 customers in 13 seconds. Test PR-AUC was 0.889, ROC-AUC 0.974, recall at T1 0.783, and legit interruption 1.10%. The report records age-band fairness, per-type recall and the generation parameters. `evidence/train_l1cc.log`, `results/model_report.json`, and `results/curves.json` contain the raw run artifacts.
+The initial model was trained directly on l1cc (s390x) with 20,000 customers in 13 seconds. Test PR-AUC was 0.889, ROC-AUC 0.974, recall at T1 0.783, and legit interruption 1.10%. After MuleNet integration, SpellBreaker was retrained on l1cc with 20,000 customers in 17 seconds. The current report shows PR-AUC 0.8803, ROC-AUC 0.9708, recall at T1 0.7735, and legit interruption 1.11%. The report records age-band fairness, per-type recall, the MuleNet score source and generation parameters. `evidence/train_l1cc.log`, `results/model_report.json`, and `results/curves.json` contain the current run artifacts.
 
-The service runs in a non-root Ubuntu 24.04 container using the same Ubuntu-prebuilt scikit-learn 1.4.1.post1 stack as the host training venv. The LinuxONE benchmark ran 10,000 `/score` requests at concurrency 16 on localhost with one Uvicorn worker:
+The service runs in a non-root Ubuntu 24.04 container using the same Ubuntu-prebuilt scikit-learn 1.4.1.post1 stack as the host training venv. After retraining with MuleNet receiver scores, the LinuxONE benchmark ran 10,000 `/score` requests at concurrency 16 on localhost with one Uvicorn worker:
 
 | Duration | Throughput | Server p50 | Server p95 | Server p99 | Client p50 | Client p99 |
 |---:|---:|---:|---:|---:|---:|---:|
-| 47.16 s | 212.06 req/s | 22.98 ms | 24.05 ms | 25.74 ms | 74.48 ms | 103.11 ms |
+| 48.53 s | 206.07 req/s | 23.70 ms | 24.79 ms | 25.99 ms | 76.79 ms | 106.61 ms |
 
 The server-side p99 meets the <50 ms target. Client round-trip latency includes queueing and transport. This final run uses the deterministic case-note fallback; the local Granite runtime was tested but rejected because it repeatedly generated unrelated scam labels and unsupported email claims, so `/health` and the dashboard correctly report `template`. Full results are in `results/bench.json` and `evidence/bench.txt`; §9 platform, CPU, container, package, health, GenAI attempt and crypto evidence is in `evidence/`. The executed LinuxONE notebook verifies a live CRITICAL score and asynchronous case note in `evidence/SpellBreaker_on_LinuxONE.executed.ipynb`.
 
@@ -134,3 +134,10 @@ The server-side p99 meets the <50 ms target. Client round-trip latency includes 
 ## LinuxONE GenAI runtime decision
 
 The official JupyterLab image supplied a prebuilt s390x `llama-cpp-python` runtime and was used to attempt local Granite 3.0 1B Q4 inference. Generated responses repeatedly substituted unrelated scam labels or invented email details. An exact scam-type output validator rejected those responses, and the service returned its fact-based 4-sentence template asynchronously. The deployed `/health.genai` value and dashboard badge are `template`; the attempt and model details are recorded in `evidence/genai_runtime.txt`. The executed notebook records a 5.49 ms CRITICAL score and an asynchronous case note ready with `runtime=template`.
+
+
+## AMLworld MuleNet and retraining
+
+MuleNet ran on l1cc from the apt-backed project venv against the official AMLworld HI-Small CSV, with the run capped at 2,000,000 rows because l1cc had about 6.3 GiB available RAM. It trained on 1.6 million rows and scored 400,000 test rows, exporting 149,128 receiver-account scores. The siloed PR-AUC was 0.00458 on this highly imbalanced sample; collaboration and oracle PR-AUC are not computed by this baseline. The exact command, memory snapshot and output are in `evidence/mulenet_l1cc.log`; the report is `results/mulenet_report.json`.
+
+SpellBreaker was then retrained on l1cc with 20,000 customers in 17 seconds. The report confirms that all 149,128 real receiver scores were sampled with replacement across the synthetic transfer sessions and used as the `receiver_mule_score` training feature. The retrained model reports PR-AUC 0.8803, ROC-AUC 0.9708, and `trained_on=s390x`. Its model report and curves are in `results/`; the service was rebuilt from that model and the post-deploy benchmark remains at 25.99 ms server p99. Both deployment and training sync scripts exclude `data/`, preserving the 454 MB dataset on l1cc.

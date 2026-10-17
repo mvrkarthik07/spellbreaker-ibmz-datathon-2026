@@ -1,38 +1,50 @@
 training_on=s390x
 {
   "full": {
-    "pr_auc": 0.8887452187801311,
-    "roc_auc": 0.9743387668685011,
-    "recall_at_t1": 0.7828535669586983,
-    "precision_at_t1": 0.8515997277059224,
-    "legit_interruption_rate": 0.01098347440548166
+    "pr_auc": 0.8802594628910934,
+    "roc_auc": 0.9707673657721084,
+    "recall_at_t1": 0.7734668335419274,
+    "precision_at_t1": 0.8489010989010989,
+    "legit_interruption_rate": 0.011084240225715438
   },
   "fairness_by_age_band": {
     "18-34": {
-      "legit_interruption_rate": 0.011273209549071617,
-      "scam_recall": 0.7620192307692307,
+      "legit_interruption_rate": 0.010941644562334218,
+      "scam_recall": 0.7451923076923077,
       "n_legit": 6032,
       "n_scam": 416
     },
     "35-49": {
-      "legit_interruption_rate": 0.011054421768707483,
-      "scam_recall": 0.7971014492753623,
+      "legit_interruption_rate": 0.011564625850340135,
+      "scam_recall": 0.8019323671497585,
       "n_legit": 5880,
       "n_scam": 414
     },
     "50-64": {
-      "legit_interruption_rate": 0.010052271813429835,
-      "scam_recall": 0.7879341864716636,
+      "legit_interruption_rate": 0.010454362685967028,
+      "scam_recall": 0.7824497257769653,
       "n_legit": 4974,
       "n_scam": 547
     },
     "65+": {
-      "legit_interruption_rate": 0.011816340310600946,
-      "scam_recall": 0.7828054298642534,
+      "legit_interruption_rate": 0.011478730587440918,
+      "scam_recall": 0.751131221719457,
       "n_legit": 2962,
       "n_scam": 221
     }
   },
-  "elapsed_s": 12.701639914999987
+  "elapsed_s": 16.47299171199984
 }
-Training completed in 13s with customers=20000.
+Training completed in 17s with customers=20000.
+
+MuleNet scores used by SpellBreaker training:
+{
+  "used": true,
+  "path": "results/mule_scores.csv",
+  "score_rows": 149128,
+  "positive_account_rate": 0.0024207392307279653,
+  "score_min": 0.0,
+  "score_median": 0.0004774044315361,
+  "score_max": 0.9996592916969596,
+  "sampling": "seeded sampling with replacement across synthetic transfer sessions"
+}

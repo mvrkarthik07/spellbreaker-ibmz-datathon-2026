@@ -1,6 +1,7 @@
 #!/bin/sh
 set -eu
 cd "$HOME/spellbreaker"
+export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
 mkdir -p evidence results models
 
 # Ubuntu supplies native s390x wheels/libraries for the complete ML stack.
@@ -21,11 +22,13 @@ import numpy, pandas, sklearn, scipy, joblib, fastapi, uvicorn, httpx, pytest
 print("Ubuntu prebuilt s390x ML/service stack imports passed in the project venv.")
 PY
 
-if [ -f data/HI-Small_Trans.csv ]; then
+if [ -f data/HI-Small_Trans.csv ] && [ ! -s results/mule_scores.csv ]; then
   rows="${MULENET_NROWS:-}"
-  mem_kb=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
-  if [ -z "$rows" ] && [ "${mem_kb:-0}" -lt 6291456 ]; then rows=2000000; echo "RAM below 6 GB; MuleNet capped at 2000000 rows." | tee -a evidence/train_l1cc.log; fi
+  mem_kb=$(awk '/MemAvailable/ {print $2}' /proc/meminfo)
+  if [ -z "$rows" ] && [ "${mem_kb:-0}" -gt 5242880 ]; then rows=2000000; echo "Available memory exceeds about 5 GiB; MuleNet capped at 2000000 rows." | tee -a evidence/train_l1cc.log; fi
   if [ -n "$rows" ]; then .venv/bin/python ml/mulenet_baseline.py --nrows "$rows" --export-scores results/mule_scores.csv; else .venv/bin/python ml/mulenet_baseline.py --export-scores results/mule_scores.csv; fi
+elif [ -s results/mule_scores.csv ]; then
+  echo 'Using existing results/mule_scores.csv; MuleNet was already run.' | tee -a evidence/train_l1cc.log
 else
   echo 'Needs human: download AMLworld HI-Small to data/' >> BLOCKERS.md
 fi
@@ -45,10 +48,14 @@ if [ "$status" -eq 124 ] && [ "$customers" -gt 10000 ]; then
   elapsed=$(($(date +%s) - start))
 fi
 echo "Training completed in ${elapsed}s with customers=${customers}." | tee -a evidence/train_l1cc.log
-cat evidence/train_l1cc.log
 .venv/bin/python - <<'PY'
 import json, platform
 report=json.load(open('results/model_report.json'))
 assert platform.machine()=='s390x', platform.machine()
 assert report.get('trained_on')=='s390x', report.get('trained_on')
+assert report.get('mule_score_source',{}).get('used') is True, report.get('mule_score_source')
+with open('evidence/train_l1cc.log','a') as log:
+    log.write('\nMuleNet scores used by SpellBreaker training:\n')
+    log.write(json.dumps(report['mule_score_source'],indent=2)+'\n')
 PY
+cat evidence/train_l1cc.log

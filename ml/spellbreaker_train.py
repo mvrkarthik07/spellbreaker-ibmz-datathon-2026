@@ -73,10 +73,15 @@ def main():
     t0=time.perf_counter(); print(f'training_on={platform.machine()}'); ROOT.joinpath('results').mkdir(exist_ok=True); ROOT.joinpath('models').mkdir(exist_ok=True)
     df=synthesize(a.customers,a.difficulty,a.seed)
     mule_path=ROOT/a.mule_scores
+    mule_score_source={'used':False,'path':str(a.mule_scores)}
     if mule_path.exists():
         try:
-            ext=pd.read_csv(mule_path); vals=ext['score'].to_numpy(); df['receiver_mule_score']=np.resize(vals,len(df))
-        except Exception as e: print(f'Mule scores ignored: {e}')
+            ext=pd.read_csv(mule_path,usecols=['score','is_mule']); vals=ext['score'].dropna().to_numpy(dtype=float)
+            if vals.size:
+                df['receiver_mule_score']=np.random.default_rng(a.seed).choice(vals,size=len(df),replace=True)
+                mule_score_source={'used':True,'path':str(a.mule_scores),'score_rows':int(len(ext)),'positive_account_rate':float(ext['is_mule'].mean()),'score_min':float(vals.min()),'score_median':float(np.median(vals)),'score_max':float(vals.max()),'sampling':'seeded sampling with replacement across synthetic transfer sessions'}
+            else: raise ValueError('Mule score file contains no finite score values')
+        except Exception as e: raise RuntimeError(f'Unable to load requested MuleNet scores from {mule_path}: {e}') from e
     train=df[df.day<=64].copy(); valid=df[(df.day>=65)&(df.day<=76)].copy(); test=df[df.day>=77].copy()
     # Add typology-consistent high-severity gov cases to the training partition so
     # a first-ever coerced transfer is represented, even with no history counters.
@@ -136,7 +141,7 @@ def main():
     curve=[]
     for friction in np.linspace(.001,.05,20):
         threshold=float(np.quantile(prob[yt.to_numpy()==0],1-friction)); curve.append({'friction':float(friction),'ml_loss_prevented':float(np.mean(prob[(yt==1).to_numpy()]>=threshold)),'rules_loss_prevented':float(rules_full['recall'] if rules_full['legit_interruption_rate']<=friction else rules_full['recall']*friction/max(rules_full['legit_interruption_rate'],1e-6))})
-    report={'full':full,'rules_baseline':rules_full,'thresholds':thresholds,'per_type_recall':bytype,'fairness_by_age_band':fairness,'ablations':ablations,'leave_one_type_out_recall':loto,'trained_on':platform.machine(),'generation_parameters':{'difficulty':a.difficulty,'customers':a.customers,'rows':len(df),'scam_fraction':float(df.label.mean()),'hard_negative_rate':.04 if a.difficulty=='realistic' else .02,'behavioral_label_noise':.03 if a.difficulty=='realistic' else 0.,'overlap_adjustment':'on_call scam .24 (gov .72), pasted gov .60, new payee scam .36 (gov .75), 10% legit high-balance transfers; 450 gov, 300 job-sequence and 300 rising-investment training-only typology cases','seed':a.seed},'latency_ms_per_score':float((time.perf_counter()-t0)*1000/max(len(test),1))}
+    report={'full':full,'rules_baseline':rules_full,'thresholds':thresholds,'per_type_recall':bytype,'fairness_by_age_band':fairness,'ablations':ablations,'leave_one_type_out_recall':loto,'trained_on':platform.machine(),'mule_score_source':mule_score_source,'generation_parameters':{'difficulty':a.difficulty,'customers':a.customers,'rows':len(df),'scam_fraction':float(df.label.mean()),'hard_negative_rate':.04 if a.difficulty=='realistic' else .02,'behavioral_label_noise':.03 if a.difficulty=='realistic' else 0.,'overlap_adjustment':'on_call scam .24 (gov .72), pasted gov .60, new payee scam .36 (gov .75), 10% legit high-balance transfers; 450 gov, 300 job-sequence and 300 rising-investment training-only typology cases','seed':a.seed},'latency_ms_per_score':float((time.perf_counter()-t0)*1000/max(len(test),1))}
     report['effectiveness_assumption']='Risk flags trigger a friction/interruption; prevented-loss curves assume interrupted scams are prevented.'
     bundle={'risk_model':model,'type_model':RandomForestClassifier(n_estimators=100,min_samples_leaf=3,class_weight='balanced',random_state=a.seed).fit(train[FEATS],train.scam_type),'features':FEATS,'thresholds':thresholds,'legit_medians':med,'effectiveness_assumption':report['effectiveness_assumption'],'difficulty':a.difficulty,'version':'0.1.0','trained_on':platform.machine(),'trained_at':datetime.now(timezone.utc).isoformat()}
     dump(bundle,ROOT/'models/spellbreaker_model.joblib')

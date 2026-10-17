@@ -2,4 +2,3 @@ runtime=template
 attempted_runtime=llama-cpp-python in official LinuxONE JupyterLab s390x image
 model=Granite 3.0 1B A400M Instruct Q4_K_M big-endian GGUF
 result=attempted; generation repeatedly returned unrelated scam labels or unsupported email claims, rejected by exact type validation; service uses the deterministic fact-based template
-rejected_output_examples=The indicators support the cybersecurity review.; the gov impersonation review ... the email appears to be from a legitimate government agency, containing a fake email address and requesting urgent action on a non-existent matter.

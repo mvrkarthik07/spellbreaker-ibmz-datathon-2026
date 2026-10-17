@@ -21,9 +21,9 @@ flowchart LR
 | `service/features.py` | Runtime transfer features and recent-history counts |
 | M1 | Estimate manipulated transfer risk |
 | M2 | Predict scam type for targeted interruption |
-| M3 | Receiver account risk lookup (placeholder values unless AMLworld scores are supplied) |
+| M3 | Receiver account risk lookup (MuleNet scores from the supplied AMLworld subset) |
 | `service/policy.py` | Map calibrated thresholds to intervention language and action |
 | `service/genai.py` | Local deterministic analyst note fallback |
 | Web apps | Synthetic bank transfer simulation and analyst dashboard |
 
-The target hybrid comprises three predictive signals plus one generative component. This workspace does not contain real AMLworld scores or a local LLM runtime.
+The target hybrid comprises three predictive signals plus one generative component. This run includes MuleNet scores from AMLworld HI-Small. Case notes use the deterministic template because local Granite outputs failed factuality validation.

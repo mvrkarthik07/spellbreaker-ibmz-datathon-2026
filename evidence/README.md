@@ -4,8 +4,10 @@
 - `cpu_features.txt`: exposed CPU feature flags and NNPA visibility.
 - `container.txt`: container runtime, image, running service and configured user, or the documented venv fallback.
 - `python_env.txt`: Python version and installed packages used by the service.
-- `genai_runtime.txt`: GenAI runtime status and the rejected local-model attempt with the selected fallback.
 - `train_l1cc.log`: model training output, including the training architecture.
+- `mulenet_l1cc.log`: l1cc MuleNet command, memory selection and output.
+- `results/mulenet_report.json` and `results/mule_scores.csv`: MuleNet holdout report and receiver-account scores.
+- `genai_runtime.txt`: GenAI runtime status and local-model attempt outcome.
 - `health.json`: live service architecture, trained-on architecture and runtime badge.
 - `bench.txt`: 10,000-request localhost benchmark summary from LinuxONE.
 - `crypto.txt`: OpenSSL version and SHA-256 speed output.

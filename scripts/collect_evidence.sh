@@ -26,6 +26,12 @@ ssh l1cc 'cd ~/spellbreaker && cat results/curves.json' > results/curves.json
 if ssh l1cc 'test -f ~/spellbreaker/results/mule_scores.csv'; then
   ssh l1cc 'cd ~/spellbreaker && cat results/mule_scores.csv' > results/mule_scores.csv
 fi
+if ssh l1cc 'test -f ~/spellbreaker/results/mulenet_report.json'; then
+  ssh l1cc 'cd ~/spellbreaker && cat results/mulenet_report.json' > results/mulenet_report.json
+fi
+if ssh l1cc 'test -f ~/spellbreaker/evidence/mulenet_l1cc.log'; then
+  ssh l1cc 'cd ~/spellbreaker && cat evidence/mulenet_l1cc.log' > evidence/mulenet_l1cc.log
+fi
 ssh l1cc 'openssl version; openssl speed -seconds 2 -evp sha256 || true' > evidence/crypto.txt 2>&1
 cat > evidence/README.md <<'EOF'
 # LinuxONE evidence
@@ -34,8 +40,10 @@ cat > evidence/README.md <<'EOF'
 - `cpu_features.txt`: exposed CPU feature flags and NNPA visibility.
 - `container.txt`: container runtime, image, running service and configured user, or the documented venv fallback.
 - `python_env.txt`: Python version and installed packages used by the service.
-- `genai_runtime.txt`: local s390x llama-cpp-python model endpoint and model file when enabled.
 - `train_l1cc.log`: model training output, including the training architecture.
+- `mulenet_l1cc.log`: l1cc MuleNet command, memory selection and output.
+- `results/mulenet_report.json` and `results/mule_scores.csv`: MuleNet holdout report and receiver-account scores.
+- `genai_runtime.txt`: GenAI runtime status and local-model attempt outcome.
 - `health.json`: live service architecture, trained-on architecture and runtime badge.
 - `bench.txt`: 10,000-request localhost benchmark summary from LinuxONE.
 - `crypto.txt`: OpenSSL version and SHA-256 speed output.

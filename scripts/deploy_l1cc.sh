@@ -8,7 +8,7 @@ if [ "$arch" != s390x ]; then
   exit 1
 fi
 
-rsync -az --exclude=.git/ --exclude=.venv/ --exclude=__pycache__/ --exclude=.pytest_cache/ \
+rsync -az --exclude=data/ --exclude=.git/ --exclude=.venv/ --exclude=__pycache__/ --exclude=.pytest_cache/ \
   --exclude=data/ --exclude=models/ --exclude=results/ --exclude=evidence/ ./ l1cc:~/spellbreaker/
 ssh -o BatchMode=yes -o ConnectTimeout=10 l1cc 'cd ~/spellbreaker && ./scripts/deploy_l1cc_remote.sh'
 

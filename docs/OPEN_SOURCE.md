@@ -11,7 +11,7 @@
 | joblib | Model serialization | https://github.com/joblib/joblib | BSD-3-Clause |
 | threadpoolctl | Limit inference thread oversubscription | https://github.com/joblib/threadpoolctl | BSD-3-Clause |
 | pytest | Acceptance checks | https://github.com/pytest-dev/pytest | MIT |
-| IBM AMLworld HI-Small | Intended receiver-side dataset; not present/downloaded | https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml | Kaggle dataset terms apply; verify before redistribution |
+| IBM AMLworld HI-Small | Receiver-side transaction data used by MuleNet; 454 MB copy present in `data/HI-Small_Trans.csv` | https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml | CDLA-Sharing-1.0; comply with licence terms before redistribution |
 | httpx2 | TestClient HTTP transport for acceptance checks | https://pypi.org/project/httpx2/ | MIT |
 | Chart.js | Dashboard charts | https://www.chartjs.org/ | MIT |
 | llama-cpp-python | Attempted local Granite inference; deterministic template retained after factuality validation | https://github.com/abetlen/llama-cpp-python | MIT |
