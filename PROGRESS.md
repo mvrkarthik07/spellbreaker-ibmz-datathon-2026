@@ -7,7 +7,7 @@
 - [ ] P4 — LinuxONE deployment + training on s390x — scripts ready; verification blocked because `l1cc` does not resolve
 - [ ] P5 — Benchmark + evidence — verified 2026-10-18 01:07 SGT — local 100-request run recorded 22.16 RPS and p50/p95 server latency 347.7/356.3 ms; required 10,000-request s390x benchmark/evidence blocked with `l1cc`
 - [x] P6 — GenAI case notes — verified 2026-10-18 01:07 SGT using documented deterministic `template` fallback; `/health` reports `template`, HIGH/CRITICAL case note tested
-- [x] P7 — Docs, video support, polish — verified 2026-10-18 01:12 SGT (fresh clone installed dependencies, trained, and passed all 8 acceptance tests)
+- [x] P7 — Docs, video support, polish — verified 2026-10-18 01:12 SGT (fresh clone installed dependencies, trained, passed all 8 acceptance tests, and served `/health`, `/bank/`, and `/dashboard/` with 200 responses)
 - [ ] P8 — Post-freeze and hand-off — hand-off section drafted; post-freeze final push/recheck remains scheduled after 07:45 SGT
 
 ## Hand-off
