@@ -90,7 +90,7 @@ Local 10,000-request run, concurrency 16, Uvicorn workers equal to the laptop's 
 | Before | 488.98 s | 20.45 req/s | 760.05 ms | 902.48 ms | 996.16 ms |
 | After | 8.38 s | 1,193.98 req/s | 7.53 ms | 17.63 ms | 27.37 ms |
 
-The after run meets the real-time target (server p50 < 10 ms and p99 < 50 ms). Changes were: set native math-library thread counts to one before model imports; pass NumPy arrays rather than DataFrames; infer M2 once; batch all occlusion rows into one `predict_proba`; keep model artifacts, thresholds, medians and mule scores in startup globals; append to a bounded deque; generate case notes through FastAPI background tasks; and run the short CPU-bound scoring handler on the worker event loop. The default local launcher stays at one worker to keep its in-memory demo state coherent; the benchmark explicitly uses 10 workers.
+The after run meets the real-time target (server p50 < 10 ms and p99 < 50 ms). Changes were: set native math-library thread counts to one before model imports; pass NumPy arrays rather than DataFrames; infer M2 once; batch all occlusion rows into one `predict_proba`; keep model artifacts, thresholds, medians and mule scores in startup globals; append to a bounded deque; generate case notes through FastAPI background tasks; and run the short CPU-bound scoring handler on the worker event loop. The local launcher and container use one worker so process-local demo state stays coherent; the benchmark explicitly uses 10 workers.
 
 Debug-stage median over 25 local `TestClient` calls with `SPELLBREAKER_DEBUG_TIMINGS=1` (single process, diagnostic only):
 
