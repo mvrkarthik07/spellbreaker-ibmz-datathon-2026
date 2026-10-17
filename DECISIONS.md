@@ -9,3 +9,4 @@
 - 2026-10-18 01:33 SGT — Set `run_local.sh` to one worker by default because demo state is process-local; the required performance benchmark explicitly sets workers to the 10-CPU count.
 - 2026-10-18 01:33 SGT — `l1cc` now resolves only to the literal `<vm_public_ip>` placeholder; keep P4/P5 blocked and retry after 10 minutes while continuing local work.
 - 2026-10-18 01:35 SGT — Set the container to one Uvicorn worker as well; its in-memory decisions, profiles and case notes must share one process until they move to shared storage.
+- 2026-10-18 01:39 SGT — Split LinuxONE P4 training from P5 deploy/benchmark, guard each with the required `uname -m` check, and preserve remote model/results during sync. Include local AMLworld data when present and collect the full §9 evidence plus LinuxONE model reports; fallback from failed container builds to venv + Uvicorn.
