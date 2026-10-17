@@ -32,3 +32,4 @@
 - 2026-10-18 03:44 SGT — Replaced the root SVG flowchart with `flowchart.md`, a plain Markdown file containing a Mermaid diagram. GitHub renders it natively, and the README and architecture doc link to that single editable source.
 - 2026-10-18 03:45 SGT — Embedded the Mermaid diagram in README so it is visible on the repository landing page, while keeping the standalone root `flowchart.md` for direct access.
 - 2026-10-18 03:47 SGT — Removed `docs/VIDEO_SCRIPT.md` at the user's request. Removed its README/blocker references and revised the submission description to state that optional Granite was implemented but accepted 0/50 notes.
+- 2026-10-18 03:51 SGT — Hide `hour_sin` from the dashboard's selected-case feature list while keeping the trained model feature unchanged. Deployed to l1cc and confirmed the served dashboard script contains the filter; latest deployment benchmark server p99 was 26.85 ms.
