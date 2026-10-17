@@ -83,21 +83,38 @@ Synthetic victim-side simulator, temporal holdout; not a real-world effectivenes
 
 ## Benchmark
 
+Local 10,000-request run, concurrency 16, Uvicorn workers equal to the laptop's 10 logical CPUs. The before run used the pre-fix scoring path; the after run used the optimized scoring path. Latencies below are measured inside `/score` on the server. The full raw reports are in `results/bench_before.json` and `results/bench.json`.
+
+| Run | Duration | Throughput | Server p50 | Server p95 | Server p99 |
+|---|---:|---:|---:|---:|---:|
+| Before | 488.98 s | 20.45 req/s | 760.05 ms | 902.48 ms | 996.16 ms |
+| After | 8.38 s | 1,193.98 req/s | 7.53 ms | 17.63 ms | 27.37 ms |
+
+The after run meets the real-time target (server p50 < 10 ms and p99 < 50 ms). Changes were: set native math-library thread counts to one before model imports; pass NumPy arrays rather than DataFrames; infer M2 once; batch all occlusion rows into one `predict_proba`; keep model artifacts, thresholds, medians and mule scores in startup globals; append to a bounded deque; generate case notes through FastAPI background tasks; and run the short CPU-bound scoring handler on the worker event loop. The default local launcher stays at one worker to keep its in-memory demo state coherent; the benchmark explicitly uses 10 workers.
+
+Debug-stage median over 25 local `TestClient` calls with `SPELLBREAKER_DEBUG_TIMINGS=1` (single process, diagnostic only):
+
+| Parse | Features | M1 | M2 | Explain | Policy | Logging | Total |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0.298 ms | 0.021 ms | 0.520 ms | 2.644 ms | 0.518 ms | 0.002 ms | 0.010 ms | 4.079 ms |
+
+These stage values are a local diagnostic sample, not the multi-worker benchmark. Enable the breakdown with `SPELLBREAKER_DEBUG_TIMINGS=1`; the service returns `debug_timings_ms` and logs the same timing object.
+
 ```json
 {
-  "requests": 100,
-  "concurrency": 8,
-  "duration_s": 4.511672082997393,
-  "rps": 22.16473142559678,
+  "requests": 10000,
+  "concurrency": 16,
+  "duration_s": 8.375355374999344,
+  "rps": 1193.979186823554,
   "client_round_trip_ms": {
-    "p50": 351.54283299925737,
-    "p95": 370.18841700046323,
-    "p99": 384.98162501491606
+    "p50": 11.771499994210899,
+    "p95": 25.27149999514222,
+    "p99": 43.79658302059397
   },
   "server_latency_ms": {
-    "p50": 347.7268749848008,
-    "p95": 356.29812499973923,
-    "p99": 368.7394170265179
+    "p50": 7.5291250250302255,
+    "p95": 17.625665990635753,
+    "p99": 27.37029199488461
   }
 }
 ```

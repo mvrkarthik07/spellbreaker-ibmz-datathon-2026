@@ -1,4 +1,5 @@
 from copy import deepcopy
+from collections import deque
 from datetime import datetime, timezone
 
 SEED={
@@ -8,11 +9,18 @@ SEED={
 PAYEES={'MB-778-201-9931':{'name':'Secure Govt Account','mule':.91},'MB-554-310-1207':{'name':'Apex Wealth Desk','mule':.8},'MB-201-889-4410':{'name':'TaskHub Rewards','mule':.75}}
 class Store:
  def __init__(self): self.reset()
- def reset(self): self.customers=deepcopy(SEED); self.decisions=[]; self.counter=0
+ def reset(self): self.customers=deepcopy(SEED); self.decisions=deque(maxlen=10000); self.by_id={}; self.counter=0
  def profile(self,cid): return self.customers.get(cid,self.customers['C-RAJ'])
- def add_decision(self,d): self.counter+=1; d['decision_id']=f'd_{self.counter:06d}'; d['created_at']=datetime.now(timezone.utc).isoformat(); d['outcome']=None; self.decisions.insert(0,d); return d
+ def add_decision(self,d):
+  self.counter+=1; d['decision_id']=f'd_{self.counter:06d}'; d['created_at']=datetime.now(timezone.utc).isoformat(); d['outcome']=None
+  if len(self.decisions)==self.decisions.maxlen: self.by_id.pop(self.decisions[-1]['decision_id'],None)
+  self.decisions.appendleft(d); self.by_id[d['decision_id']]=d; return d
+ def get_decision(self,did): return self.by_id.get(did)
+ def set_case_note(self,did,note):
+  d=self.by_id.get(did)
+  if d is not None: d['case_note']=note
  def confirm(self,did,choice):
-  d=next((x for x in self.decisions if x['decision_id']==did),None)
+  d=self.by_id.get(did)
   if not d:return None
   d['outcome']='proceeded' if choice=='proceed' else 'cancelled'
   p=self.profile(d['customer_id'])
