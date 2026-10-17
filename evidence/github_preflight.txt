@@ -1,0 +1,8 @@
+Public GitHub push preflight
+
+Private-key text scan: PASS, no matches.
+PEM-extension path/content scan: PASS, no matches.
+Dataset-source scan: only public source/licensing references appear in project docs; no credentials or downloaded data are included.
+Git tracked sensitive-path scan: PASS, no tracked data/, *.csv, models/, or .env paths.
+Git ignore checks: PASS for data/HI-Small_Trans.csv, results/mule_scores.csv, models/spellbreaker_model.joblib, .env, and nested .env.
+No API tokens, SSH keys, private keys, dataset CSVs, or serialized model artifacts are included in the public push.

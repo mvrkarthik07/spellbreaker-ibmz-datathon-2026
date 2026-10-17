@@ -7,9 +7,12 @@ sudo apt-get install -y python3-numpy python3-pandas python3-sklearn python3-sci
 LLM_ENV=""
 LLM_MODEL="$HOME/shared/models/granite-3.0-1b-a400m-instruct-be.Q4_K_M.gguf"
 LLM_IMAGE=registry.linuxone.cloud.marist.edu/l1cc/jupyterlab-image-s390x:latest
+GENAI_MODE="${SPELLBREAKER_GENAI_MODE:-template}"
 if [ "${SPELLBREAKER_ENABLE_LLM:-0}" = "1" ] && [ -s "$LLM_MODEL" ] && docker image inspect "$LLM_IMAGE" >/dev/null 2>&1; then
   docker rm -f spellbreaker-llm >/dev/null 2>&1 || true
   docker run -d --restart unless-stopped --name spellbreaker-llm --network host \
+    --user 10001:10001 --read-only --tmpfs /tmp:rw,nosuid,nodev,size=64m --cap-drop ALL \
+    --memory=2g --memory-swap=2g --cpus=1 \
     -e OMP_NUM_THREADS=1 -e OPENBLAS_NUM_THREADS=1 -e MKL_NUM_THREADS=1 \
     -e LLM_BIND_HOST=127.0.0.1 -e MODEL_PATH=/models/$(basename "$LLM_MODEL") -e LLAMA_THREADS=3 \
     -v "$HOME/shared/models:/models:ro" \
@@ -18,7 +21,7 @@ if [ "${SPELLBREAKER_ENABLE_LLM:-0}" = "1" ] && [ -s "$LLM_MODEL" ] && docker im
   for i in $(seq 1 120); do
     if curl -fsS http://127.0.0.1:8081/health > evidence/genai_runtime.txt; then
       printf 'model_file=%s\n' "$(basename "$LLM_MODEL")" >> evidence/genai_runtime.txt
-      LLM_ENV='-e SPELLBREAKER_LLM_URL=http://127.0.0.1:8081'
+      LLM_ENV="-e SPELLBREAKER_LLM_URL=http://127.0.0.1:8081 -e SPELLBREAKER_GENAI_MODE=$GENAI_MODE"
       break
     fi
     sleep 1
@@ -30,12 +33,12 @@ if [ "${SPELLBREAKER_ENABLE_LLM:-0}" = "1" ] && [ -s "$LLM_MODEL" ] && docker im
 else
   docker rm -f spellbreaker-llm >/dev/null 2>&1 || true
   cat > evidence/genai_runtime.txt <<'EOF'
-runtime=template
-attempted_runtime=llama-cpp-python in official LinuxONE JupyterLab s390x image
+runtime=template (fallback)
+granite_mode=optional; enable with SPELLBREAKER_ENABLE_LLM=1 SPELLBREAKER_GENAI_MODE=granite
 model=Granite 3.0 1B A400M Instruct Q4_K_M big-endian GGUF
-result=attempted; generation repeatedly returned unrelated scam labels or unsupported email claims, rejected by exact type validation; service uses the deterministic fact-based template
+result=deterministic template is the default runtime
 EOF
-  echo 'Granite output failed factuality validation; using the deterministic template runtime.' | tee -a evidence/deploy_l1cc.log
+  echo 'Granite is disabled; the deterministic template is the default runtime.' | tee -a evidence/deploy_l1cc.log
 fi
 
 record_container_env() {

@@ -31,7 +31,10 @@ def test_s1():
   note=client.get('/case/'+d['decision_id']).json()
   if note['status']=='ready' or time.monotonic()>=deadline:break
   time.sleep(.25)
- assert note['status']=='ready' and note['runtime'] in ('template','local-llm') and len(note['note'].split('. '))>=4
+ assert note['status']=='ready' and note['runtime'] in ('template (fallback)','granite (validated)')
+ if note['validated']:
+  assert len(note['note'].splitlines())==4 and note['note'].splitlines()[2]=='Likely scam: gov_impersonation'
+ else:assert len(note['note'].split('. '))>=4
 def test_s2():
  reset();d=score('C-TAN','MB-LANDLORD','Landlord',1800,'current',{'on_call':True,'pasted_account':False,'rushed_score':.2});assert d['level']=='LOW'
 def test_s3():
@@ -55,3 +58,17 @@ def test_feature_parity_100_sessions():
   profile={'usual_amount':100+i,'current_balance':10000+i,'savings_balance':50000+i,'saved_payees':({'P-0':50} if i%2 else {}),'transfers':[{'payee_account':'P-0','amount':20,'time':(now-timedelta(minutes=30+j)).isoformat()} for j in range(i%4)]}
   payload={'payee_account':f'P-{i%3}','amount':200+i,'source_pot':'savings' if i%2 else 'current','flags':{'on_call':bool(i%2),'pasted_account':bool(i%3),'rushed_score':i/100,'clicked_flagged_link_recent':bool(i%5)},'timestamp':now.isoformat()}
   assert build_features(payload,profile,{'P-1':.8})==training_live_features(payload,profile,{'P-1':.8})
+
+def test_genai_fact_validator():
+ from service.genai import validate_note, _expected_lines
+ fact={'level':'CRITICAL','risk':.999,'scam_type':'gov_impersonation','reasons':['active call','new receiver (0.91)'],'amount_band':'S$10k–50k','age_band':'65+'}
+ good='\n'.join(_expected_lines(fact))
+ assert validate_note(good,fact)==(True,None)
+ wrong=good.replace('Likely scam: gov_impersonation','Likely scam: investment')
+ assert validate_note(wrong,fact)[1]=='predicted_scam_type_mismatch'
+ extra=good.replace('99.9% risk','100% risk')
+ assert validate_note(extra,fact)[1]=='number_not_in_fact_sheet'
+ assert validate_note(good.replace('Next step:',''),fact)[1]=='missing_or_misordered_line'
+ assert validate_note(good.replace('registered channel','Alice'),fact)[1]=='name_or_account_identifier'
+ assert validate_note(good.replace('registered channel','MB-12345678'),fact)[1]=='name_or_account_identifier'
+ assert validate_note(good.replace('registered channel','investment'),fact)[1]=='additional_scam_type'

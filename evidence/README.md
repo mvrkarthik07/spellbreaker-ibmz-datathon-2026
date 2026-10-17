@@ -3,10 +3,13 @@
 - `platform.txt`: LinuxONE OS, architecture, CPU count and memory.
 - `cpu_features.txt`: CPU flags and literal `grep -c nnpa /proc/cpuinfo` result.
 - `container.txt`: Docker service, configured user, read-only root, tmpfs and dropped capabilities.
+- `github_preflight.txt`: secret/key/data scan and ignored-path checks before public push.
 - `python_env.txt`: apt-backed project training environment and Ubuntu service container package versions.
 - `train_l1cc.log`: SpellBreaker training output and MuleNet score source.
 - `mulenet_l1cc.log`: official Jupyter image MuleNet command and XGBoost/HistGradientBoosting report.
 - `genai_runtime.txt`: GenAI runtime status and Granite attempt outcome.
+- `genai_eval.log`: live HIGH/CRITICAL case-note evaluation log.
+- `../results/genai_eval.json`: acceptance rate and generation-time summary.
 - `health.json`: live service architecture, trained-on architecture and runtime badge.
 - `bench.txt`: 10,000-request localhost LinuxONE benchmark.
 - `crypto.txt`: OpenSSL SHA-256 speed, MSA visibility and synthetic Python HMAC token sample.

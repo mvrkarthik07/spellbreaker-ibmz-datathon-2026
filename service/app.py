@@ -63,8 +63,12 @@ def root():return RedirectResponse('/bank/')
 def health():return {'status':'ok','model_version':BUNDLE.get('version') if BUNDLE else 'stub-0','arch':platform.machine(),'trained_on':BUNDLE.get('trained_on') if BUNDLE else 'not-trained','genai':RUNTIME}
 def prepare_case_note(decision_id: str, case_data: dict[str, Any]):
  # FastAPI runs this after the response has been sent.
- note=generate_note(case_data)
- store.set_case_note(decision_id,note)
+ result=generate_note(case_data)
+ if result.get('fallback_reason'):
+  logging.getLogger('spellbreaker.genai').warning(
+   'case_note_fallback decision_id=%s reason=%s generation_ms=%s',
+   decision_id,result['fallback_reason'],result.get('generation_ms'))
+ store.set_case_note(decision_id,result)
 
 @app.post('/score')
 async def score(p:ScoreIn, background_tasks:BackgroundTasks, request:Request):
@@ -113,8 +117,8 @@ def decisions(limit:int=50):return list(islice(store.decisions,max(0,min(limit,5
 def case(decision_id:str):
  d=store.get_decision(decision_id)
  if not d:raise HTTPException(404,'decision not found')
- if d['level'] not in ('HIGH','CRITICAL'):return {'note':'Case notes are prepared for HIGH and CRITICAL decisions.','runtime':RUNTIME}
- return {'note':d.get('case_note'),'status':'ready' if d.get('case_note') else 'pending','runtime':RUNTIME}
+ if d['level'] not in ('HIGH','CRITICAL'):return {'note':'Case notes are prepared for HIGH and CRITICAL decisions.','runtime':RUNTIME,'validated':False}
+ return {'note':d.get('case_note'),'status':'ready' if d.get('case_note') else 'pending','runtime':d.get('case_note_runtime',RUNTIME),'validated':d.get('case_note_validated',False),'fallback_reason':d.get('case_note_fallback_reason'),'generation_ms':d.get('case_note_generation_ms')}
 @app.get('/report')
 def report():
  out=dict(REPORT);out['curves']=CURVES

@@ -2,7 +2,7 @@
 
 Synthetic victim-side simulator, temporal holdout; not a real-world effectiveness estimate.
 
-AI stack: scikit-learn (risk + scam-type models), XGBoost (mule model), llama-cpp-python + IBM Granite (case notes; Granite was attempted, and the active runtime is the deterministic template fallback).
+AI stack: scikit-learn (risk + scam-type models), XGBoost (mule model), and llama-cpp-python + IBM Granite (optional case notes with deterministic validation; the default is the template fallback after 0/50 validated notes).
 
 ## Model report
 
@@ -89,7 +89,7 @@ Inside the official s390x Jupyter image, a compact PyTorch MLP (16 inputs, hidde
 
 ## Benchmark
 
-Local 10,000-request run, concurrency 16, Uvicorn workers equal to the laptop's 10 logical CPUs. The before run used the pre-fix scoring path; the after run used the optimized scoring path. Latencies below are measured inside `/score` on the server. The full raw reports are in `results/bench_before.json` and `results/bench.json`.
+Local 10,000-request run, concurrency 16, Uvicorn workers equal to the laptop's 10 logical CPUs. The before run used the pre-fix scoring path; the after run used the optimized scoring path. Latencies below are measured inside `/score` on the server. Raw reports are in `results/bench_before.json` and `results/bench_local.json`; `results/bench.json` is the current l1cc run.
 
 | Run | Duration | Throughput | Server p50 | Server p95 | Server p99 |
 |---|---:|---:|---:|---:|---:|
@@ -108,15 +108,15 @@ These stage values are a local diagnostic sample, not the multi-worker benchmark
 
 ## LinuxONE training and benchmark
 
-The initial model was trained directly on l1cc (s390x) with 20,000 customers in 13 seconds. Test PR-AUC was 0.889, ROC-AUC 0.974, recall at T1 0.783, and legit interruption 1.10%. After MuleNet integration, SpellBreaker was retrained on l1cc with 20,000 customers in 17 seconds. The current report shows PR-AUC 0.8805, ROC-AUC 0.9708, recall at T1 0.7760, and legit interruption 1.14%. The report records age-band fairness, per-type recall, the XGBoost MuleNet score source and generation parameters. `evidence/train_l1cc.log`, `results/model_report.json`, and `results/curves.json` contain the current run artifacts.
+The current model was trained directly on l1cc (s390x) with 20,000 customers in 17 seconds using 237,983 full-file XGBoost MuleNet receiver scores. Test PR-AUC is 0.8802, ROC-AUC 0.9708, recall at T1 0.7772, and legit interruption 1.13%. The report records age-band fairness, per-type recall, the XGBoost MuleNet score source and generation parameters. `evidence/train_l1cc.log`, `results/model_report.json`, and `results/curves.json` contain the current run artifacts.
 
 The service runs in a non-root Ubuntu 24.04 container using the same Ubuntu-prebuilt scikit-learn 1.4.1.post1 stack as the host training venv. Docker inspection verified UID/GID 10001:10001, `ReadonlyRootfs=true`, `/tmp` tmpfs, and `CapDrop=[ALL]`. After retraining with XGBoost MuleNet receiver scores, the LinuxONE benchmark ran 10,000 `/score` requests at concurrency 16 on localhost with one Uvicorn worker:
 
 | Duration | Throughput | Server p50 | Server p95 | Server p99 | Client p50 | Client p99 |
 |---:|---:|---:|---:|---:|---:|---:|
-| 47.64 s | 209.91 req/s | 23.28 ms | 24.35 ms | 25.23 ms | 75.43 ms | 104.54 ms |
+| 48.46 s | 206.35 req/s | 23.68 ms | 24.93 ms | 26.40 ms | 76.72 ms | 106.85 ms |
 
-The server-side p99 meets the <50 ms target. Client round-trip latency includes queueing and transport. This final run uses the deterministic case-note fallback; the local Granite runtime was tested but rejected because it repeatedly generated unrelated scam labels and unsupported email claims, so `/health` and the dashboard correctly report `template`. Full results are in `results/bench.json` and `evidence/bench.txt`; §9 platform, CPU, container, package, health, GenAI attempt and crypto evidence is in `evidence/`. The executed LinuxONE notebook verifies a live CRITICAL score and asynchronous case note in `evidence/SpellBreaker_on_LinuxONE.executed.ipynb`.
+The server-side p99 meets the <50 ms target. Client round-trip latency includes queueing and transport. Granite's 50-case acceptance was 0%, so the deterministic template is the default and Granite remains opt-in; `/health` reports `template (fallback)`. Full results are in `results/bench.json` and `evidence/bench.txt`; platform, CPU, container, package, health, GenAI evaluation and crypto evidence is in `evidence/`. The executed LinuxONE notebook verifies a live CRITICAL score and asynchronous case note in `evidence/SpellBreaker_on_LinuxONE.executed.ipynb`.
 
 ```json
 {
@@ -139,15 +139,23 @@ The server-side p99 meets the <50 ms target. Client round-trip latency includes 
 
 ## LinuxONE GenAI runtime decision
 
-The official JupyterLab image supplied a prebuilt s390x `llama-cpp-python` runtime and was used to attempt local Granite 3.0 1B Q4 inference. Generated responses repeatedly substituted unrelated scam labels or invented email details. An exact scam-type output validator rejected those responses, and the service returned its fact-based 4-sentence template asynchronously. The deployed `/health.genai` value and dashboard badge are `template`; the attempt and model details are recorded in `evidence/genai_runtime.txt`. The refreshed executed notebook records a 5.61 ms CRITICAL score, an asynchronous case note ready with `runtime=template`, and the PyTorch challenger metrics.
+Granite runs only as an optional local case-note mode. The fixed fact sheet contains level, risk percentage, predicted scam type, exact reasons, amount band, and age band; the prompt uses temperature 0, one formatting example, and at most 120 tokens. A deterministic four-line validator rejects any changed type, unsupported number, name/account identifier, or missing/misordered line. The live 50-decision HIGH/CRITICAL burst had 0/50 accepted notes: requests fell back immediately with `granite_busy`, while a serial primary-model probe reached the 90-second client timeout. Its burst fallback completion mean was 0.00758 ms; the primary model probe took 90.054 s before fallback. Because acceptance was below 60%, the default remains the deterministic template and `/health` reports `template (fallback)`. Granite remains opt-in with `SPELLBREAKER_ENABLE_LLM=1 SPELLBREAKER_GENAI_MODE=granite`. See `results/genai_eval.json`, `evidence/genai_eval.log`, and `evidence/genai_runtime.txt`.
 
 
 ## XGBoost MuleNet comparison and retraining
 
-MuleNet ran on l1cc inside the official prebuilt s390x JupyterLab image against the AMLworld HI-Small CSV, capped at 2,000,000 rows because l1cc has 7 GB RAM. XGBoost 3.4.1 and scikit-learn 1.9.0 trained on the same chronological split: 1.6 million train rows and 400,000 holdout rows. XGBoost reached PR-AUC 0.00567 / ROC-AUC 0.77193; scikit-learn HistGradientBoosting reached PR-AUC 0.00317 / ROC-AUC 0.69887. This is a highly imbalanced receiver-mule task; collaboration and oracle PR-AUC are not computed. The selected XGBoost model exported 149,128 receiver-account scores. The exact command and output are in `evidence/mulenet_l1cc.log`; the metrics and versions are in `results/mulenet_report.json`.
+MuleNet ran on l1cc inside the official prebuilt s390x JupyterLab image on the full AMLworld HI-Small file: 5,078,345 rows, chronological 80/20 split, and 237,983 receiving accounts in the test window. The transaction holdout base mule rate was 0.1232%. XGBoost 3.4.1 achieved PR-AUC 0.01605 (base rate 0.1232%) / ROC-AUC 0.80685; scikit-learn HistGradientBoosting 1.9.0 achieved PR-AUC 0.00725 (base rate 0.1232%) / ROC-AUC 0.76605.
 
-SpellBreaker was then retrained on l1cc with 20,000 customers in 17 seconds. The report confirms that all 149,128 real XGBoost receiver scores were sampled with replacement across the synthetic transfer sessions and used as the `receiver_mule_score` training feature. The retrained model reports PR-AUC 0.8805, ROC-AUC 0.9708, and `trained_on=s390x`. Its model report and curves are in `results/`; the service was rebuilt from that model and the post-deploy server p99 is 25.23 ms. Both deployment and training sync scripts exclude `data/`, preserving the 454 MB dataset on l1cc.
+At account level, the holdout base mule rate was 0.4000% (952 mule accounts). XGBoost had ROC-AUC 0.76263; at the top 1%, precision was 2.983%, recall 7.458%, and lift 7.46×. At the top 5%, precision was 1.605%, recall 20.063%, and lift 4.01×.
+
+| Account-level view | ROC-AUC | Top 1% precision / recall / lift | Top 5% precision / recall / lift | Accounts exposed |
+|---|---:|---:|---:|---:|
+| Siloed XGBoost | 0.68786 | 3.109% / 7.773% / 7.77× | 1.563% / 19.538% / 3.91× | 5.00% via local red flags |
+| Collaborative XGBoost | 0.72865 | 3.361% / 8.403% / 8.40× | 1.739% / 21.744% / 4.35× | 3.10% (7,383 accounts) |
+| Oracle upper bound | 1.00000 | 40.000% / 100% / 99.99× | 8.000% / 100% / 20.00× | 0.40% ground-truth mule accounts |
+
+The collaboration comparison is an offline two-silo simulation: source-bank IDs are split by parity, each receiver account is joined with an ephemeral HMAC-SHA256 token, and only the top 5% per-silo red flags are shared. Tokens and the evaluation key are not exported. It is a bounded proof of the red-flag/HMAC sharing rule, not a claim of independent-bank production validation. XGBoost exported 237,983 receiver-account scores, which were then sampled with replacement into the 20,000-customer SpellBreaker training run on l1cc (17 seconds). The refreshed SpellBreaker model reports PR-AUC 0.8802, ROC-AUC 0.9708, T1 recall 0.7772, and 1.13% legitimate interruption; `/health` confirms `trained_on=s390x`. The post-retrain service p99 is 26.40 ms. Training and deploy rsync exclude `data/`, `models/`, `results/`, and `evidence/` on the destination; no delete flag is used. Full metrics and versions are in `results/mulenet_report.json`; command/output is in `evidence/mulenet_l1cc.log`.
 
 ## Platform security evidence
 
-`evidence/container.txt` records the inspected container user and hardening flags. `evidence/cpu_features.txt` reports the CPACF MSA feature and the literal NNPA line count (`1`); this means NNPA is exposed, not that Telum inference ran. No model was compiled with or executed through zDLC, so Telum on-chip inference via zDLC remains a production path. `evidence/crypto.txt` records OpenSSL SHA-256 speed on LinuxONE and a synthetic HMAC-SHA256 token generated by Python `hmac`/`hashlib` using CPython's `_hashlib` provider; the random demo key was ephemeral and not saved. The separate token export utility omits raw account identifiers and requires an out-of-band HMAC key. `evidence/genai_prompt_sample.txt` shows that the local model prompt includes only a scam-type string and contains no names, account numbers or raw transaction data.
+`evidence/container.txt` records the inspected container user and hardening flags. `evidence/cpu_features.txt` reports the CPACF MSA feature and the literal NNPA line count (`1`); this means NNPA is exposed, not that Telum inference ran. No model was compiled with or executed through zDLC, so Telum on-chip inference via zDLC remains a production path. `evidence/crypto.txt` records OpenSSL SHA-256 speed on LinuxONE and a synthetic HMAC-SHA256 token generated by Python `hmac`/`hashlib` using CPython's `_hashlib` provider; the random demo key was ephemeral and not saved. The separate token export utility omits raw account identifiers and requires an out-of-band HMAC key. `evidence/genai_prompt_sample.txt` shows the exact six-field allow-list and excludes names, account numbers and raw transaction data.

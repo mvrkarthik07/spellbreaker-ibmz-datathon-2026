@@ -17,7 +17,9 @@ N_THREADS = int(os.environ.get("LLAMA_THREADS", "3"))
 MODEL = Llama(model_path=MODEL_PATH, n_ctx=2048, n_threads=N_THREADS,
               n_batch=128, verbose=False)
 MODEL_LOCK = threading.Lock()
-ALLOWED_FIELDS = ("level", "risk", "scam_type", "reasons", "amount_band", "age_band")
+ALLOWED_FIELDS = (
+    "level", "risk_percent", "predicted_scam_type", "exact_reasons", "amount_band", "age_band"
+)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -49,31 +51,57 @@ class Handler(BaseHTTPRequestHandler):
                 return
             source = json.loads(self.rfile.read(size))
             case = {key: source.get(key) for key in ALLOWED_FIELDS}
-            reasons = case.get("reasons") or []
+            reasons = case.get("exact_reasons") or []
             if not isinstance(reasons, list) or len(reasons) > 8:
                 self._write(400, {"error": "invalid reasons"})
                 return
-            scam_type = str(case.get("scam_type") or "unknown").replace("_", " ")
-            user = f"Scam type: {scam_type}"
+            if any(not isinstance(value, str) or len(value) > 240 for value in reasons):
+                self._write(400, {"error": "invalid reason value"})
+                return
+            if any(len(str(case.get(key) or "")) > 120 for key in ("level", "risk_percent", "predicted_scam_type", "amount_band", "age_band")):
+                self._write(400, {"error": "fact sheet value too long"})
+                return
+            facts = json.dumps(case, ensure_ascii=False, separators=(",", ":"))
+            user = (
+                "FACT SHEET (the only allowed facts):\n" + facts + "\n\n"
+                "Return exactly four lines using this pattern and no other text:\n"
+                "What happened: A <level> transfer in <amount_band> was flagged at <risk_percent> risk.\n"
+                "Why suspicious: <exact reasons joined by semicolons>; age band: <age_band>.\n"
+                "Likely scam: <predicted_scam_type>\n"
+                "Next step: Independently verify the transfer using the bank's registered channel.\n"
+                "Copy each fact exactly from the fact sheet. Do not add facts, types, names, account numbers, "
+                "dates, amounts or any other numbers."
+            )
             messages = [
                 {"role": "system", "content": (
-                    "Return exactly one sentence in this format: 'The indicators support the "
-                    "<scam type> review.' Replace <scam type> with the supplied scam type. "
-                    "Do not add any other words or claims."
+                    "You write a short fraud-analyst note. Use only the supplied fixed fact sheet. "
+                    "Copy its values exactly; never infer, embellish, name an entity, or invent a number. "
+                    "Output exactly four labeled lines and no markdown. The Likely scam value must exactly "
+                    "equal predicted_scam_type. Limit the response to 120 tokens."
+                )},
+                {"role": "user", "content": (
+                    "One formatting example (example facts are not facts about the current case):\n"
+                    'FACT SHEET: {"level":"HIGH","risk_percent":"91.3%","predicted_scam_type":"investment",'
+                    '"exact_reasons":["escalating payments","new recipient"],"amount_band":"S$1k–10k","age_band":"35-49"}\n'
+                    "What happened: A HIGH transfer in S$1k–10k was flagged at 91.3% risk.\n"
+                    "Why suspicious: escalating payments; new recipient; age band: 35-49.\n"
+                    "Likely scam: investment\n"
+                    "Next step: Independently verify the transfer using the bank's registered channel."
+                )},
+                {"role": "assistant", "content": (
+                    "What happened: A HIGH transfer in S$1k–10k was flagged at 91.3% risk.\n"
+                    "Why suspicious: escalating payments; new recipient; age band: 35-49.\n"
+                    "Likely scam: investment\n"
+                    "Next step: Independently verify the transfer using the bank's registered channel."
                 )},
                 {"role": "user", "content": user},
             ]
             with MODEL_LOCK:
                 response = MODEL.create_chat_completion(
-                    messages=messages, max_tokens=64, temperature=0.2,
+                    messages=messages, max_tokens=120, temperature=0, seed=42,
                 )
             note = response["choices"][0]["message"]["content"].strip()
-            match = re.fullmatch(r"The indicators support the ([a-z ]+) review\.", note, re.IGNORECASE)
-            if not match or match.group(1).strip().lower() != scam_type.lower():
-                print(f"llama_http: rejected sentence text={note!r}", flush=True)
-                raise ValueError("unverified model response")
-            note = f"The indicators support the {scam_type} review."
-            self._write(200, {"note": note, "runtime": "local-llm"})
+            self._write(200, {"note": note, "runtime": "llama-cpp-python"})
         except Exception as exc:
             self._write(500, {"error": type(exc).__name__})
 

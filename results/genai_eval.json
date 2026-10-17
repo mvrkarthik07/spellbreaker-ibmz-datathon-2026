@@ -1,0 +1,375 @@
+{
+  "evaluation": "synthetic HIGH/CRITICAL decisions scored through the live LinuxONE service",
+  "requested_decisions": 50,
+  "evaluated_decisions": 50,
+  "attempts": 64,
+  "acceptance_rate": 0.0,
+  "accepted": 0,
+  "fallbacks": 50,
+  "mean_generation_time_ms": 0.00758,
+  "mean_generation_time_scope": "50-request burst, service case-note completion time including fast template fallbacks; active Granite request timed out at the 90-second client limit and is reported separately",
+  "fallback_reasons": {
+    "granite_busy": 50
+  },
+  "cases": [
+    {
+      "decision_id": "d_000003",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.013
+    },
+    {
+      "decision_id": "d_000004",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.005
+    },
+    {
+      "decision_id": "d_000007",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.005
+    },
+    {
+      "decision_id": "d_000008",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.009
+    },
+    {
+      "decision_id": "d_000006",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.013
+    },
+    {
+      "decision_id": "d_000005",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.004
+    },
+    {
+      "decision_id": "d_000009",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.008
+    },
+    {
+      "decision_id": "d_000010",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.005
+    },
+    {
+      "decision_id": "d_000011",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.008
+    },
+    {
+      "decision_id": "d_000012",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.007
+    },
+    {
+      "decision_id": "d_000013",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.009
+    },
+    {
+      "decision_id": "d_000014",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.004
+    },
+    {
+      "decision_id": "d_000015",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.01
+    },
+    {
+      "decision_id": "d_000016",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.005
+    },
+    {
+      "decision_id": "d_000017",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.008
+    },
+    {
+      "decision_id": "d_000018",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.005
+    },
+    {
+      "decision_id": "d_000019",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.005
+    },
+    {
+      "decision_id": "d_000020",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.004
+    },
+    {
+      "decision_id": "d_000021",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.005
+    },
+    {
+      "decision_id": "d_000022",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.004
+    },
+    {
+      "decision_id": "d_000023",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.004
+    },
+    {
+      "decision_id": "d_000024",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.003
+    },
+    {
+      "decision_id": "d_000026",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.007
+    },
+    {
+      "decision_id": "d_000025",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.009
+    },
+    {
+      "decision_id": "d_000027",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.007
+    },
+    {
+      "decision_id": "d_000028",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.008
+    },
+    {
+      "decision_id": "d_000029",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.007
+    },
+    {
+      "decision_id": "d_000030",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.015
+    },
+    {
+      "decision_id": "d_000031",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.004
+    },
+    {
+      "decision_id": "d_000032",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.005
+    },
+    {
+      "decision_id": "d_000033",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.003
+    },
+    {
+      "decision_id": "d_000034",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.047
+    },
+    {
+      "decision_id": "d_000035",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.005
+    },
+    {
+      "decision_id": "d_000036",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.008
+    },
+    {
+      "decision_id": "d_000037",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.004
+    },
+    {
+      "decision_id": "d_000038",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.004
+    },
+    {
+      "decision_id": "d_000039",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.004
+    },
+    {
+      "decision_id": "d_000040",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.006
+    },
+    {
+      "decision_id": "d_000042",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.003
+    },
+    {
+      "decision_id": "d_000041",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.003
+    },
+    {
+      "decision_id": "d_000043",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.003
+    },
+    {
+      "decision_id": "d_000044",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.003
+    },
+    {
+      "decision_id": "d_000045",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.003
+    },
+    {
+      "decision_id": "d_000046",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.003
+    },
+    {
+      "decision_id": "d_000047",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.006
+    },
+    {
+      "decision_id": "d_000048",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.012
+    },
+    {
+      "decision_id": "d_000049",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.035
+    },
+    {
+      "decision_id": "d_000050",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.006
+    },
+    {
+      "decision_id": "d_000051",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.009
+    },
+    {
+      "decision_id": "d_000052",
+      "runtime": "template (fallback)",
+      "validated": false,
+      "fallback_reason": "granite_busy",
+      "generation_ms": 0.007
+    }
+  ],
+  "granite_default_threshold": 0.6,
+  "primary_model_probe": {
+    "decision_id": "d_000001",
+    "outcome": "granite_request_TimeoutError; deterministic template fallback",
+    "elapsed_ms": 90053.762,
+    "client_timeout_seconds": 90,
+    "validated": false,
+    "note": "The first serial Granite call exceeded the client timeout; the 50-decision burst then returned granite_busy fallbacks."
+  }
+}

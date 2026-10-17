@@ -1,0 +1,16 @@
+completed=50/50 pending=0
+{
+  "evaluation": "synthetic HIGH/CRITICAL decisions scored through the live LinuxONE service",
+  "requested_decisions": 50,
+  "evaluated_decisions": 50,
+  "attempts": 64,
+  "acceptance_rate": 0.0,
+  "accepted": 0,
+  "fallbacks": 50,
+  "mean_generation_time_ms": 0.00758,
+  "mean_generation_time_scope": "all completed case-note jobs including validator/template fallbacks; excludes case-note timeouts",
+  "fallback_reasons": {
+    "granite_busy": 50
+  },
+  "granite_default_threshold": 0.6
+}

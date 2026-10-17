@@ -1,72 +1,72 @@
 {
   "full": {
-    "pr_auc": 0.8805388735560538,
-    "roc_auc": 0.9707501826144027,
-    "recall_at_t1": 0.7759699624530664,
-    "precision_at_t1": 0.8458390177353342,
-    "legit_interruption_rate": 0.011386537686416768
+    "pr_auc": 0.8801969252513916,
+    "roc_auc": 0.9707732143514741,
+    "recall_at_t1": 0.7772215269086358,
+    "precision_at_t1": 0.8472032742155525,
+    "legit_interruption_rate": 0.01128577186618299
   },
   "rules_baseline": {
     "recall": 0.22528160200250313,
     "legit_interruption_rate": 0.013704151551793631
   },
   "thresholds": {
-    "T1": 0.4128683241009474,
-    "T2": 0.7036073222099528,
-    "T3": 0.8532717446788376
+    "T1": 0.4156579581282317,
+    "T2": 0.6982360889194243,
+    "T3": 0.8404641023467548
   },
   "per_type_recall": {
-    "gov_impersonation": 0.9140811455847255,
-    "investment": 0.7654986522911051,
+    "gov_impersonation": 0.9164677804295943,
+    "investment": 0.7628032345013477,
     "job": 0.6501305483028721,
-    "phishing_led": 0.7623529411764706
+    "phishing_led": 0.7670588235294118
   },
   "fairness_by_age_band": {
     "18-34": {
-      "legit_interruption_rate": 0.010941644562334218,
-      "scam_recall": 0.7427884615384616,
+      "legit_interruption_rate": 0.011438992042440319,
+      "scam_recall": 0.7451923076923077,
       "n_legit": 6032,
       "n_scam": 416
     },
     "35-49": {
-      "legit_interruption_rate": 0.012414965986394558,
-      "scam_recall": 0.8115942028985508,
+      "legit_interruption_rate": 0.01207482993197279,
+      "scam_recall": 0.8091787439613527,
       "n_legit": 5880,
       "n_scam": 414
     },
     "50-64": {
-      "legit_interruption_rate": 0.010655408122235626,
-      "scam_recall": 0.7824497257769653,
+      "legit_interruption_rate": 0.010253317249698432,
+      "scam_recall": 0.7861060329067642,
       "n_legit": 4974,
       "n_scam": 547
     },
     "65+": {
-      "legit_interruption_rate": 0.011478730587440918,
+      "legit_interruption_rate": 0.01114112086428089,
       "scam_recall": 0.755656108597285,
       "n_legit": 2962,
       "n_scam": 221
     }
   },
   "ablations": {
-    "no_behaviour": 0.8500316638327842,
+    "no_behaviour": 0.8498647973923198,
     "no_mule_score": 0.8859981994358221,
-    "full": 0.8805388735560538
+    "full": 0.8801969252513916
   },
   "leave_one_type_out_recall": {
-    "gov_impersonation": 0.8210023866348448,
-    "investment": 0.6226415094339622,
-    "job": 0.5848563968668408,
+    "gov_impersonation": 0.8090692124105012,
+    "investment": 0.6307277628032345,
+    "job": 0.5744125326370757,
     "phishing_led": 0.6847058823529412
   },
   "trained_on": "s390x",
   "mule_score_source": {
     "used": true,
     "path": "results/mule_scores.csv",
-    "score_rows": 149128,
-    "positive_account_rate": 0.0024207392307279653,
-    "score_min": 2.4606138e-06,
-    "score_median": 0.00040309141,
-    "score_max": 0.09938702,
+    "score_rows": 237983,
+    "positive_account_rate": 0.004000285734695335,
+    "score_min": 3.0409292e-06,
+    "score_median": 0.0005807268,
+    "score_max": 0.059457347,
     "sampling": "seeded sampling with replacement across synthetic transfer sessions"
   },
   "generation_parameters": {
@@ -79,6 +79,6 @@
     "overlap_adjustment": "on_call scam .24 (gov .72), pasted gov .60, new payee scam .36 (gov .75), 10% legit high-balance transfers; 450 gov, 300 job-sequence and 300 rising-investment training-only typology cases",
     "seed": 42
   },
-  "latency_ms_per_score": 0.3618310296092377,
+  "latency_ms_per_score": 0.3626530383754523,
   "effectiveness_assumption": "Risk flags trigger a friction/interruption; prevented-loss curves assume interrupted scams are prevented."
 }

@@ -43,12 +43,11 @@ cat > evidence/genai_prompt_sample.txt <<'EOF'
 Illustrative sample of the local GenAI adapter boundary (synthetic values only).
 
 Allow-listed request received by the adapter:
-{"level":"CRITICAL","risk":0.998,"scam_type":"gov_impersonation","reasons":["active call","new recipient"],"amount_band":"S$10k–50k","age_band":"65+"}
+{"level":"CRITICAL","risk_percent":"99.8%","predicted_scam_type":"gov_impersonation","exact_reasons":["active call","new recipient"],"amount_band":"S$10k–50k","age_band":"65+"}
 
-Actual user message sent to Granite by service/genai_llm_server.py:
-Scam type: gov impersonation
+The local Granite adapter receives exactly these six fields and constructs a fixed four-line prompt. It has one formatting example, temperature 0, and max_tokens=120. Its deterministic validator rejects unlisted scam types, numbers, names/account identifiers, unsupported edits, or missing/misordered lines.
 
-Excluded: customer name, customer/account identifiers, recipient name/account, raw transaction details, audio, and contact data. The adapter constructs the model prompt from scam_type alone. This example is synthetic and contains no personal data.
+Excluded: customer name, customer/account identifiers, recipient name/account, raw transaction details, audio, and contact data. This example is synthetic and contains no personal data.
 EOF
 curl -fsS localhost:8000/health > evidence/health.json
 cp results/bench.json evidence/bench.txt
@@ -62,11 +61,13 @@ cat > evidence/README.md <<'EOF'
 - `train_l1cc.log`: SpellBreaker training output and MuleNet score source.
 - `mulenet_l1cc.log`: official Jupyter image MuleNet command and XGBoost/HistGradientBoosting report.
 - `genai_runtime.txt`: GenAI runtime status and Granite attempt outcome.
+- `genai_eval.log`: live HIGH/CRITICAL case-note evaluation log.
+- `genai_eval.json`: acceptance rate and generation-time summary.
 - `health.json`: live service architecture, trained-on architecture and runtime badge.
 - `bench.txt`: 10,000-request localhost LinuxONE benchmark.
 - `crypto.txt`: OpenSSL SHA-256 speed, MSA visibility and synthetic Python HMAC token sample.
 - `genai_prompt_sample.txt`: synthetic, personal-data-free model prompt example.
 - `SpellBreaker_on_LinuxONE.executed.ipynb`: executed service demo and notebook-only PyTorch MLP comparison against HistGradientBoosting.
 EOF
-tar -czf - evidence/platform.txt evidence/cpu_features.txt evidence/container.txt evidence/python_env.txt evidence/train_l1cc.log evidence/mulenet_l1cc.log evidence/genai_runtime.txt evidence/health.json evidence/bench.txt evidence/crypto.txt evidence/genai_prompt_sample.txt evidence/SpellBreaker_on_LinuxONE.executed.ipynb evidence/README.md results/bench.json results/model_report.json results/curves.json results/mulenet_report.json results/mule_scores.csv
+tar -czf - evidence/platform.txt evidence/cpu_features.txt evidence/container.txt evidence/python_env.txt evidence/train_l1cc.log evidence/mulenet_l1cc.log evidence/genai_runtime.txt evidence/genai_eval.log evidence/health.json evidence/bench.txt evidence/crypto.txt evidence/genai_prompt_sample.txt evidence/SpellBreaker_on_LinuxONE.executed.ipynb evidence/README.md results/bench.json results/model_report.json results/curves.json results/mulenet_report.json results/mule_scores.csv results/genai_eval.json
 REMOTE

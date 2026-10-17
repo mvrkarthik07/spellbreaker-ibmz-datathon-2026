@@ -1,39 +1,39 @@
 training_on=s390x
 {
   "full": {
-    "pr_auc": 0.8805388735560538,
-    "roc_auc": 0.9707501826144027,
-    "recall_at_t1": 0.7759699624530664,
-    "precision_at_t1": 0.8458390177353342,
-    "legit_interruption_rate": 0.011386537686416768
+    "pr_auc": 0.8801969252513916,
+    "roc_auc": 0.9707732143514741,
+    "recall_at_t1": 0.7772215269086358,
+    "precision_at_t1": 0.8472032742155525,
+    "legit_interruption_rate": 0.01128577186618299
   },
   "fairness_by_age_band": {
     "18-34": {
-      "legit_interruption_rate": 0.010941644562334218,
-      "scam_recall": 0.7427884615384616,
+      "legit_interruption_rate": 0.011438992042440319,
+      "scam_recall": 0.7451923076923077,
       "n_legit": 6032,
       "n_scam": 416
     },
     "35-49": {
-      "legit_interruption_rate": 0.012414965986394558,
-      "scam_recall": 0.8115942028985508,
+      "legit_interruption_rate": 0.01207482993197279,
+      "scam_recall": 0.8091787439613527,
       "n_legit": 5880,
       "n_scam": 414
     },
     "50-64": {
-      "legit_interruption_rate": 0.010655408122235626,
-      "scam_recall": 0.7824497257769653,
+      "legit_interruption_rate": 0.010253317249698432,
+      "scam_recall": 0.7861060329067642,
       "n_legit": 4974,
       "n_scam": 547
     },
     "65+": {
-      "legit_interruption_rate": 0.011478730587440918,
+      "legit_interruption_rate": 0.01114112086428089,
       "scam_recall": 0.755656108597285,
       "n_legit": 2962,
       "n_scam": 221
     }
   },
-  "elapsed_s": 16.675888630999907
+  "elapsed_s": 16.906711048000034
 }
 Training completed in 17s with customers=20000.
 
@@ -41,10 +41,10 @@ MuleNet scores used by SpellBreaker training:
 {
   "used": true,
   "path": "results/mule_scores.csv",
-  "score_rows": 149128,
-  "positive_account_rate": 0.0024207392307279653,
-  "score_min": 2.4606138e-06,
-  "score_median": 0.00040309141,
-  "score_max": 0.09938702,
+  "score_rows": 237983,
+  "positive_account_rate": 0.004000285734695335,
+  "score_min": 3.0409292e-06,
+  "score_median": 0.0005807268,
+  "score_max": 0.059457347,
   "sampling": "seeded sampling with replacement across synthetic transfer sessions"
 }

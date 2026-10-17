@@ -1,9 +1,8 @@
 Illustrative sample of the local GenAI adapter boundary (synthetic values only).
 
 Allow-listed request received by the adapter:
-{"level":"CRITICAL","risk":0.998,"scam_type":"gov_impersonation","reasons":["active call","new recipient"],"amount_band":"S$10k–50k","age_band":"65+"}
+{"level":"CRITICAL","risk_percent":"99.8%","predicted_scam_type":"gov_impersonation","exact_reasons":["active call","new recipient"],"amount_band":"S$10k–50k","age_band":"65+"}
 
-Actual user message sent to Granite by service/genai_llm_server.py:
-Scam type: gov impersonation
+The local Granite adapter receives exactly these six fields and constructs a fixed four-line prompt. It has one formatting example, temperature 0, and max_tokens=120. Its deterministic validator rejects unlisted scam types, numbers, names/account identifiers, unsupported edits, or missing/misordered lines.
 
-Excluded: customer name, customer/account identifiers, recipient name/account, raw transaction details, audio, and contact data. The adapter constructs the model prompt from scam_type alone. This example is synthetic and contains no personal data.
+Excluded: customer name, customer/account identifiers, recipient name/account, raw transaction details, audio, and contact data. This example is synthetic and contains no personal data.

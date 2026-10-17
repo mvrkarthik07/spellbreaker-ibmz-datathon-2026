@@ -16,9 +16,14 @@ class Store:
   if len(self.decisions)==self.decisions.maxlen: self.by_id.pop(self.decisions[-1]['decision_id'],None)
   self.decisions.appendleft(d); self.by_id[d['decision_id']]=d; return d
  def get_decision(self,did): return self.by_id.get(did)
- def set_case_note(self,did,note):
+ def set_case_note(self,did,result):
   d=self.by_id.get(did)
-  if d is not None: d['case_note']=note
+  if d is not None:
+   d['case_note']=result['note']
+   d['case_note_runtime']=result['runtime']
+   d['case_note_validated']=bool(result.get('validated'))
+   d['case_note_fallback_reason']=result.get('fallback_reason')
+   d['case_note_generation_ms']=result.get('generation_ms')
  def confirm(self,did,choice):
   d=self.by_id.get(did)
   if not d:return None
