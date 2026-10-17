@@ -4,6 +4,40 @@ cd "$HOME/spellbreaker"
 mkdir -p evidence results models
 sudo apt-get install -y python3-numpy python3-pandas python3-sklearn python3-scipy python3-joblib python3-fastapi python3-uvicorn python3-httpx python3-pytest python3-venv
 
+LLM_ENV=""
+LLM_MODEL="$HOME/shared/models/granite-3.0-1b-a400m-instruct-be.Q4_K_M.gguf"
+LLM_IMAGE=registry.linuxone.cloud.marist.edu/l1cc/jupyterlab-image-s390x:latest
+if [ "${SPELLBREAKER_ENABLE_LLM:-0}" = "1" ] && [ -s "$LLM_MODEL" ] && docker image inspect "$LLM_IMAGE" >/dev/null 2>&1; then
+  docker rm -f spellbreaker-llm >/dev/null 2>&1 || true
+  docker run -d --restart unless-stopped --name spellbreaker-llm --network host \
+    -e OMP_NUM_THREADS=1 -e OPENBLAS_NUM_THREADS=1 -e MKL_NUM_THREADS=1 \
+    -e LLM_BIND_HOST=127.0.0.1 -e MODEL_PATH=/models/$(basename "$LLM_MODEL") -e LLAMA_THREADS=3 \
+    -v "$HOME/shared/models:/models:ro" \
+    -v "$HOME/spellbreaker/service/genai_llm_server.py:/app/genai_llm_server.py:ro" \
+    --entrypoint python3 "$LLM_IMAGE" /app/genai_llm_server.py >/dev/null
+  for i in $(seq 1 120); do
+    if curl -fsS http://127.0.0.1:8081/health > evidence/genai_runtime.txt; then
+      printf 'model_file=%s\n' "$(basename "$LLM_MODEL")" >> evidence/genai_runtime.txt
+      LLM_ENV='-e SPELLBREAKER_LLM_URL=http://127.0.0.1:8081'
+      break
+    fi
+    sleep 1
+  done
+  if [ -z "$LLM_ENV" ]; then
+    echo 'Local Granite model failed its health check; retaining the template fallback.' | tee -a evidence/deploy_l1cc.log
+    docker logs --tail 60 spellbreaker-llm >> evidence/genai_runtime.txt 2>&1 || true
+  fi
+else
+  docker rm -f spellbreaker-llm >/dev/null 2>&1 || true
+  cat > evidence/genai_runtime.txt <<'EOF'
+runtime=template
+attempted_runtime=llama-cpp-python in official LinuxONE JupyterLab s390x image
+model=Granite 3.0 1B A400M Instruct Q4_K_M big-endian GGUF
+result=attempted; generation repeatedly returned unrelated scam labels or unsupported email claims, rejected by exact type validation; service uses the deterministic fact-based template
+EOF
+  echo 'Granite output failed factuality validation; using the deterministic template runtime.' | tee -a evidence/deploy_l1cc.log
+fi
+
 record_container_env() {
   .venv/bin/python - <<'PY' > evidence/python_env_host.txt
 import platform, sys
@@ -19,7 +53,7 @@ PY
 
 if command -v docker >/dev/null 2>&1 && docker build -t spellbreaker:latest -f service/Containerfile .; then
   docker rm -f spellbreaker >/dev/null 2>&1 || true
-  if docker run -d --name spellbreaker -p 8000:8000 spellbreaker:latest; then
+  if docker run -d --restart unless-stopped --name spellbreaker --network host $LLM_ENV spellbreaker:latest; then
     record_container_env
     exit 0
   fi
@@ -28,7 +62,7 @@ fi
 echo 'Ubuntu 24.04 package image build/run failed; trying the official prebuilt s390x Jupyter image.' | tee -a evidence/deploy_l1cc.log
 if docker build -t spellbreaker:latest -f service/Containerfile.jupyter .; then
   docker rm -f spellbreaker >/dev/null 2>&1 || true
-  if docker run -d --name spellbreaker -p 8000:8000 spellbreaker:latest; then
+  if docker run -d --restart unless-stopped --name spellbreaker --network host $LLM_ENV spellbreaker:latest; then
     record_container_env
     exit 0
   fi

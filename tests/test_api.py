@@ -1,4 +1,4 @@
-import os,sys
+import os,sys,time
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from fastapi.testclient import TestClient
@@ -25,7 +25,13 @@ def score(cid,acct,name,amount,pot='current',flags=None):
  return client.post('/score',json={'customer_id':cid,'payee_account':acct,'payee_name':name,'amount':amount,'source_pot':pot,'flags':flags or {}}).json()
 def confirm(d,choice='proceed'):client.post('/transfer/confirm',json={'decision_id':d['decision_id'],'user_choice':choice})
 def test_s1():
- reset();d=score('C-TAN','MB-778-201-9931','Secure Govt Account',20000,'savings',{'on_call':True,'pasted_account':True,'rushed_score':.8});assert d['level']=='CRITICAL' and d['scam_type']=='gov_impersonation';assert any('active phone call' in x for x in d['reasons']);note=client.get('/case/'+d['decision_id']).json();assert note['runtime']=='template' and len(note['note'].split('. '))>=4
+ reset();d=score('C-TAN','MB-778-201-9931','Secure Govt Account',20000,'savings',{'on_call':True,'pasted_account':True,'rushed_score':.8});assert d['level']=='CRITICAL' and d['scam_type']=='gov_impersonation';assert any('active phone call' in x for x in d['reasons'])
+ deadline=time.monotonic()+30
+ while True:
+  note=client.get('/case/'+d['decision_id']).json()
+  if note['status']=='ready' or time.monotonic()>=deadline:break
+  time.sleep(.25)
+ assert note['status']=='ready' and note['runtime'] in ('template','local-llm') and len(note['note'].split('. '))>=4
 def test_s2():
  reset();d=score('C-TAN','MB-LANDLORD','Landlord',1800,'current',{'on_call':True,'pasted_account':False,'rushed_score':.2});assert d['level']=='LOW'
 def test_s3():

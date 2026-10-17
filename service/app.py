@@ -23,7 +23,7 @@ from .state import store, PAYEES
 from .features import build_features
 from .policy import decide
 from .explain import reasons
-from .genai import template_note, RUNTIME
+from .genai import generate_note, RUNTIME
 
 ROOT=Path(__file__).resolve().parents[1]
 app=FastAPI(title='SpellBreaker — Merlion Bank')
@@ -63,7 +63,7 @@ def root():return RedirectResponse('/bank/')
 def health():return {'status':'ok','model_version':BUNDLE.get('version') if BUNDLE else 'stub-0','arch':platform.machine(),'trained_on':BUNDLE.get('trained_on') if BUNDLE else 'not-trained','genai':RUNTIME}
 def prepare_case_note(decision_id: str, case_data: dict[str, Any]):
  # FastAPI runs this after the response has been sent.
- note=template_note(case_data)
+ note=generate_note(case_data)
  store.set_case_note(decision_id,note)
 
 @app.post('/score')

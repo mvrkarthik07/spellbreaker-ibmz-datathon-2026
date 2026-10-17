@@ -108,9 +108,9 @@ The service runs in a non-root Ubuntu 24.04 container using the same Ubuntu-preb
 
 | Duration | Throughput | Server p50 | Server p95 | Server p99 | Client p50 | Client p99 |
 |---:|---:|---:|---:|---:|---:|---:|
-| 47.17 s | 212.00 req/s | 23.04 ms | 24.05 ms | 25.24 ms | 74.68 ms | 102.61 ms |
+| 47.16 s | 212.06 req/s | 22.98 ms | 24.05 ms | 25.74 ms | 74.48 ms | 103.11 ms |
 
-The server-side p99 meets the <50 ms target. Client round-trip latency includes queueing and transport. Full results are in `results/bench.json` and `evidence/bench.txt`; §9 platform, CPU, container, package, health and crypto evidence is in `evidence/`. The executed LinuxONE notebook verifies a live CRITICAL scoring response and asynchronous case note in `evidence/SpellBreaker_on_LinuxONE.executed.ipynb`.
+The server-side p99 meets the <50 ms target. Client round-trip latency includes queueing and transport. This final run uses the deterministic case-note fallback; the local Granite runtime was tested but rejected because it repeatedly generated unrelated scam labels and unsupported email claims, so `/health` and the dashboard correctly report `template`. Full results are in `results/bench.json` and `evidence/bench.txt`; §9 platform, CPU, container, package, health, GenAI attempt and crypto evidence is in `evidence/`. The executed LinuxONE notebook verifies a live CRITICAL score and asynchronous case note in `evidence/SpellBreaker_on_LinuxONE.executed.ipynb`.
 
 ```json
 {
@@ -130,3 +130,7 @@ The server-side p99 meets the <50 ms target. Client round-trip latency includes 
   }
 }
 ```
+
+## LinuxONE GenAI runtime decision
+
+The official JupyterLab image supplied a prebuilt s390x `llama-cpp-python` runtime and was used to attempt local Granite 3.0 1B Q4 inference. Generated responses repeatedly substituted unrelated scam labels or invented email details. An exact scam-type output validator rejected those responses, and the service returned its fact-based 4-sentence template asynchronously. The deployed `/health.genai` value and dashboard badge are `template`; the attempt and model details are recorded in `evidence/genai_runtime.txt`. The executed notebook records a 5.49 ms CRITICAL score and an asynchronous case note ready with `runtime=template`.

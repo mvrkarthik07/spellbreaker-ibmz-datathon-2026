@@ -14,5 +14,8 @@
 | IBM AMLworld HI-Small | Intended receiver-side dataset; not present/downloaded | https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml | Kaggle dataset terms apply; verify before redistribution |
 | httpx2 | TestClient HTTP transport for acceptance checks | https://pypi.org/project/httpx2/ | MIT |
 | Chart.js | Dashboard charts | https://www.chartjs.org/ | MIT |
+| llama-cpp-python | Attempted local Granite inference; deterministic template retained after factuality validation | https://github.com/abetlen/llama-cpp-python | MIT |
+| IBM Granite 3.0 1B A400M Instruct (Q4_K_M, big-endian GGUF) | Local analyst-note summary; only allowed case fields are sent to the local model process | https://huggingface.co/taronaeo/Granite-3.0-1B-A400M-Instruct-BE-GGUF | Apache-2.0 model family; quantized artifact hosted by taronaeo |
+| LinuxONE Community Cloud Jupyter Lab ML image | Prebuilt s390x llama-cpp-python runtime and notebook execution | https://github.com/linuxone-community-cloud/jupyter-lab-ml | Image published for LinuxONE Community Cloud |
 
 All application code in this repository was authored for this project. The synthetic victim-side records are generated locally and are not real transactions. Review each upstream license and the dataset terms before redistribution.

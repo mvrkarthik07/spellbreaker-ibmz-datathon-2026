@@ -14,6 +14,9 @@ ssh l1cc 'uname -a; cat /etc/os-release; lscpu; nproc; free -g' > evidence/platf
 ssh l1cc 'grep -m1 features /proc/cpuinfo; grep -c nnpa /proc/cpuinfo || true' > evidence/cpu_features.txt
 ssh l1cc 'cd ~/spellbreaker && if command -v podman >/dev/null 2>&1; then podman --version; podman images; podman ps; podman inspect spellbreaker --format "{{.Config.User}}" || true; elif command -v docker >/dev/null 2>&1; then docker --version; docker images; docker ps; docker inspect spellbreaker --format "{{.Config.User}}" || true; else echo "Container runtime unavailable; service uses the documented venv + uvicorn fallback."; fi' > evidence/container.txt 2>&1
 ssh -o BatchMode=yes -o ConnectTimeout=10 l1cc 'cd ~/spellbreaker && cat evidence/python_env.txt' > evidence/python_env.txt
+if ssh -o BatchMode=yes -o ConnectTimeout=10 l1cc 'test -f ~/spellbreaker/evidence/genai_runtime.txt'; then
+  ssh -o BatchMode=yes -o ConnectTimeout=10 l1cc 'cd ~/spellbreaker && cat evidence/genai_runtime.txt' > evidence/genai_runtime.txt
+fi
 ssh l1cc 'cd ~/spellbreaker && cat evidence/train_l1cc.log' > evidence/train_l1cc.log
 ssh l1cc 'curl -fsS localhost:8000/health' > evidence/health.json
 ssh l1cc 'cd ~/spellbreaker && cat results/bench.json' > results/bench.json
@@ -31,6 +34,7 @@ cat > evidence/README.md <<'EOF'
 - `cpu_features.txt`: exposed CPU feature flags and NNPA visibility.
 - `container.txt`: container runtime, image, running service and configured user, or the documented venv fallback.
 - `python_env.txt`: Python version and installed packages used by the service.
+- `genai_runtime.txt`: local s390x llama-cpp-python model endpoint and model file when enabled.
 - `train_l1cc.log`: model training output, including the training architecture.
 - `health.json`: live service architecture, trained-on architecture and runtime badge.
 - `bench.txt`: 10,000-request localhost benchmark summary from LinuxONE.
