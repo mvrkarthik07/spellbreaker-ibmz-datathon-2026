@@ -2,7 +2,7 @@
 
 **SpellBreaker spots the moment a genuine customer is being manipulated into sending money, then interrupts with a scam-specific warning.** It asks: **“Is the owner under someone else’s control right now?”**
 
-**Public repository:** [github.com/mvrkarthik07/spellbreaker-ibmz-datathon-2026](https://github.com/mvrkarthik07/spellbreaker-ibmz-datathon-2026)
+**Public repository:** [github.com/mvrkarthik07/spellbreaker](https://github.com/mvrkarthik07/spellbreaker)
 
 In 2025, Singapore recorded S$913.1 million in scam losses across 41,974 cases. 81.8% of cases involved self-effected transfers, where the real account owner sent the money. Seniors were about 15% of victims and had the highest average loss at S$37,053. [Singapore Police Force, 2025 annual scam figures](https://www.police.gov.sg/media-hub/police-life/2026/02/scams-and-cybercrime-fell-by-almost-a-quarter-in-2025)
 
