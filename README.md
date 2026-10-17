@@ -60,7 +60,40 @@ See [full model results](docs/RESULTS.md).
 
 ## Architecture
 
-See the [transfer flowchart](flowchart.md), written in Markdown with Mermaid so GitHub renders it directly. The component details are in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+A transfer comes in, SpellBreaker checks the context and returns a clear next step. High-risk case notes run separately in the background.
+
+```mermaid
+flowchart LR
+  bank[Bank app] --> score[SpellBreaker on LinuxONE]
+  score --> context[Gather payee and recent transfer context]
+  context --> risk[Transfer risk · scikit-learn]
+  context --> type[Likely scam type · scikit-learn]
+  context --> mule[Receiver risk · XGBoost score]
+  risk --> action[Choose next step: allow, ask, pause or hold]
+  type --> action
+  mule --> action
+  action --> reply[Send a clear response to the bank app]
+  reply --> dashboard[Fraud analyst dashboard]
+  action -. "High or critical · background" .-> note[Prepare a case note]
+  note --> check{Granite note passes fact checks?}
+  check -- Yes --> granite[Show the validated note]
+  check -- No --> fallback[Use the ready-made note]
+  granite --> dashboard
+  fallback --> dashboard
+
+  classDef bank fill:#eaf5f3,stroke:#438a88,color:#183b3a
+  classDef service fill:#edf4f8,stroke:#4c819a,color:#1d3342
+  classDef model fill:#f6f2fb,stroke:#8068a5,color:#33294a
+  classDef decision fill:#fff8e8,stroke:#c49a42,color:#493915
+  classDef async fill:#fffaf1,stroke:#c59a52,color:#493915
+  class bank,reply bank
+  class score,context,dashboard service
+  class risk,type,mule model
+  class action decision
+  class note,check,granite,fallback async
+```
+
+The standalone [flowchart.md](flowchart.md) is also available at the repository root. For component details, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Results
 
