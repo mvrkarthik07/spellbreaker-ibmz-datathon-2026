@@ -1,0 +1,4 @@
+-r ml/requirements.txt
+-r service/requirements.txt
+pytest>=8.0
+httpx2>=1.0
