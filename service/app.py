@@ -112,8 +112,12 @@ async def score(p:ScoreIn, background_tasks:BackgroundTasks, request:Request):
  return d
 @app.post('/transfer/confirm')
 def confirm(p:ConfirmIn):
+ if p.user_choice not in ('proceed','cancel'):raise HTTPException(422,'Choose proceed or cancel.')
+ decision=store.get_decision(p.decision_id)
+ if not decision:raise HTTPException(404,'decision not found')
+ if decision['level']=='CRITICAL' and p.user_choice=='proceed':
+  raise HTTPException(409,'Critical transfers are held for bank verification and cannot be continued here.')
  d=store.confirm(p.decision_id,p.user_choice)
- if not d:raise HTTPException(404,'decision not found')
  return {'status':'ok','outcome':d['outcome']}
 @app.get('/decisions')
 def decisions(limit:int=50):return list(islice(store.decisions,max(0,min(limit,500))))

@@ -181,7 +181,9 @@ function render(decision) {
   const timer = decision.level === 'HIGH' ? '<div class="hold-timer" id="countdown">30:00</div><p class="trusted-contact">Use this time to speak with someone you trust, using a contact method you already know.</p>' : '';
   const actions = decision.level === 'LOW'
     ? '<div class="result-actions"><button class="done-button" onclick="finish(\'proceed\')">Done</button></div>'
-    : '<div class="result-actions"><button onclick="finish(\'cancel\')">Stop this transfer</button><button class="continue-button" onclick="finish(\'proceed\')">Continue transfer</button></div>';
+    : decision.level === 'CRITICAL'
+      ? '<div class="result-actions"><button onclick="finish(\'cancel\')">Cancel transfer</button></div>'
+      : '<div class="result-actions"><button onclick="finish(\'cancel\')">Stop this transfer</button><button class="continue-button" onclick="finish(\'proceed\')">Continue transfer</button></div>';
 
   $('result').innerHTML = `<article class="result-card ${escapeHtml(decision.level)}">
     <p class="result-status"><span aria-hidden="true">●</span>${copy.label}</p>
