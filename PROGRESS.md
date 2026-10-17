@@ -2,7 +2,7 @@
 
 - [x] P0 — Bootstrap — verified 2026-10-18 00:57 SGT (dependency imports pass)
 - [x] P1 — Service + UI — verified 2026-10-18 01:06 SGT (`/health` ok; `/bank/` and `/dashboard/` HTTP 200; stub fallback retained)
-- [ ] P2 — ML realistic model
+- [x] P2 — ML realistic model — verified 2026-10-18 01:06 SGT (`--customers 5000 --loto`; PR-AUC 0.873; fairness report present; artifact and curves generated)
 - [ ] P3 — Real model in the service
 - [ ] P4 — LinuxONE deployment + training on s390x
 - [ ] P5 — Benchmark + evidence
