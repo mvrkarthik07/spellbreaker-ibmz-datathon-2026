@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f1f5f6">
   <title>Merlion Bank | Secure transfers</title>
-  <link rel="stylesheet" href="style.css?v=20261018-4">
+  <link rel="stylesheet" href="style.css?v=20261018-5">
 </head>
 <body>
   <main class="bank-app" aria-label="Merlion Bank personal banking">
@@ -16,9 +16,6 @@
       </a>
       <div class="topbar-right">
         <span class="region"><span class="region-dot" aria-hidden="true"></span>Singapore</span>
-        <button class="icon-button" id="gear" type="button" aria-label="Scenario settings" title="Scenario settings">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="m19.4 13.5 1.1.8-1.1 1.9-1.3-.5a7.8 7.8 0 0 1-1.6.9l-.2 1.4h-2.2l-.3-1.4a7.8 7.8 0 0 1-1.7-.1l-.9 1.1-1.9-1.1.5-1.3a7.8 7.8 0 0 1-.9-1.6l-1.4-.2v-2.2l1.4-.3a7.8 7.8 0 0 1 .1-1.7l-1.1-.9 1.1-1.9 1.3.5a7.8 7.8 0 0 1 1.6-.9l.2-1.4h2.2l.3 1.4a7.8 7.8 0 0 1 1.7.1l.9-1.1 1.9 1.1-.5 1.3a7.8 7.8 0 0 1 .9 1.6l1.4.2v2.2l-1.4.3a7.8 7.8 0 0 1-.1 1.7Z"/></svg>
-        </button>
       </div>
     </header>
 
@@ -87,27 +84,8 @@
 
     <section id="result" class="screen result-screen hidden" aria-live="polite"></section>
 
-    <details id="controls" class="scenario-settings">
-      <summary><span class="settings-summary-icon" aria-hidden="true">⚙</span><span>Scenario settings</span><svg class="summary-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></summary>
-      <div class="settings-content">
-        <p class="settings-description">Adjust the account profile and signals to explore different transfer journeys. Call status is a supplied signal; this interface cannot detect phone calls.</p>
-        <label class="settings-toggle"><span><strong>Caller reports an active call</strong><small>Supplied with this transfer</small></span><input type="checkbox" id="call"><i aria-hidden="true"></i></label>
-        <label class="settings-toggle"><span><strong>Recently opened a flagged link</strong><small>Threat-intelligence signal</small></span><input type="checkbox" id="link"><i aria-hidden="true"></i></label>
-        <label class="field-label" for="customer">Account profile</label>
-        <div class="select-wrap"><select id="customer"><option value="C-TAN">Mdm Tan · Everyday account</option><option value="C-LIM">Mr Lim · Everyday account</option><option value="C-RAJ">Raj · Everyday account</option></select><span class="select-chevron" aria-hidden="true">⌄</span></div>
-        <div class="preset-heading"><span>Load a scenario</span><span>5 available</span></div>
-        <div class="presets">
-          <button type="button" data-preset="S1"><span class="preset-icon danger">!</span><span>Government impersonation</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
-          <button type="button" data-preset="S2"><span class="preset-icon safe">↗</span><span>Rent payment</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
-          <button type="button" data-preset="S3"><span class="preset-icon neutral">↗</span><span>Contractor invoice</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
-          <button type="button" data-preset="S4"><span class="preset-icon warning">↗</span><span>Investment opportunity</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
-          <button type="button" data-preset="S5"><span class="preset-icon warning">↗</span><span>Task-based job offer</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
-        </div>
-        <button id="reset" type="button" class="reset-button">Reset activity</button>
-      </div>
-    </details>
     <footer class="app-footer"><span class="footer-mark">M</span> Merlion Bank <span class="footer-separator">·</span> Private and secure banking</footer>
   </main>
-  <script src="app.js?v=20261018-8"></script>
+  <script src="app.js?v=20261018-9"></script>
 </body>
 </html>

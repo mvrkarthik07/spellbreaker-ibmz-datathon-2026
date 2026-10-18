@@ -5,11 +5,8 @@ let typed = [];
 let holdTimer = null;
 let balancesHidden = false;
 
-const profiles = {
-  'C-TAN': { name: 'Mdm Tan', initial: 'T', current: 9000, savings: 85000 },
-  'C-LIM': { name: 'Mr Lim', initial: 'L', current: 25000, savings: 40000 },
-  'C-RAJ': { name: 'Raj', initial: 'R', current: 3000, savings: 6000 }
-};
+const customerId = 'C-TAN';
+const profile = { name: 'Mdm Tan', initial: 'T', current: 9000, savings: 85000 };
 
 const money = amount => `S$${Number(amount).toLocaleString('en-SG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({
@@ -19,7 +16,7 @@ const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({
 function updateGreeting() {
   const hour = new Date().getHours();
   const part = hour < 12 ? 'morning' : hour < 18 ? 'afternoon' : 'evening';
-  $('greeting').textContent = `Good ${part}, ${profiles[$('customer').value].name}`;
+  $('greeting').textContent = `Good ${part}, ${profile.name}`;
   $('today').textContent = new Intl.DateTimeFormat('en-SG', {
     weekday: 'long', day: 'numeric', month: 'long'
   }).format(new Date()).toUpperCase();
@@ -30,7 +27,6 @@ function displayBalance(amount) {
 }
 
 function availableBalance() {
-  const profile = profiles[$('customer').value];
   return $('pot').value === 'savings' ? profile.savings : profile.current;
 }
 
@@ -41,13 +37,12 @@ function updateAmountLimit() {
 }
 
 function updateCustomer() {
-  const profile = profiles[$('customer').value];
   $('avatar').textContent = profile.initial;
   $('current').textContent = displayBalance(profile.current);
   $('savings').textContent = displayBalance(profile.savings);
   $('total-balance').textContent = displayBalance(profile.current + profile.savings);
-  $('current-number').textContent = $('customer').value === 'C-TAN' ? '•• 2846' : $('customer').value === 'C-LIM' ? '•• 3418' : '•• 1906';
-  $('savings-number').textContent = $('customer').value === 'C-TAN' ? '•• 5721' : $('customer').value === 'C-LIM' ? '•• 6620' : '•• 4472';
+  $('current-number').textContent = '•• 2846';
+  $('savings-number').textContent = '•• 5721';
   updateAmountLimit();
   updateGreeting();
   refreshRecent();
@@ -76,7 +71,7 @@ function refreshRecent() {
     .then(decisions => {
       // A score is only a review. Show a transfer here after the customer
       // explicitly proceeds; unsubmitted and cancelled reviews are not activity.
-      const rows = decisions.filter(item => item.customer_id === $('customer').value && item.outcome === 'proceeded').slice(0, 4);
+      const rows = decisions.filter(item => item.customer_id === customerId && item.outcome === 'proceeded').slice(0, 4);
       if (!rows.length) {
         $('recent').innerHTML = '<div class="empty-state"><span class="empty-icon" aria-hidden="true">↗</span><div><strong>No completed transfers</strong><p>Transfers you choose to continue will appear here.</p></div></div>';
         return;
@@ -102,48 +97,6 @@ function showScreen(id) {
     $('form-error').hidden = true;
     $('form-error').textContent = '';
   }
-}
-
-async function scoreScenario(preset) {
-  if (preset === 'S4' || preset === 'S5') {
-    await fetch('/demo/reset', { method: 'POST' });
-    const sequence = preset === 'S4'
-      ? [['MB-554-310-1207', 'Apex Wealth Desk', 500], ['MB-554-310-1207', 'Apex Wealth Desk', 1200]]
-      : [['MB-201-889-4410', 'TaskHub Rewards', 30], ['MB-201-889-4410', 'TaskHub Rewards', 80], ['MB-201-889-4410', 'TaskHub Rewards', 160]];
-    for (const [account, name, amount] of sequence) {
-      const response = await fetch('/score', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customer_id: 'C-RAJ', payee_account: account, payee_name: name, amount, source_pot: 'current', flags: {} })
-      });
-      const decision = await response.json();
-      await fetch('/transfer/confirm', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ decision_id: decision.decision_id, user_choice: 'proceed' })
-      });
-    }
-  }
-
-  if (preset === 'S1') {
-    $('customer').value = 'C-TAN'; setPayee('Secure Govt Account', 'MB-778-201-9931');
-    $('amount').value = 20000; $('pot').value = 'savings'; $('call').checked = true; $('account').dataset.pasted = 'true';
-  } else if (preset === 'S2') {
-    $('customer').value = 'C-TAN'; setPayee('Landlord', 'MB-LANDLORD', 'MB-LANDLORD');
-    $('amount').value = 1800; $('pot').value = 'current'; $('call').checked = true;
-  } else if (preset === 'S3') {
-    $('customer').value = 'C-LIM'; setPayee('New contractor', 'MB-CONTRACTOR-NEW');
-    $('amount').value = 8000; $('pot').value = 'current'; $('call').checked = false;
-  } else if (preset === 'S4') {
-    $('customer').value = 'C-RAJ'; setPayee('Apex Wealth Desk', 'MB-554-310-1207');
-    $('amount').value = 2800; $('pot').value = 'current'; $('call').checked = false;
-  } else if (preset === 'S5') {
-    $('customer').value = 'C-RAJ'; setPayee('TaskHub Rewards', 'MB-201-889-4410');
-    $('amount').value = 400; $('pot').value = 'current'; $('call').checked = false;
-  }
-  updateCustomer();
-  showScreen('form');
-  $('controls').open = false;
 }
 
 function resultCopy(decision) {
@@ -227,9 +180,7 @@ async function finish(choice) {
 
 $('start').addEventListener('click', () => showScreen('form'));
 $('back').addEventListener('click', () => { showScreen('home'); refreshRecent(); });
-$('customer').addEventListener('change', updateCustomer);
 $('pot').addEventListener('change', updateAmountLimit);
-$('gear').addEventListener('click', () => { $('controls').open = !$('controls').open; });
 $('toggle-balance').addEventListener('click', event => {
   balancesHidden = !balancesHidden;
   event.currentTarget.setAttribute('aria-pressed', String(balancesHidden));
@@ -247,11 +198,6 @@ $('payeeChoice').addEventListener('change', () => {
   const recipient = savedPayees[$('payeeChoice').value];
   if (recipient) setPayee(recipient[0], recipient[1], $('payeeChoice').value);
   else setPayee('', '');
-});
-document.querySelectorAll('[data-preset]').forEach(button => button.addEventListener('click', () => scoreScenario(button.dataset.preset)));
-$('reset').addEventListener('click', async () => {
-  await fetch('/demo/reset', { method: 'POST' });
-  location.reload();
 });
 ['amount', 'account'].forEach(id => $(id).addEventListener('keydown', () => {
   typed.push(Date.now());
@@ -282,16 +228,16 @@ $('transfer-form').addEventListener('submit', async event => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        customer_id: $('customer').value,
+        customer_id: customerId,
         payee_account: $('account').value,
         payee_name: $('name').value,
         amount,
         source_pot: $('pot').value,
         flags: {
-          on_call: $('call').checked,
+          on_call: false,
           pasted_account: $('account').dataset.pasted === 'true',
           rushed_score: rushedSignal(),
-          clicked_flagged_link_recent: $('link').checked
+          clicked_flagged_link_recent: false
         }
       })
     });

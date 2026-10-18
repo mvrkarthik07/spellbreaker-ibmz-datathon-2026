@@ -2,21 +2,16 @@
 
 - `platform.txt`: LinuxONE OS, architecture, CPU count and memory.
 - `cpu_features.txt`: CPU flags and literal `grep -c nnpa /proc/cpuinfo` result.
-- `nnpa.txt`: live SSH checks of NNPA visibility on the host and running service container, plus a truthful zDLC/inference-use audit.
 - `container.txt`: Docker service, configured user, read-only root, tmpfs and dropped capabilities.
-- `github_preflight.txt`: secret/key/data scan and ignored-path checks before public push.
 - `python_env.txt`: apt-backed project training environment and Ubuntu service container package versions.
 - `train_l1cc.log`: SpellBreaker training output and MuleNet score source.
 - `mulenet_l1cc.log`: official Jupyter image MuleNet command and XGBoost/HistGradientBoosting report.
 - `genai_runtime.txt`: GenAI runtime status and Granite attempt outcome.
 - `genai_eval.log`: live HIGH/CRITICAL case-note evaluation log.
-- `../results/genai_eval.json`: acceptance rate and generation-time summary.
+- `genai_eval.json`: acceptance rate and generation-time summary.
 - `health.json`: live service architecture, trained-on architecture and runtime badge.
-- `bench.txt`: 10,000-request localhost LinuxONE benchmark.
-- `trace_smoke_test.txt`: live score ID correlated across the redacted trace endpoint and structured Docker JSON log.
-- `trace_live_viewer.txt`: live `/trace` viewer, recent-list API, per-request trace, and LinuxONE structured log correlation.
-- `recipient_model_gap.txt`: live synthetic recipient-name scores and the local Granite semantic-review feasibility probe.
+- `bench.txt`: latest 10,000-request localhost LinuxONE benchmark.
+- `ui_smoke_test.txt`: deployed bank-app interaction check, including a synthetic CRITICAL review and cancellation without proceeding it.
 - `crypto.txt`: OpenSSL SHA-256 speed, MSA visibility and synthetic Python HMAC token sample.
 - `genai_prompt_sample.txt`: synthetic, personal-data-free model prompt example.
-- `ui_smoke_test.txt`: live-browser banking UI checks and remote acceptance suite result.
 - `SpellBreaker_on_LinuxONE.executed.ipynb`: executed service demo and notebook-only PyTorch MLP comparison against HistGradientBoosting.

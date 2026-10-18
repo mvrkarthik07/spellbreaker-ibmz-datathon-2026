@@ -11,14 +11,14 @@ The Protection from Scams Act allows police to direct banks to restrict an indiv
 <!-- RESULTS:START -->
 On the receiver-account holdout (0.40% mule base rate), XGBoost MuleNet achieves 7.46× lift and 7.46% recall at the top 1%, and 4.01× lift and 20.06% recall at the top 5%. SpellBreaker synthetic holdout PR-AUC is 0.8802, with a 1.13% legit interruption rate at T1.
 
-Optimized local benchmark (10,000 requests, concurrency 16): server p50 7.53 ms and p99 27.37 ms ([raw JSON](results/bench_local.json)). Latest LinuxONE run (10,000 requests, concurrency 16): server p50 23.12 ms and p99 25.17 ms ([raw JSON](results/bench.json)). The synthetic model metrics and measured service latency are separate from real-world effectiveness.
+Optimized local benchmark (10,000 requests, concurrency 16): server p50 7.53 ms and p99 27.37 ms ([raw JSON](results/bench_local.json)). Latest LinuxONE run (10,000 requests, concurrency 16): server p50 23.44 ms and p99 25.22 ms ([raw JSON](results/bench.json)). The synthetic model metrics and measured service latency are separate from real-world effectiveness.
 
 See [full model results](docs/RESULTS.md).
 <!-- RESULTS:END -->
 
 ## Demo
 
-[Open the live Merlion Bank demo](http://148.100.98.199:8000/bank/) or the [analyst dashboard](http://148.100.98.199:8000/dashboard/). The browser smoke check exercised all five presets, both warning choices, the explanation panel, and reset; see [`evidence/ui_smoke_test.txt`](evidence/ui_smoke_test.txt).
+[Open the live Merlion Bank app](http://148.100.98.199:8000/bank/) or the [analyst dashboard](http://148.100.98.199:8000/dashboard/). The bank app has no scenario presets or settings drawer; the transfer is scored from the details entered in the normal payment flow. A timed three-minute walkthrough is in [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md). UI checks are recorded in [`evidence/ui_smoke_test.txt`](evidence/ui_smoke_test.txt).
 
 **Model scope:** A LOW score means the model did not find strong pressure patterns in the supplied transaction and interaction signals. It does not verify a recipient's identity or determine who controls that account. The current model does not use the entered recipient name; the live synthetic recipient-name probe is documented in [`evidence/recipient_model_gap.txt`](evidence/recipient_model_gap.txt).
 
@@ -32,7 +32,7 @@ Each review displays a unique decision ID. Open the [live trace viewer](http://1
 |---|---|---|
 | Model trained on s390x | [training log](evidence/train_l1cc.log), bundle `trained_on` | Verified; report says `trained_on=s390x` |
 | Served in a container on LinuxONE | [container inspection](evidence/container.txt) | Verified; Ubuntu 24.04 container on l1cc |
-| Real-time latency and throughput | [benchmark JSON](results/bench.json), [benchmark evidence](evidence/bench.txt) | Latest LinuxONE run: server p99 25.17 ms |
+| Real-time latency and throughput | [benchmark JSON](results/bench.json), [benchmark evidence](evidence/bench.txt) | Latest LinuxONE run: server p99 25.22 ms |
 | Customer data stays within bank platform | `docs/PRIVACY.md` | Prototype design statement; no production deployment verified |
 | Local GenAI | `/health`, [50-case evaluation](results/genai_eval.json), [runtime evidence](evidence/genai_runtime.txt) | Granite acceptance was 0/50; deterministic template is default and Granite remains optional |
 | NNPA hardware visibility; zDLC model inference | [host/container check](evidence/nnpa.txt) | NNPA is exposed on l1cc and the service container (`grep -c` = 1); zDLC is absent, so accelerated inference is not claimed |
@@ -108,7 +108,7 @@ See [docs/RESULTS.md](docs/RESULTS.md) and the generated [model report](results/
 
 ## Privacy and responsible AI
 
-- Only a small set of transfer and yes/no interaction signals is sent to the scoring service.
+- The form sends transfer details, a pasted-account indicator and a client-computed typing-speed summary; it does not collect call status or link-click history.
 - Caller number, audio, contacts, messages, clipboard contents, raw keystroke timings and location are not sent.
 - All named customers and accounts are synthetic.
 - A high score pauses or escalates a transfer for human review; the model does not automatically freeze an account.
