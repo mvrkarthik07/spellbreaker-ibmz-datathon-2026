@@ -18,7 +18,7 @@ See [full model results](docs/RESULTS.md).
 
 ## Demo
 
-[Short intro deck](docs/SpellBreaker_Intro.pptx) (three slides; about 35 seconds before the live demo).
+[Short intro deck](docs/SpellBreaker_Demo_Deck.pptx) (four slides; about 47 seconds before the live demo).
 
 [Open the live Merlion Bank app](http://148.100.98.199:8000/bank/) or the [analyst dashboard](http://148.100.98.199:8000/dashboard/). The bank app has no scenario presets or settings drawer; the transfer is scored from the details entered in the normal payment flow. UI checks are recorded in [`evidence/ui_smoke_test.txt`](evidence/ui_smoke_test.txt).
 
