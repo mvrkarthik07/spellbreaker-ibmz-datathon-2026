@@ -148,9 +148,9 @@ async function scoreScenario(preset) {
 
 function resultCopy(decision) {
   if (decision.level === 'LOW') return {
-    label: 'SECURITY CHECK COMPLETE',
-    title: 'This transfer can proceed',
-    description: 'No high-risk pattern was identified in this review.'
+    label: 'LOW MODEL RISK',
+    title: 'No strong pressure signals found',
+    description: 'This check looks for signs of pressure. It does not verify who controls the recipient account or whether their request is genuine.'
   };
   if (decision.level === 'MEDIUM') return {
     label: 'PLEASE REVIEW',
@@ -180,7 +180,7 @@ function render(decision) {
   const question = decision.level === 'LOW' ? '' : `<p class="result-question">${escapeHtml(decision.question || '')}</p>`;
   const timer = decision.level === 'HIGH' ? '<div class="hold-timer" id="countdown">30:00</div><p class="trusted-contact">Use this time to speak with someone you trust, using a contact method you already know.</p>' : '';
   const actions = decision.level === 'LOW'
-    ? '<div class="result-actions"><button class="done-button" onclick="finish(\'proceed\')">Done</button></div>'
+    ? '<div class="result-actions"><button class="done-button" onclick="finish(\'proceed\')">Confirm transfer</button></div>'
     : decision.level === 'CRITICAL'
       ? '<div class="result-actions"><button onclick="finish(\'cancel\')">Cancel transfer</button></div>'
       : '<div class="result-actions"><button onclick="finish(\'cancel\')">Stop this transfer</button><button class="continue-button" onclick="finish(\'proceed\')">Continue transfer</button></div>';

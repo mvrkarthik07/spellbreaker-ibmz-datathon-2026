@@ -4,6 +4,7 @@
 
 - Confirm the final team role descriptions with **Karthik Manda**, **Pranay Kanth Molugu**, **Sai Prakash Reddy**, and **Amrutha Vanaparthi** before submission; the proposed roles are in README.
 - Record and upload the final ≤3-minute demo, then replace the video URL placeholder in `docs/SUBMISSION.md`.
+- Recipient-name review needs a capable, tested semantic model before it can be part of the score. The victim-side model ignores recipient names; local Granite Q2 took 83.8s and returned malformed output, while the prior Q4 evaluation timed out and accepted 0/50 notes. Do not pass recipient names to a live decision LLM or treat it as a reliable gate until a stronger local model or approved low-latency runtime is available and validated.
 
 ## Resolved / fallbacks
 

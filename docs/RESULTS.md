@@ -114,7 +114,7 @@ The service runs in a non-root Ubuntu 24.04 container using the same Ubuntu-preb
 
 | Duration | Throughput | Server p50 | Server p95 | Server p99 | Client p50 | Client p99 |
 |---:|---:|---:|---:|---:|---:|---:|
-| 47.74 s | 209.46 req/s | 23.29 ms | 24.15 ms | 24.99 ms | 75.57 ms | 104.96 ms |
+| 47.36 s | 211.14 req/s | 23.12 ms | 24.03 ms | 25.17 ms | 75.02 ms | 103.68 ms |
 
 The server-side p99 meets the <50 ms target. Client round-trip latency includes queueing and transport. Granite's 50-case acceptance was 0%, so the deterministic template is the default and Granite remains opt-in; `/health` reports `template (fallback)`. Full results are in `results/bench.json` and `evidence/bench.txt`; platform, CPU, container, package, health, GenAI evaluation and crypto evidence is in `evidence/`. The executed LinuxONE notebook verifies a live CRITICAL score and asynchronous case note in `evidence/SpellBreaker_on_LinuxONE.executed.ipynb`.
 

@@ -1,0 +1,29 @@
+# Recipient-name scoring gap check (synthetic requests)
+
+Live target: LinuxONE service at `http://148.100.98.199:8000`. Both requests used the fictional customer profile and a test-only receiver account. Neither request was confirmed or sent.
+
+## Baseline request
+
+- Payee label: `Singapore Police Force`
+- Amount: S$1,000
+- Coercion flags: none supplied
+- Decision: `LOW`, model risk `0.004341`, scam type `none`, action `ALLOW`
+- Reasons: new payee; 3.3x usual amount; 11% of available balance
+- Decision ID: `d_bb5d14c66ef147368b6d41b5ff1318a7`
+
+## Same amount with coercion signals
+
+- Payee label: `Singapore Police Force`
+- Amount: S$1,000
+- Coercion flags: active call, pasted account, rushed input 0.8
+- Decision: `LOW`, model risk `0.117127`, scam type `none`, action `ALLOW`
+- Reasons include active call, pasted account, rushed input and new payee
+- Decision ID: `d_7694dad76f234b7496fa9e19068ed19d`
+
+## Local Granite feasibility probe
+
+Ran Granite 3.0 1B A400M Q2_K in the prebuilt s390x image with one CPU thread and a synthetic request about the same recipient label. Generation took 83.8 seconds and returned malformed prose instead of the requested JSON classification. The earlier Q4_K_M case-note probe timed out at 90 seconds; the 50-case note evaluation accepted 0/50. Current service configuration does not run the LLM during `/score`; Granite is an optional asynchronous case-note path for HIGH/CRITICAL results.
+
+## Interpretation
+
+The scoring model does not consume `payee_name`; it scores transaction and interaction features. The optional Granite path is too slow and unreliable in these checks to drive an immediate transfer decision. No recipient-specific rule or artificial model score was added. The customer UI now describes LOW as “no strong pressure signals found,” says recipient ownership is not verified, and asks for an explicit “Confirm transfer.” A capable, tested local semantic model or an approved low-latency LLM integration is needed before recipient-name review can safely participate in the decision.
