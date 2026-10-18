@@ -55,6 +55,13 @@ def test_trace_endpoint_returns_a_redacted_decision_record():
  trace=r.json();assert trace['decision_id']==d['decision_id'] and trace['level']==d['level']
  assert trace['model_version'] and 'latency_ms' in trace and trace['reasons']
  assert not {'customer_id','payee_account','payee_name','features_used'}.intersection(trace)
+def test_live_trace_viewer_and_recent_endpoint_are_redacted():
+ reset();first=score('C-TAN','MB-SP','SP Group',500,flags={});second=score('C-LIM','MB-NEW','New payee',200,flags={})
+ page=client.get('/trace');assert page.status_code==200 and 'Request traces' in page.text and 'setInterval(refresh,2000)' in page.text
+ response=client.get('/trace/recent?limit=1');assert response.status_code==200
+ data=response.json();assert data['count']==1 and data['traces'][0]['decision_id']==second['decision_id']
+ assert data['traces'][0]['created_at'] and not {'customer_id','payee_account','payee_name','features_used'}.intersection(data['traces'][0])
+ assert client.get('/trace/'+first['decision_id']).json()['decision_id']==first['decision_id']
 def test_trace_explanations_use_singapore_time_without_raw_hour_features():
  from service.explain import reasons
  profile=SEED['C-TAN'];payload={'timestamp':'2026-10-18T12:00:00+08:00','payee_account':'MB-SP','amount':500,'source_pot':'current','flags':{}}

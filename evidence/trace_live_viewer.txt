@@ -1,0 +1,21 @@
+{
+  "viewer_http_status": 200,
+  "viewer_content_type": "text/html; charset=utf-8",
+  "recent_endpoint_count": 100,
+  "test_decision_id": "d_0b061e6a52e14a11afa51ad1e280f422",
+  "level": "LOW",
+  "recent_trace_matches": true,
+  "single_trace_matches": true,
+  "structured_docker_log_matches": {
+    "event": "score_decision",
+    "decision_id": "d_0b061e6a52e14a11afa51ad1e280f422",
+    "model_version": "0.1.0",
+    "scored_on": "IBM LinuxONE (s390x)",
+    "level": "LOW",
+    "risk": 0.002677,
+    "scam_type": "none",
+    "action": "ALLOW",
+    "latency_ms": 5.669
+  },
+  "transfer_confirmed": false
+}
